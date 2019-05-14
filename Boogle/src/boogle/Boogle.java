@@ -1,21 +1,28 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package boogle;
 
-/**
- *
- * @author Sunny
- */
-public class Boogle {
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
+public class Boogle extends Application {
+
+    @Override
+    public void start(Stage primaryStage) {
+        Pane mainPane = new Pane();
+        BoogleMenuBar menuBar = new BoogleMenuBar(mainPane);
+
+        VBox root = new VBox(menuBar, mainPane);
+        Scene scene = new Scene(root, 600, 600);
+
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Beroepsproject");
+        primaryStage.show();
     }
-    
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+
 }
