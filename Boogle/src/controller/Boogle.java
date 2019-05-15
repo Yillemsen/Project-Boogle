@@ -18,7 +18,7 @@ public class Boogle extends Application {
 
         VBox root = new VBox(menuBar, mainPane);
         Scene scene = new Scene(root, 600, 600);
-        new InsertBibliotheekView(root);
+       // new InsertBibliotheekView(root);
 
         primaryStage.setScene(scene);
         primaryStage.setTitle("Beroepsproject");

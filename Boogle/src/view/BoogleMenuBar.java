@@ -31,7 +31,7 @@ public class BoogleMenuBar extends MenuBar {
         miInsertFilm = new MenuItem("Film");
         miInsertFilm.setOnAction(event -> {
             mainPane.getChildren().clear();
-            new InsertBoekView(mainPane);
+            new InsertFilmView(mainPane);
         });
 
         miInsertActeur = new MenuItem("Acteur");
@@ -40,10 +40,10 @@ public class BoogleMenuBar extends MenuBar {
             new InsertActeurView(mainPane);
         });
 
-        miInsertAuteur = new MenuItem("Acteur");
+        miInsertAuteur = new MenuItem("Auteur");
         miInsertAuteur.setOnAction(event -> {
             mainPane.getChildren().clear();
-            new InsertActeurView(mainPane);
+            new InsertAuteurView(mainPane);
         });
 
         miUpdateBibliotheek = new MenuItem("Bibliotheek");
@@ -61,7 +61,7 @@ public class BoogleMenuBar extends MenuBar {
         miUpdateFilm = new MenuItem("Film");
         miUpdateFilm.setOnAction(event -> {
             mainPane.getChildren().clear();
-            new UpdateBoekView(mainPane);
+            new UpdateFilmView(mainPane);
         });
 
         miUpdateActeur = new MenuItem("Acteur");
@@ -73,7 +73,7 @@ public class BoogleMenuBar extends MenuBar {
         miUpdateAuteur = new MenuItem("Auteur");
         miUpdateAuteur.setOnAction(event -> {
             mainPane.getChildren().clear();
-            new UpdateActeurView(mainPane);
+            new UpdateAuteurView(mainPane);
         });
 
         miDelete = new MenuItem("Verwijderen");
