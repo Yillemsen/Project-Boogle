@@ -1,4 +1,4 @@
-package boogle;
+package view;
 
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;

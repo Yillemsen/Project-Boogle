@@ -1,10 +1,13 @@
-package boogle;
+package controller;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import view.BoogleMenuBar;
+import view.InsertBibliotheekView;
 
 public class Boogle extends Application {
 
@@ -15,6 +18,7 @@ public class Boogle extends Application {
 
         VBox root = new VBox(menuBar, mainPane);
         Scene scene = new Scene(root, 600, 600);
+        new InsertBibliotheekView(root);
 
         primaryStage.setScene(scene);
         primaryStage.setTitle("Beroepsproject");
