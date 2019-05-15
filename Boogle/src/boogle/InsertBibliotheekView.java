@@ -12,7 +12,7 @@ public class InsertBibliotheekView extends GridPane {
     private Label lblName, lblAddress, lblPlace, lblPhone;
     private TextField txtName, txtAddress, txtPlace, txtPhone;
     private Text libaryInput;
-    private Button btnLibary;
+    private Button btnSave;
 
     public InsertBibliotheekView(Pane mainPane) {    
         libaryInput = new Text(" Bibliotheek invoeren");
@@ -27,7 +27,7 @@ public class InsertBibliotheekView extends GridPane {
         lblPlace = new Label(" Plaats : ");
         lblPhone = new Label (" Telefoonnummer : ");
         
-        btnLibary = new Button(" Opslaan ");
+        btnSave = new Button(" Opslaan ");
         
         setPadding(new Insets(10,10,10,10));
         setHgap(10);
@@ -42,7 +42,7 @@ public class InsertBibliotheekView extends GridPane {
         add(txtPlace, 1, 4);
         add(lblPhone, 0, 5);
         add(txtPhone, 1, 5);
-        add(btnLibary, 1, 6);
+        add(btnSave, 1, 6);
         
         mainPane.getChildren().add(this);
         

@@ -41,7 +41,7 @@ public class BoogleMenuBar extends MenuBar {
         });
 
         miUpdateBoekFilm = new MenuItem("Boek / Film");
-        miInsertBoekFilm.setOnAction(event -> {
+        miUpdateBoekFilm.setOnAction(event -> {
             mainPane.getChildren().clear();
             new UpdateBoekFilmView(mainPane);
         });
