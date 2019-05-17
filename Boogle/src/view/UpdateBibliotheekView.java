@@ -7,6 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import model.Database;
 
 public class UpdateBibliotheekView extends GridPane {
 
@@ -15,8 +16,12 @@ public class UpdateBibliotheekView extends GridPane {
 	private final TextField nameTextField, adresTextField, locationTextField, cellTextField;
 	private final Button saveButton;
 	private final Text text;
+	private Database db;
 
 	public UpdateBibliotheekView(Pane mainPane) {
+		//Instantiating Database
+		db = new Database();
+		
 		// Instantiating labelobjects
 		nameLabel = new Label("Naam:");
 		adresLabel = new Label("Adres:");
@@ -64,5 +69,6 @@ public class UpdateBibliotheekView extends GridPane {
 		this.add(errorLabel, 1, 6);
 
 		mainPane.getChildren().add(this);
+		
 	}
 }
