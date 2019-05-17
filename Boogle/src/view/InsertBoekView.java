@@ -83,7 +83,6 @@ public class InsertBoekView extends GridPane {
             add(lblAuteur, 0, 12);
             add(boxAuteur, 1, 12);
             add(btnSave, 1, 13);
-            System.out.println(db.getBoek("214748"));
 
             mainPane.getChildren().add(this);
 	}
