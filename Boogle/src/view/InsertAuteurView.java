@@ -1,5 +1,6 @@
 package view;
 
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -9,30 +10,37 @@ import javafx.scene.text.Text;
 
 public class InsertAuteurView extends GridPane {
     
-    private Label lblNameActeur, lblNameAuteur, lblBirthActeur, lblBirthAuteur, lblDeathActeur, lblDeathAuteur;
-    private TextField txtNameActeur, txtNameAuteur, txtBirthActeur, txtBirthAuteur, txtDeathActeur, txtDeathAuteur;
-    private Text acteurInput, auteurInput;
-    private Button btnActeur, btnAuteur;
+    private Label lblName, lblBirth, lblDeath;
+    private TextField txtName, txtBirth, txtDeath;
+    private Text auteurInput;
+    private Button btnSave;
 
     public InsertAuteurView(Pane mainPane) { 
-        auteurInput = new Text(" Auteur invoeren");
-        acteurInput = new Text(" Acteur invoeren");
+        auteurInput = new Text(" Auteur invoeren ");
         
-        txtNameActeur = new TextField();
-        txtNameAuteur = new TextField();
-        txtBirthActeur = new TextField();
-        txtBirthAuteur = new TextField();
-        txtDeathActeur = new TextField();
-        txtDeathAuteur = new TextField();
+        txtName = new TextField();
+        txtBirth = new TextField();
+        txtDeath = new TextField();
         
-        lblNameActeur = new Label(" Naam : ");
-        lblNameAuteur = new Label(" Naam : ");
-        lblBirthActeur = new Label(" Geboortedatum : ");
-        lblBirthAuteur = new Label (" Geboortedatum : ");
-        lblDeathActeur = new Label (" Overlijdingsdatum : ");
-        lblDeathActeur = new Label (" Overlijdingsdatum : ");
+        lblName = new Label(" Naam : ");
+        lblBirth = new Label(" Geboortedatum : ");
+        lblDeath = new Label (" Overlijdingsdatum : ");
         
-        btnActeur = new Button(" Opslaan ");
-        btnActeur = new Button(" Opslaan ");
+        btnSave = new Button(" Opslaan ");
+        
+        setPadding(new Insets(10,10,10,10));
+        setHgap(10);
+        setVgap(10);
+        
+        add(auteurInput, 0, 0); 
+        add(lblName, 0, 2);
+        add(txtName, 1, 2);
+        add(lblBirth, 0, 3);
+        add(txtBirth, 1, 3);
+        add(lblDeath, 0, 4);
+        add(txtDeath, 1, 4);
+        add(btnSave, 1, 5);
+        
+        mainPane.getChildren().add(this);
         
     }}
