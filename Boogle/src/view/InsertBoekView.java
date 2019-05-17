@@ -4,17 +4,21 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import model.Database;
 
 public class InsertBoekView extends GridPane {
-    private Label lblIsbn, lblBooknumber, lblTitle, lblLanguage, lblDate, lblIntTitle, lblGenre, lblAuteur, lblLibary, lblNumber;
+    private Label lblIsbn, lblBooknumber, lblTitle, lblLanguage, lblDate, lblIntTitle, lblGenre, lblAuteur, lblLibary, lblNumber, lblDesc;
     private TextField txtIsbn, txtBooknumber, txtTitle, txtDate, txtIntTitle;
     private ComboBox boxLanguage, boxGenre, boxAuteur, boxLibary, boxNumber;
     private Text bookInput;
+    private TextArea txtDesc;
     private Button btnSave;
+    private Database db;
     
 	public InsertBoekView(Pane mainPane) {
             //Labels to show
@@ -26,8 +30,10 @@ public class InsertBoekView extends GridPane {
             lblLanguage = new Label(" Taal : ");
             lblDate = new Label(" Datum uitgave : ");
             lblIntTitle = new Label(" Internationale titel : ");
+            lblDesc = new Label(" Beschrijving : ");
             lblGenre = new Label(" Genre : ");
             lblAuteur = new Label(" Auteur : ");
+            db = new Database();
             
             
             //TextFields and ComboBoxs to show
@@ -39,6 +45,9 @@ public class InsertBoekView extends GridPane {
             boxLanguage = new ComboBox();
             txtDate  = new TextField();
             txtIntTitle = new TextField();
+            txtDesc  = new TextArea();
+            txtDesc.setPrefHeight(150);
+            txtDesc.setPrefWidth(20);
             boxGenre = new ComboBox();
             boxAuteur = new ComboBox();
             
@@ -67,11 +76,14 @@ public class InsertBoekView extends GridPane {
             add(txtDate, 1, 8);
             add(lblIntTitle, 0, 9);
             add(txtIntTitle, 1, 9);
-            add(lblGenre, 0, 10);
-            add(boxGenre, 1, 10);
-            add(lblAuteur, 0, 11);
-            add(boxAuteur, 1, 11);
-            add(btnSave, 1, 12);
+            add(lblDesc, 0, 10);
+            add(txtDesc, 1, 10);
+            add(lblGenre, 0, 11);
+            add(boxGenre, 1, 11);
+            add(lblAuteur, 0, 12);
+            add(boxAuteur, 1, 12);
+            add(btnSave, 1, 13);
+            System.out.println(db.getBoek("214748"));
 
             mainPane.getChildren().add(this);
 	}
