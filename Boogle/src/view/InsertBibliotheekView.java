@@ -15,7 +15,7 @@ public class InsertBibliotheekView extends GridPane {
     private Button btnSave;
 
     public InsertBibliotheekView(Pane mainPane) {    
-        libaryInput = new Text(" Bibliotheek invoeren");
+        libaryInput = new Text(" Bibliotheek invoeren ");
        
         txtName = new TextField();
         txtAddress = new TextField();
