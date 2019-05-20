@@ -91,6 +91,7 @@ public class InsertFilmView extends GridPane{
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
+   
         
             add(movieInput, 0, 0); 
             add(lblLibary, 0, 2);

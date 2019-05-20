@@ -97,6 +97,9 @@ public class InsertBoekView extends GridPane {
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
+            
+            boxLanguage = new ComboBox();
+            boxLanguage.getItems().addAll("Nederlands", "English", "Francias","Polski","Deutsch");
         
             add(bookInput, 0, 0); 
             add(lblLibary, 0, 2);
