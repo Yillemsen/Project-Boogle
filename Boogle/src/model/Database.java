@@ -135,6 +135,28 @@ public class Database {
 	 * @return null||error/stacktrace
 	 */
 
+        public ResultSet getData(String strSQL){
+        ResultSet result = null;
+        try{
+            Statement stmt = getConnection().createStatement();
+            result = stmt.executeQuery(strSQL);
+        }catch(Exception e){
+            System.err.println(e.getMessage());
+        }
+        return result;
+    }  
+    
+    public int executeDML(String strSQL){
+        int result = 0;
+        try{
+            Statement stmt = getConnection().createStatement();
+            result = stmt.executeUpdate(strSQL);
+        }catch(Exception e){
+            System.err.println(e.getMessage());
+        }
+        return result;
+    }
+    
 	private ResultSet goToFirstRow(ResultSet rowSet) {
 		try {
 			if (rowSet.next()) {
