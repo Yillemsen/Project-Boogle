@@ -6,8 +6,8 @@ public class BoekModel {
 	public String getISBN() {
 		return ISBN;
 	}
-	public void setISBN(String iSBN) {
-		ISBN = iSBN;
+	public void setISBN(String ISBN) {
+		this.ISBN = ISBN;
 	}
 	public String getTitle() {
 		return title;
