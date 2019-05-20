@@ -1,5 +1,9 @@
 package view;
 
+import java.util.ArrayList;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -8,15 +12,22 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import model.BoekModel;
+import model.Database;
 
 public class UpdateBoekView extends GridPane {
 	private final Label selectISBNLabel, libraryLabel, bookCaseNrLabel, genreLabel, ISBNLabel, bookNrLabel, titleLabel, languageLabel, releaseDateLabel, intTitle, authorLabel, errorLabel;
-	private final TextField ISBNTextField, bookNrTextField, titleTextField, languageTextField, releaseDateTextField, intTitleTextField, authorTextField;
+	private final TextField ISBNTextField, bookNrTextField, titleTextField, languageTextField, releaseDateTextField, intTitleTextField;
 	private final Button saveButton, addBookCaseButton, addAuthorTextFieldButton;
 	private final Text text;
-	private final ComboBox ISBNCB, libraryCB, bookCaseCB, genreCB;
+	private final ComboBox ISBNCB, libraryCB, bookCaseCB, genreCB, authorCB;
+	private final Database db;
+	private ArrayList<String> ISBNItems, libraryItems, bookCaseItems, genreItems, authorItems;
 
 	public UpdateBoekView(Pane mainPane) {
+		//Instantiating objects
+		db = new Database();
+		
 		// Instantiating labelobjects
 		selectISBNLabel = new Label("Selecteer ISBN:");
 		libraryLabel = new Label("Bibliotheek:");
@@ -38,7 +49,6 @@ public class UpdateBoekView extends GridPane {
 		languageTextField = new TextField();
 		releaseDateTextField = new TextField();
 		intTitleTextField = new TextField();
-		authorTextField = new TextField();
 		
 		// Instantiating buttonobjects
 		saveButton = new Button("Opslaan");
@@ -49,10 +59,15 @@ public class UpdateBoekView extends GridPane {
 		text = new Text("Boek aanpassen");
 		
 		//Instantiating comboboxes
-		ISBNCB = new ComboBox();
+		ISBNCB = new ComboBox(setComboBoxArrayLists());
 		libraryCB = new ComboBox();
 		bookCaseCB = new ComboBox();
 		genreCB = new ComboBox();
+		authorCB = new ComboBox();
+		
+		setComboBoxArrayLists();
+		
+		
 
 		// Make-up for text and layout
 		text.setStyle("-fx-font: 17 arial");
@@ -70,7 +85,7 @@ public class UpdateBoekView extends GridPane {
 		}
 
 		// Place textfieldobjects with for loop
-		TextField[] textFieldObjects = { ISBNTextField, bookNrTextField, titleTextField, languageTextField, releaseDateTextField, intTitleTextField, authorTextField };
+		TextField[] textFieldObjects = { ISBNTextField, bookNrTextField, titleTextField, languageTextField, releaseDateTextField, intTitleTextField };
 		for (int i = 0; i < textFieldObjects.length; i++) {
 			this.add(textFieldObjects[i], 1, i + 5);
 		}
@@ -80,6 +95,7 @@ public class UpdateBoekView extends GridPane {
 		this.add(libraryCB, 1, 2);
 		this.add(bookCaseCB, 1, 3);
 		this.add(genreCB, 1, 4);
+		this.add(authorCB, 1, 11);
 
 		// Place buttonobject
 		this.add(saveButton, 1, 13);
@@ -90,5 +106,14 @@ public class UpdateBoekView extends GridPane {
 		this.add(errorLabel, 1, 14);
 
 		mainPane.getChildren().add(this);
+	}
+	
+	private ObservableList<String> setComboBoxArrayLists() {
+		for(BoekModel boek: db.getAllBooks()) {
+			System.out.println(boek.getISBN());
+			ISBNItems.add(boek.getISBN());
+		}
+		ObservableList<String> isbn = FXCollections.observableArrayList(ISBNItems);
+		return isbn;
 	}
 }

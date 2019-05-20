@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class Database {
 	private Connection connection;
@@ -42,7 +43,8 @@ public class Database {
 	/**
 	 * Closes result set
 	 * 
-	 * @param lResultSet ResultSet
+	 * @param lResultSet
+	 *            ResultSet
 	 */
 
 	private void rmConnection(ResultSet lResultSet) {
@@ -66,7 +68,8 @@ public class Database {
 	/**
 	 * Executes select statement
 	 * 
-	 * @param query String containing query
+	 * @param query
+	 *            String containing query
 	 * @return resultset
 	 */
 	private ResultSet select(String query) {
@@ -86,7 +89,8 @@ public class Database {
 	/**
 	 * Update or insert
 	 * 
-	 * @param query String containing query
+	 * @param query
+	 *            String containing query
 	 * @return resultset
 	 */
 
@@ -109,7 +113,8 @@ public class Database {
 	/**
 	 * Executes insert statement
 	 * 
-	 * @param query String containing query
+	 * @param query
+	 *            String containing query
 	 * @return method call
 	 */
 
@@ -120,7 +125,8 @@ public class Database {
 	/**
 	 * Executes update statement
 	 * 
-	 * @param query String containing query
+	 * @param query
+	 *            String containing query
 	 * @return method call
 	 */
 
@@ -131,7 +137,8 @@ public class Database {
 	/**
 	 * Get first row from dataset/resultset
 	 * 
-	 * @param rowSet resultset
+	 * @param rowSet
+	 *            resultset
 	 * @return null||error/stacktrace
 	 */
 
@@ -146,6 +153,13 @@ public class Database {
 		}
 		return null;
 	}
+
+	/**
+	 * Method that returns booktitle from given ISBN
+	 * 
+	 * @param ISBN
+	 * @return String booktitle
+	 */
 
 	public String getBoek(String ISBN) {
 		try {
@@ -163,5 +177,44 @@ public class Database {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	public ArrayList<BoekModel> getAllBooks() {
+		String query = "SELECT * FROM Boek";
+		ResultSet resultSet = select(query);
+
+		if (goToFirstRow(resultSet) == null) {
+			rmConnection(resultSet);
+			return null;
+		}
+
+		return rowToGetAllBooks(resultSet);
+	}
+
+	private ArrayList<BoekModel> rowToGetAllBooks(ResultSet rowSet) {
+		ArrayList<BoekModel> allBooks = new ArrayList<>();
+
+		try {
+			while (rowSet.next()) {
+				BoekModel boekmodel = new BoekModel();
+
+				boekmodel.setISBN(rowSet.getString("ISBN"));
+				boekmodel.setTitle(rowSet.getString("Titel"));
+				boekmodel.setLanguage(rowSet.getString("Taal"));
+				boekmodel.setReleaseDate(rowSet.getString("DatumUitgave"));
+				boekmodel.setIntTitle(rowSet.getString("InternationaleTitel"));
+				boekmodel.setGenre(rowSet.getString("GenreNaam"));
+				boekmodel.setImage(rowSet.getString("Image"));
+				boekmodel.setDescription(rowSet.getString("Beschrijving"));
+				// boekmodel.setBookNr(rowSet.getInt(columnIndex));
+				allBooks.add(boekmodel);
+			}
+		} catch (SQLException e) {
+			rmConnection(rowSet);
+			e.printStackTrace();
+		}
+		rmConnection(rowSet);
+
+		return allBooks;
 	}
 }
