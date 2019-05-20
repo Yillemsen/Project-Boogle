@@ -164,4 +164,23 @@ public class Database {
 			return null;
 		}
 	}
+        public void newBibliotheek(String name, String adres, String location, String cell) {
+        String query = "INSERT INTO bibliotheek(`naam`,`adres`,`plaats`,`telefoon`)" +
+                "VALUES ('" + name + "', '" + adres + "', '" + location + "', '" + cell + "');";
+        System.out.println(query);
+        insert(query);
+
+    }
+        public void newActeur(String name, String birth, String death) {
+        String query = "INSERT INTO acteur(`naam`,`geboortedatum`,`overlijdensdatum`)" +
+                "VALUES ('" + name + "', '" + birth + "', '" + death + "');";
+        System.out.println(query);
+        insert(query);
+    }
+        public void newAuteur(String name, String birth, String death) {
+        String query = "INSERT INTO auteur(`naam`,`geboortedatum`,`overlijdensdatum`)" +
+                "VALUES ('" + name + "', '" + birth + "', '" + death + "');";
+        System.out.println(query);
+        insert(query);
+    }
 }
