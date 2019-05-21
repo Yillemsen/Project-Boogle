@@ -10,6 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import model.BibliotheekModel;
 import model.Database;
 
 public class InsertBoekView extends GridPane {
@@ -18,8 +19,9 @@ public class InsertBoekView extends GridPane {
     private ComboBox boxLanguage, boxGenre, boxAuteur, boxLibary, boxNumber;
     private Text bookInput;
     private TextArea txtDesc;
-    private Button btnSave;
+    private Button btnSave, btnPlus;
     private ResultSet biebResult, genreResult, auteurResult;
+    private BibliotheekModel biebName;
     private Database db = new Database();
     
 	public InsertBoekView(Pane mainPane) {
@@ -42,23 +44,45 @@ public class InsertBoekView extends GridPane {
             txtIsbn = new TextField();
             txtBooknumber = new TextField();
             txtTitle = new TextField();
-            boxLanguage = new ComboBox();
             txtDate  = new TextField();
             txtIntTitle = new TextField();
             txtDesc  = new TextArea();
             txtDesc.setPrefHeight(150);
             txtDesc.setPrefWidth(20);
-            boxGenre = new ComboBox();
-            boxAuteur = new ComboBox();
             
             bookInput = new Text(" Boek invoeren ");
             
+            btnPlus = new Button("+");
+          //  btnPlus.setOnAction(event -> {
+            //    biebName = new BibliotheekModel();
+             //   biebName.setName(boxLibary.getSelectionModel().getSelectedItem().toString());
+             //   try { String strSQL = "select * from bibliotheek where naam=" + biebName.getName() + "";
+                    
+              //  }
+             //    catch (Exception e) {
+               // System.err.println(e.getMessage());
+                
+            //});
+            
             btnSave = new Button(" Opslaan ");
+            String isbn = txtIsbn.getText();
+            String boeknummer = txtBooknumber.getText();
+            String titel = txtTitle.getText();
+            String taal = boxLanguage.getSelectedItem().toString();
+            String datumuitgave = txtDate.getText();
+            String inttitel = txtIntTitle.getText();
+            String beschrijving = txtDesc.getText();
+            String genre = boxGenre.getText();
+            String auteur = boxAuteur.getText();
+                       db.newBibliotheek(name, address, place, phone);
             
             setPadding(new Insets(10,10,10,10));
             setHgap(10);
             setVgap(10);
             
+            /**
+             * functie SQL statements
+             */
             boxLibary = new ComboBox();
             String strSQL = "select * from bibliotheek";
             biebResult = db.getData(strSQL);
@@ -98,6 +122,8 @@ public class InsertBoekView extends GridPane {
             System.err.println(e.getMessage());
         }
             
+            
+            
             boxLanguage = new ComboBox();
             boxLanguage.getItems().addAll("Nederlands", "English", "Francias","Polski","Deutsch");
         
@@ -106,6 +132,7 @@ public class InsertBoekView extends GridPane {
             add(boxLibary, 1, 2);
             add(lblNumber, 0, 3);
             add(boxNumber, 1, 3);
+            //add(btnPlus, 2, 3);
             add(lblIsbn, 0, 4);
             add(txtIsbn, 1, 4);
             add(lblBooknumber, 0, 5);
