@@ -1,7 +1,7 @@
 package model;
 
 public class AuteurModel {
-	private String name, dob, dod;
+	private String name, birth, death;
 
 	public String getName() {
 		return name;
@@ -11,19 +11,19 @@ public class AuteurModel {
 		this.name = name;
 	}
 
-	public String getDob() {
-		return dob;
+	public String getBirth() {
+		return birth;
 	}
 
-	public void setDob(String dob) {
-		this.dob = dob;
+	public void setBirth(String birth) {
+		this.birth = birth;
 	}
 
-	public String getDod() {
-		return dod;
+	public String getDeath() {
+		return death;
 	}
 
-	public void setDod(String dod) {
-		this.dod = dod;
+	public void setDeath(String death) {
+		this.death = death;
 	}
 }

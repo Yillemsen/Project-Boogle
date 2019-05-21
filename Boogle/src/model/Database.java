@@ -343,8 +343,8 @@ public class Database {
 				ActeurModel actorModel = new ActeurModel();
 
 				actorModel.setName(rowSet.getString("Naam"));
-				actorModel.setDob(rowSet.getString("GeboorteDatum"));
-				actorModel.setDod(rowSet.getString("OverlijdensDatum"));
+				actorModel.setBirth(rowSet.getString("GeboorteDatum"));
+				actorModel.setDeath(rowSet.getString("OverlijdensDatum"));
 
 				allActors.add(actorModel);
 			}
@@ -388,8 +388,8 @@ public class Database {
 				AuteurModel authorModel = new AuteurModel();
 
 				authorModel.setName(rowSet.getString("Naam"));
-				authorModel.setDob(rowSet.getString("GeboorteDatum"));
-				authorModel.setDod(rowSet.getString("OverlijdensDatum"));
+				authorModel.setBirth(rowSet.getString("GeboorteDatum"));
+				authorModel.setDeath(rowSet.getString("OverlijdensDatum"));
 
 				allAuthors.add(authorModel);
 			}

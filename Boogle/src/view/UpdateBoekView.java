@@ -69,7 +69,9 @@ public class UpdateBoekView extends GridPane {
 
 		// Instantiating comboboxes
 		ISBNCB = new ComboBox();
-		ISBNCB.setItems(setComboBoxArrayLists());
+		setComboBoxArrayLists();
+		ISBNCB.getItems().add(ISBNItems.get(0));
+		//ISBNCB.setItems(setComboBoxArrayLists());
 		libraryCB = new ComboBox();
 		bookCaseCB = new ComboBox();
 		genreCB = new ComboBox();
@@ -116,14 +118,14 @@ public class UpdateBoekView extends GridPane {
 		mainPane.getChildren().add(this);
 	}
 
-	private ObservableList<String> setComboBoxArrayLists() {
+	private ArrayList<String> setComboBoxArrayLists() {
 
 		for (BoekModel boek : db.getAllBooks()) {
 			System.out.println(boek.getISBN());
-			// ISBNItems.add(boek.getISBN());
+			ISBNItems.add(boek.getISBN());
 
 		}
 		ObservableList<String> isbn = FXCollections.observableArrayList(ISBNItems);
-		return isbn;
+		return ISBNItems;
 	}
 }
