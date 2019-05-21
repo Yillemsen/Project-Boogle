@@ -8,6 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import model.Database;
 
 public class UpdateBibliotheekView extends GridPane {
 
@@ -74,6 +75,11 @@ public class UpdateBibliotheekView extends GridPane {
 			this.add(textFieldObjects[i], 1, i + 2);
 		}
 
+		Database db = new Database();
+		System.out.println(db.getAllLibraries().get(0).getName());
+		System.out.println(db.getAllLibraries().get(1).getName());
+		System.out.println(db.getAllLibraries().get(2).getName());
+		System.out.println(db.getAllLibraries().get(3).getName());
 
 		mainPane.getChildren().add(this);
 		

@@ -43,8 +43,7 @@ public class Database {
 	/**
 	 * Closes result set
 	 * 
-	 * @param lResultSet
-	 *            ResultSet
+	 * @param lResultSet ResultSet
 	 */
 
 	private void rmConnection(ResultSet lResultSet) {
@@ -68,8 +67,7 @@ public class Database {
 	/**
 	 * Executes select statement
 	 * 
-	 * @param query
-	 *            String containing query
+	 * @param query String containing query
 	 * @return resultset
 	 */
 	private ResultSet select(String query) {
@@ -89,8 +87,7 @@ public class Database {
 	/**
 	 * Update or insert
 	 * 
-	 * @param query
-	 *            String containing query
+	 * @param query String containing query
 	 * @return resultset
 	 */
 
@@ -113,8 +110,7 @@ public class Database {
 	/**
 	 * Executes insert statement
 	 * 
-	 * @param query
-	 *            String containing query
+	 * @param query String containing query
 	 * @return method call
 	 */
 
@@ -125,8 +121,7 @@ public class Database {
 	/**
 	 * Executes update statement
 	 * 
-	 * @param query
-	 *            String containing query
+	 * @param query String containing query
 	 * @return method call
 	 */
 
@@ -137,8 +132,7 @@ public class Database {
 	/**
 	 * Get first row from dataset/resultset
 	 * 
-	 * @param rowSet
-	 *            resultset
+	 * @param rowSet resultset
 	 * @return null||error/stacktrace
 	 */
 
@@ -216,5 +210,39 @@ public class Database {
 		rmConnection(rowSet);
 
 		return allBooks;
+	}
+
+	public ArrayList<BibliotheekModel> getAllLibraries() {
+		String query = "SELECT * FROM bibliotheek";
+		ResultSet resultSet = select(query);
+
+		if (goToFirstRow(resultSet) == null) {
+			rmConnection(resultSet);
+			return null;
+		}
+
+		return rowToGetAllLibraries(resultSet);
+	}
+
+	private ArrayList<BibliotheekModel> rowToGetAllLibraries(ResultSet rowSet) {
+		ArrayList<BibliotheekModel> allLibraries = new ArrayList<>();
+
+		try {
+			while (rowSet.next()) {
+				BibliotheekModel libraryModel = new BibliotheekModel();
+
+				libraryModel.setName(rowSet.getString("Naam"));
+				libraryModel.setAdres(rowSet.getString("Adres"));
+				libraryModel.setLocation(rowSet.getString("Plaats"));
+				libraryModel.setCell(rowSet.getString("Telefoon"));
+				allLibraries.add(libraryModel);
+			}
+		} catch (SQLException e) {
+			rmConnection(rowSet);
+			e.printStackTrace();
+		}
+		rmConnection(rowSet);
+
+		return allLibraries;
 	}
 }
