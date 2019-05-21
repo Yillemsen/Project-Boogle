@@ -18,7 +18,6 @@ public class UpdateBibliotheekView extends GridPane {
 	private final Button saveButton;
 	private final Text text;
 	private final ComboBox selectLibraryCB;
-	
 
 	public UpdateBibliotheekView(Pane mainPane) {
 		// Instantiating labelobjects
@@ -40,8 +39,8 @@ public class UpdateBibliotheekView extends GridPane {
 
 		// Instantiating textobjects
 		text = new Text("Bibliotheek aanpassen");
-		
-		//Instantiating Comboboxobjects
+
+		// Instantiating Comboboxobjects
 		selectLibraryCB = new ComboBox();
 
 		// Make-up for text, labels and layout
@@ -52,10 +51,9 @@ public class UpdateBibliotheekView extends GridPane {
 
 		// Place textobject
 		this.add(text, 0, 0);
-		
-		//Place Comboboxes
+
+		// Place Comboboxes
 		this.add(selectLibraryCB, 1, 1);
-		
 
 		// Place buttonobject
 		this.add(saveButton, 1, 6);
@@ -75,13 +73,6 @@ public class UpdateBibliotheekView extends GridPane {
 			this.add(textFieldObjects[i], 1, i + 2);
 		}
 
-		Database db = new Database();
-		System.out.println(db.getAllLibraries().get(0).getName());
-		System.out.println(db.getAllLibraries().get(1).getName());
-		System.out.println(db.getAllLibraries().get(2).getName());
-		System.out.println(db.getAllLibraries().get(3).getName());
-
 		mainPane.getChildren().add(this);
-		
 	}
 }

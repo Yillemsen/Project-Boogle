@@ -173,11 +173,16 @@ public class Database {
 		}
 	}
 
+	/**
+	 * Method that returns an arraylist with all existing boekModels
+	 * 
+	 * @return Arraylist<BoekModel>
+	 */
 	public ArrayList<BoekModel> getAllBooks() {
 		String query = "SELECT * FROM Boek";
 		ResultSet resultSet = select(query);
 
-		if (goToFirstRow(resultSet) == null) {
+		if (goToFirstRow(select(query)) == null) {
 			rmConnection(resultSet);
 			return null;
 		}
@@ -185,6 +190,12 @@ public class Database {
 		return rowToGetAllBooks(resultSet);
 	}
 
+	/**
+	 * Method that fills arraylist with BoekModels and returns them
+	 * 
+	 * @param rowSet
+	 * @return ArrayList<BoekModel>
+	 */
 	private ArrayList<BoekModel> rowToGetAllBooks(ResultSet rowSet) {
 		ArrayList<BoekModel> allBooks = new ArrayList<>();
 
@@ -200,7 +211,6 @@ public class Database {
 				boekmodel.setGenre(rowSet.getString("GenreNaam"));
 				boekmodel.setImage(rowSet.getString("Image"));
 				boekmodel.setDescription(rowSet.getString("Beschrijving"));
-				// boekmodel.setBookNr(rowSet.getInt(columnIndex));
 				allBooks.add(boekmodel);
 			}
 		} catch (SQLException e) {
@@ -212,11 +222,16 @@ public class Database {
 		return allBooks;
 	}
 
+	/**
+	 * Method that returns an arraylist with all existing BibliotheekModels
+	 * 
+	 * @return
+	 */
 	public ArrayList<BibliotheekModel> getAllLibraries() {
-		String query = "SELECT * FROM bibliotheek";
+		String query = "SELECT * FROM `bibliotheek`";
 		ResultSet resultSet = select(query);
 
-		if (goToFirstRow(resultSet) == null) {
+		if (goToFirstRow(select(query)) == null) {
 			rmConnection(resultSet);
 			return null;
 		}
@@ -224,6 +239,12 @@ public class Database {
 		return rowToGetAllLibraries(resultSet);
 	}
 
+	/**
+	 * Method that fills arraylist with BibliotheekModels and returns them
+	 * 
+	 * @param rowSet
+	 * @return ArrayList<BibliotheekModel>
+	 */
 	private ArrayList<BibliotheekModel> rowToGetAllLibraries(ResultSet rowSet) {
 		ArrayList<BibliotheekModel> allLibraries = new ArrayList<>();
 
@@ -235,6 +256,7 @@ public class Database {
 				libraryModel.setAdres(rowSet.getString("Adres"));
 				libraryModel.setLocation(rowSet.getString("Plaats"));
 				libraryModel.setCell(rowSet.getString("Telefoon"));
+
 				allLibraries.add(libraryModel);
 			}
 		} catch (SQLException e) {
@@ -242,7 +264,142 @@ public class Database {
 			e.printStackTrace();
 		}
 		rmConnection(rowSet);
+		System.out.println(allLibraries);
 
 		return allLibraries;
 	}
+
+	/**
+	 * Method that returns an arraylist with Filmmodels
+	 * 
+	 * @return ArrayList<FilmModel>
+	 */
+	public ArrayList<FilmModel> getAllMovies() {
+		String query = "SELECT * FROM film";
+		ResultSet resultSet = select(query);
+
+		if (goToFirstRow(select(query)) == null) {
+			rmConnection(resultSet);
+			return null;
+		}
+
+		return rowToGetAllMovies(resultSet);
+	}
+
+	/**
+	 * Method that fills arraylist with FilmModels and returns them
+	 * 
+	 * @param rowSet
+	 * @return ArrayList<FilmModel>
+	 */
+	private ArrayList<FilmModel> rowToGetAllMovies(ResultSet rowSet) {
+		ArrayList<FilmModel> allMovies = new ArrayList<>();
+
+		try {
+			while (rowSet.next()) {
+				FilmModel movieModel = new FilmModel();
+
+				movieModel.setTitle(rowSet.getString("Titel"));
+
+				allMovies.add(movieModel);
+			}
+		} catch (SQLException e) {
+			rmConnection(rowSet);
+			e.printStackTrace();
+		}
+		rmConnection(rowSet);
+
+		return allMovies;
+	}
+
+	/**
+	 * Method that returns an arraylist with ActorModels
+	 * 
+	 * @return
+	 */
+	public ArrayList<ActeurModel> getAllActors() {
+		String query = "SELECT * FROM acteur";
+		ResultSet resultSet = select(query);
+
+		if (goToFirstRow(select(query)) == null) {
+			rmConnection(resultSet);
+			return null;
+		}
+
+		return rowToGetAllActors(resultSet);
+	}
+
+	/**
+	 * Method that fills an arraylist with actormodels and returns them
+	 * 
+	 * @param rowSet
+	 * @return ArrayList<ActeurModel>
+	 */
+	private ArrayList<ActeurModel> rowToGetAllActors(ResultSet rowSet) {
+		ArrayList<ActeurModel> allActors = new ArrayList<>();
+
+		try {
+			while (rowSet.next()) {
+				ActeurModel actorModel = new ActeurModel();
+
+				actorModel.setName(rowSet.getString("Naam"));
+				actorModel.setDob(rowSet.getString("GeboorteDatum"));
+				actorModel.setDod(rowSet.getString("OverlijdensDatum"));
+
+				allActors.add(actorModel);
+			}
+		} catch (SQLException e) {
+			rmConnection(rowSet);
+			e.printStackTrace();
+		}
+		rmConnection(rowSet);
+
+		return allActors;
+	}
+
+	/**
+	 * Method that returns an arraylist with AuthorModels
+	 * 
+	 * @return
+	 */
+	public ArrayList<AuteurModel> getAllAuthors() {
+		String query = "SELECT * FROM auteur";
+		ResultSet resultSet = select(query);
+
+		if (goToFirstRow(select(query)) == null) {
+			rmConnection(resultSet);
+			return null;
+		}
+
+		return rowToGetAllAuthors(resultSet);
+	}
+
+	/**
+	 * Method that fills an arraylist with actormodels and returns them
+	 * 
+	 * @param rowSet
+	 * @return ArrayList<ActeurModel>
+	 */
+	private ArrayList<AuteurModel> rowToGetAllAuthors(ResultSet rowSet) {
+		ArrayList<AuteurModel> allAuthors = new ArrayList<>();
+
+		try {
+			while (rowSet.next()) {
+				AuteurModel authorModel = new AuteurModel();
+
+				authorModel.setName(rowSet.getString("Naam"));
+				authorModel.setDob(rowSet.getString("GeboorteDatum"));
+				authorModel.setDod(rowSet.getString("OverlijdensDatum"));
+
+				allAuthors.add(authorModel);
+			}
+		} catch (SQLException e) {
+			rmConnection(rowSet);
+			e.printStackTrace();
+		}
+		rmConnection(rowSet);
+
+		return allAuthors;
+	}
+
 }
