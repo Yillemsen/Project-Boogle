@@ -136,6 +136,28 @@ public class Database {
 	 * @return null||error/stacktrace
 	 */
 
+        public ResultSet getData(String strSQL){
+        ResultSet result = null;
+        try{
+            Statement stmt = getConnection().createStatement();
+            result = stmt.executeQuery(strSQL);
+        }catch(Exception e){
+            System.err.println(e.getMessage());
+        }
+        return result;
+    }  
+    
+    public int executeDML(String strSQL){
+        int result = 0;
+        try{
+            Statement stmt = getConnection().createStatement();
+            result = stmt.executeUpdate(strSQL);
+        }catch(Exception e){
+            System.err.println(e.getMessage());
+        }
+        return result;
+    }
+    
 	private ResultSet goToFirstRow(ResultSet rowSet) {
 		try {
 			if (rowSet.next()) {
@@ -172,6 +194,32 @@ public class Database {
 			return null;
 		}
 	}
+
+        public void newBibliotheek(String name, String adres, String location, String cell) {
+        String query = "INSERT INTO bibliotheek(`naam`,`adres`,`plaats`,`telefoon`)" +
+                "VALUES ('" + name + "', '" + adres + "', '" + location + "', '" + cell + "');";
+        System.out.println(query);
+        insert(query);
+
+    }
+        public void newActeur(String name, String birth, String death) {
+        String query = "INSERT INTO acteur(`naam`,`geboortedatum`,`overlijdensdatum`)" +
+                "VALUES ('" + name + "', '" + birth + "', '" + death + "');";
+        System.out.println(query);
+        insert(query);
+    }
+        public void newAuteur(String name, String birth, String death) {
+        String query = "INSERT INTO auteur(`naam`,`geboortedatum`,`overlijdensdatum`)" +
+                "VALUES ('" + name + "', '" + birth + "', '" + death + "');";
+        System.out.println(query);
+        insert(query);
+    }
+        public void newBoek(String ISBN, String title, String language, String releaseDate, String intTitle, String description, String genre, String image) {
+        String query = "INSERT INTO boek(`ISBN`,`taal`,`title`,`Datumuitgave`,`InternationaleTitel`,`genreNaam`,`Image`,`beschrijving`)" +
+                "VALUES ('" + ISBN + "', '" + language + "', '" + title + "', '" + releaseDate + "', '" + intTitle + "', '" + genre + "', '" + description + "', '" + image + "');";
+        System.out.println(query);
+        insert(query);
+    }
 
 	/**
 	 * Method that returns an arraylist with all existing boekModels
@@ -401,5 +449,4 @@ public class Database {
 
 		return allAuthors;
 	}
-
 }

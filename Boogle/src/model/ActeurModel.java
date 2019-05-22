@@ -1,31 +1,29 @@
 package model;
 
 public class ActeurModel {
-	private String name, birth, death;
+    private String name, birth, death;
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getBirth() {
-		return birth;
-	}
+    public String getBirth() {
+        return birth;
+    }
 
-	public void setBirth(String birth) {
-		this.birth = birth;
-	}
+    public void setBirth(String birth) {
+        this.birth = birth;
+    }
 
-	public String getDeath() {
-		return death;
-	}
+    public String getDeath() {
+        return death;
+    }
 
-	public void setDeath(String death) {
-		this.death = death;
-	}
-
-	
+    public void setDeath(String death) {
+        this.death = death;
+    }
 }
