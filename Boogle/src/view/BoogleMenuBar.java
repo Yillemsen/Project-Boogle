@@ -9,7 +9,8 @@ import javafx.scene.layout.Pane;
 public class BoogleMenuBar extends MenuBar {
 
     private Menu mToevoegen, mAanpassen, mVerwijderen;
-    private MenuItem miInsertBibliotheek, miInsertBoek, miInsertAuteur, miInsertActeur, miInsertFilm, miUpdateBibliotheek, miUpdateBoek, miUpdateFilm, miUpdateActeur, miUpdateAuteur, miDelete;
+    private MenuItem miInsertBibliotheek, miInsertBoek, miInsertAuteur, miInsertActeur, miInsertFilm, miUpdateBibliotheek, miUpdateBoek, miUpdateFilm, miUpdateActeur, miUpdateAuteur, miDeleteBoekenkast, 
+    miDeleteActeur, miDeleteAuteur, miDeleteBibliotheek, miDeleteFilmrek, miDeleteFilm, miDeleteBoek;
 
     public BoogleMenuBar(Pane mainPane) {
         mToevoegen = new Menu("Toevoegen");
@@ -76,16 +77,52 @@ public class BoogleMenuBar extends MenuBar {
             new UpdateAuteurView(mainPane);
         });
 
-        miDelete = new MenuItem("Verwijderen");
-        miDelete.setOnAction(event -> {
+        miDeleteBoekenkast = new MenuItem("Boekenkast");
+        miDeleteBoekenkast.setOnAction(event -> {
             mainPane.getChildren().clear();
-            new DeleteView(mainPane);
+            new DeleteBoekenkastView(mainPane);
+        });
+        
+        miDeleteActeur = new MenuItem("Acteur");
+        miDeleteActeur.setOnAction(event -> {
+            mainPane.getChildren().clear();
+            new DeleteActeurView(mainPane);
+        });
+        
+        miDeleteAuteur = new MenuItem("Auteur");
+        miDeleteAuteur.setOnAction(event -> {
+            mainPane.getChildren().clear();
+            new DeleteAuteurView(mainPane);
+        });
+        
+        miDeleteBibliotheek = new MenuItem("Bibliotheek");
+        miDeleteBibliotheek.setOnAction(event -> {
+            mainPane.getChildren().clear();
+            new DeleteBibliotheekView(mainPane);
+        });
+        
+        miDeleteFilmrek = new MenuItem("Filmrek");
+        miDeleteFilmrek.setOnAction(event -> {
+            mainPane.getChildren().clear();
+            new DeleteFilmRekView(mainPane);
+        });
+        
+        miDeleteFilm = new MenuItem("Film");
+        miDeleteFilm.setOnAction(event -> {
+            mainPane.getChildren().clear();
+            new DeleteFilmView(mainPane);
+        });
+        
+        miDeleteBoek = new MenuItem("Boek");
+        miDeleteBoek.setOnAction(event -> {
+            mainPane.getChildren().clear();
+            new DeleteBoekView(mainPane);
         });
 
         //voeg item toe aan menu
         mToevoegen.getItems().addAll(miInsertBibliotheek, miInsertBoek, miInsertFilm, miInsertActeur, miInsertAuteur);
         mAanpassen.getItems().addAll(miUpdateBibliotheek, miUpdateBoek, miUpdateFilm, miUpdateActeur, miUpdateAuteur);
-        mVerwijderen.getItems().addAll(miDelete);
+        mVerwijderen.getItems().addAll(miDeleteBibliotheek, miDeleteBoek, miDeleteFilm, miDeleteActeur, miDeleteAuteur, miDeleteFilmrek, miDeleteBoekenkast);
 
         //voeg menu toe aan balk
         getMenus().addAll(mToevoegen);
