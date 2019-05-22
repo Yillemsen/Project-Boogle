@@ -65,16 +65,15 @@ public class InsertBoekView extends GridPane {
             //});
             
             btnSave = new Button(" Opslaan ");
-            String isbn = txtIsbn.getText();
-            String boeknummer = txtBooknumber.getText();
-            String titel = txtTitle.getText();
-            String taal = boxLanguage.getSelectedItem().toString();
-            String datumuitgave = txtDate.getText();
-            String inttitel = txtIntTitle.getText();
-            String beschrijving = txtDesc.getText();
-            String genre = boxGenre.getText();
-            String auteur = boxAuteur.getText();
-                       db.newBibliotheek(name, address, place, phone);
+            String ISBN = txtIsbn.getText();
+            String title = txtTitle.getText();
+            String language = boxLanguage.getValue().toString();
+            String releaseDate = txtDate.getText();
+            String intTitle = txtIntTitle.getText();
+            String description = txtDesc.getText();
+            String genre = boxGenre.getValue().toString();
+            String image = boxAuteur.getValue().toString();
+                       db.newBoek(ISBN, title, language, releaseDate, intTitle, description, genre, image);
             
             setPadding(new Insets(10,10,10,10));
             setHgap(10);

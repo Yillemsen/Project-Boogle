@@ -205,4 +205,11 @@ public class Database {
         System.out.println(query);
         insert(query);
     }
+        public void newBoek(String ISBN, String title, String language, String releaseDate, String intTitle, String description, String genre, String image) {
+        String query = "INSERT INTO boek(`ISBN`,`taal`,`title`,`Datumuitgave`,`InternationaleTitel`,`genreNaam`,`Image`,`beschrijving`)" +
+                "VALUES ('" + ISBN + "', '" + language + "', '" + title + "', '" + releaseDate + "', '" + intTitle + "', '" + genre + "', '" + description + "', '" + image + "');";
+        System.out.println(query);
+        insert(query);
+    }
+
 }

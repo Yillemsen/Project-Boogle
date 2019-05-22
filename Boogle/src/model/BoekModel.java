@@ -1,7 +1,7 @@
 package model;
 
 public class BoekModel {
-	private String ISBN, title, language, releaseDate, intTitle, description, image;
+	private String ISBN, title, language, releaseDate, intTitle, description, image, genre;
 	private int bookNr;
 	public String getISBN() {
 		return ISBN;
@@ -51,4 +51,11 @@ public class BoekModel {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+         public String getGenre() {
+        return genre;
+         }
+
+        public void setGenre(String genre) {
+        this.genre = genre;
+    }
 }
