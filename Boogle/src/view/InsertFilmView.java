@@ -1,5 +1,6 @@
 package view;
 
+import java.sql.ResultSet;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -9,14 +10,17 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import model.Database;
 
 public class InsertFilmView extends GridPane{
     private Label lblTitle, lblMovienumber, lblReg, lblDate, lblDesc, lblGenre, lblActeur, lblLibary, lblNumber;
     private TextField txtTitle, txtMovienumber, txtReg, txtDate;
     private ComboBox boxGenre, boxActeur, boxLibary, boxNumber;
+    private ResultSet genreResult, auteurResult, biebResult;
     private Text movieInput;
     private TextArea txtDesc;
     private Button btnSave;
+    private Database db = new Database();
 	
 	public InsertFilmView(Pane mainPane) {
             lblLibary = new Label (" Bibliotheek : ");
@@ -48,6 +52,46 @@ public class InsertFilmView extends GridPane{
             setPadding(new Insets(10,10,10,10));
             setHgap(10);
             setVgap(10);
+            
+            boxLibary = new ComboBox();
+            String strSQL = "select * from bibliotheek";
+            biebResult = db.getData(strSQL);
+            //database opzoeken
+            try {
+            while (biebResult.next()) {
+                String strItem = biebResult.getString("naam");
+                boxLibary.getItems().add(strItem);
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+
+            boxGenre = new ComboBox();
+            String strSQL1 = "select * from genre";
+            genreResult = db.getData(strSQL1);
+            //database opzoeken
+            try {
+            while (genreResult.next()) {
+                String strItem1 = genreResult.getString("genrenaam");
+                boxGenre.getItems().add(strItem1);
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+            
+            boxActeur = new ComboBox();
+            String strSQL2 = "select * from auteur";
+            auteurResult = db.getData(strSQL2);
+            //database opzoeken
+            try {
+            while (auteurResult.next()) {
+                String strItem2 = auteurResult.getString("naam");
+                boxActeur.getItems().add(strItem2);
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+   
         
             add(movieInput, 0, 0); 
             add(lblLibary, 0, 2);

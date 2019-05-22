@@ -1,13 +1,15 @@
 package model;
 
 public class BoekModel {
+
 	private String ISBN, title, language, releaseDate, intTitle, description, genre, image;
+
 	private int bookNr;
 	public String getISBN() {
 		return ISBN;
 	}
-	public void setISBN(String iSBN) {
-		ISBN = iSBN;
+	public void setISBN(String ISBN) {
+		this.ISBN = ISBN;
 	}
 	public String getTitle() {
 		return title;
@@ -56,5 +58,5 @@ public class BoekModel {
 	}
 	public void setGenre(String genre) {
 		this.genre = genre;
-	}
+  }
 }

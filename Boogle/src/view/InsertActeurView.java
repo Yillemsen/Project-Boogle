@@ -7,6 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import model.Database;
 
 public class InsertActeurView extends GridPane {
     
@@ -14,6 +15,7 @@ public class InsertActeurView extends GridPane {
     private TextField txtName, txtBirth, txtDeath;
     private Text acteurInput;
     private Button btnSave;
+    private Database db = new Database();
 
     public InsertActeurView(Pane mainPane) { 
         acteurInput = new Text(" Acteur invoeren ");
@@ -25,8 +27,16 @@ public class InsertActeurView extends GridPane {
         lblName = new Label(" Naam : ");
         lblBirth = new Label(" Geboortedatum : ");
         lblDeath = new Label (" Overlijdingsdatum : ");
-        
+
         btnSave = new Button(" Opslaan ");
+        btnSave.setOnAction(event -> {
+            
+            String name = txtName.getText();
+            String birth = txtBirth.getText();
+            String death = txtDeath.getText();
+                       db.newActeur(name, birth, death);
+                       
+        });
         
         setPadding(new Insets(10,10,10,10));
         setHgap(10);
@@ -43,4 +53,6 @@ public class InsertActeurView extends GridPane {
         
         mainPane.getChildren().add(this);
         
-    }}
+    }
+
+}
