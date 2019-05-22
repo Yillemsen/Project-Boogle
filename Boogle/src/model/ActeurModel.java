@@ -26,5 +26,4 @@ public class ActeurModel {
     public void setDeath(String death) {
         this.death = death;
     }
-    
 }

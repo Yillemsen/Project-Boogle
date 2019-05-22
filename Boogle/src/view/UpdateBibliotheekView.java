@@ -8,6 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import model.Database;
 
 public class UpdateBibliotheekView extends GridPane {
 
@@ -17,7 +18,6 @@ public class UpdateBibliotheekView extends GridPane {
 	private final Button saveButton;
 	private final Text text;
 	private final ComboBox selectLibraryCB;
-	
 
 	public UpdateBibliotheekView(Pane mainPane) {
 		// Instantiating labelobjects
@@ -39,8 +39,8 @@ public class UpdateBibliotheekView extends GridPane {
 
 		// Instantiating textobjects
 		text = new Text("Bibliotheek aanpassen");
-		
-		//Instantiating Comboboxobjects
+
+		// Instantiating Comboboxobjects
 		selectLibraryCB = new ComboBox();
 
 		// Make-up for text, labels and layout
@@ -51,10 +51,9 @@ public class UpdateBibliotheekView extends GridPane {
 
 		// Place textobject
 		this.add(text, 0, 0);
-		
-		//Place Comboboxes
+
+		// Place Comboboxes
 		this.add(selectLibraryCB, 1, 1);
-		
 
 		// Place buttonobject
 		this.add(saveButton, 1, 6);
@@ -74,8 +73,6 @@ public class UpdateBibliotheekView extends GridPane {
 			this.add(textFieldObjects[i], 1, i + 2);
 		}
 
-
 		mainPane.getChildren().add(this);
-		
 	}
 }

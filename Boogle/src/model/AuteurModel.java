@@ -26,5 +26,4 @@ public class AuteurModel {
     public void setDeath(String death) {
         this.death = death;
     }
-    
 }

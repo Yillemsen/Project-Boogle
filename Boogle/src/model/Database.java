@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class Database {
 	private Connection connection;
@@ -169,6 +170,13 @@ public class Database {
 		return null;
 	}
 
+	/**
+	 * Method that returns booktitle from given ISBN
+	 * 
+	 * @param ISBN
+	 * @return String booktitle
+	 */
+
 	public String getBoek(String ISBN) {
 		try {
 			String query = "SELECT Titel FROM Boek WHERE ISBN = '" + ISBN + "'";
@@ -186,6 +194,7 @@ public class Database {
 			return null;
 		}
 	}
+
         public void newBibliotheek(String name, String adres, String location, String cell) {
         String query = "INSERT INTO bibliotheek(`naam`,`adres`,`plaats`,`telefoon`)" +
                 "VALUES ('" + name + "', '" + adres + "', '" + location + "', '" + cell + "');";
@@ -212,4 +221,232 @@ public class Database {
         insert(query);
     }
 
+	/**
+	 * Method that returns an arraylist with all existing boekModels
+	 * 
+	 * @return Arraylist<BoekModel>
+	 */
+	public ArrayList<BoekModel> getAllBooks() {
+		String query = "SELECT * FROM Boek";
+		ResultSet resultSet = select(query);
+
+		if (goToFirstRow(select(query)) == null) {
+			rmConnection(resultSet);
+			return null;
+		}
+
+		return rowToGetAllBooks(resultSet);
+	}
+
+	/**
+	 * Method that fills arraylist with BoekModels and returns them
+	 * 
+	 * @param rowSet
+	 * @return ArrayList<BoekModel>
+	 */
+	private ArrayList<BoekModel> rowToGetAllBooks(ResultSet rowSet) {
+		ArrayList<BoekModel> allBooks = new ArrayList<>();
+
+		try {
+			while (rowSet.next()) {
+				BoekModel boekmodel = new BoekModel();
+
+				boekmodel.setISBN(rowSet.getString("ISBN"));
+				boekmodel.setTitle(rowSet.getString("Titel"));
+				boekmodel.setLanguage(rowSet.getString("Taal"));
+				boekmodel.setReleaseDate(rowSet.getString("DatumUitgave"));
+				boekmodel.setIntTitle(rowSet.getString("InternationaleTitel"));
+				boekmodel.setGenre(rowSet.getString("GenreNaam"));
+				boekmodel.setImage(rowSet.getString("Image"));
+				boekmodel.setDescription(rowSet.getString("Beschrijving"));
+				allBooks.add(boekmodel);
+			}
+		} catch (SQLException e) {
+			rmConnection(rowSet);
+			e.printStackTrace();
+		}
+		rmConnection(rowSet);
+
+		return allBooks;
+	}
+
+	/**
+	 * Method that returns an arraylist with all existing BibliotheekModels
+	 * 
+	 * @return
+	 */
+	public ArrayList<BibliotheekModel> getAllLibraries() {
+		String query = "SELECT * FROM `bibliotheek`";
+		ResultSet resultSet = select(query);
+
+		if (goToFirstRow(select(query)) == null) {
+			rmConnection(resultSet);
+			return null;
+		}
+
+		return rowToGetAllLibraries(resultSet);
+	}
+
+	/**
+	 * Method that fills arraylist with BibliotheekModels and returns them
+	 * 
+	 * @param rowSet
+	 * @return ArrayList<BibliotheekModel>
+	 */
+	private ArrayList<BibliotheekModel> rowToGetAllLibraries(ResultSet rowSet) {
+		ArrayList<BibliotheekModel> allLibraries = new ArrayList<>();
+
+		try {
+			while (rowSet.next()) {
+				BibliotheekModel libraryModel = new BibliotheekModel();
+
+				libraryModel.setName(rowSet.getString("Naam"));
+				libraryModel.setAdres(rowSet.getString("Adres"));
+				libraryModel.setLocation(rowSet.getString("Plaats"));
+				libraryModel.setCell(rowSet.getString("Telefoon"));
+
+				allLibraries.add(libraryModel);
+			}
+		} catch (SQLException e) {
+			rmConnection(rowSet);
+			e.printStackTrace();
+		}
+		rmConnection(rowSet);
+		System.out.println(allLibraries);
+
+		return allLibraries;
+	}
+
+	/**
+	 * Method that returns an arraylist with Filmmodels
+	 * 
+	 * @return ArrayList<FilmModel>
+	 */
+	public ArrayList<FilmModel> getAllMovies() {
+		String query = "SELECT * FROM film";
+		ResultSet resultSet = select(query);
+
+		if (goToFirstRow(select(query)) == null) {
+			rmConnection(resultSet);
+			return null;
+		}
+
+		return rowToGetAllMovies(resultSet);
+	}
+
+	/**
+	 * Method that fills arraylist with FilmModels and returns them
+	 * 
+	 * @param rowSet
+	 * @return ArrayList<FilmModel>
+	 */
+	private ArrayList<FilmModel> rowToGetAllMovies(ResultSet rowSet) {
+		ArrayList<FilmModel> allMovies = new ArrayList<>();
+
+		try {
+			while (rowSet.next()) {
+				FilmModel movieModel = new FilmModel();
+
+				movieModel.setTitle(rowSet.getString("Titel"));
+
+				allMovies.add(movieModel);
+			}
+		} catch (SQLException e) {
+			rmConnection(rowSet);
+			e.printStackTrace();
+		}
+		rmConnection(rowSet);
+
+		return allMovies;
+	}
+
+	/**
+	 * Method that returns an arraylist with ActorModels
+	 * 
+	 * @return
+	 */
+	public ArrayList<ActeurModel> getAllActors() {
+		String query = "SELECT * FROM acteur";
+		ResultSet resultSet = select(query);
+
+		if (goToFirstRow(select(query)) == null) {
+			rmConnection(resultSet);
+			return null;
+		}
+
+		return rowToGetAllActors(resultSet);
+	}
+
+	/**
+	 * Method that fills an arraylist with actormodels and returns them
+	 * 
+	 * @param rowSet
+	 * @return ArrayList<ActeurModel>
+	 */
+	private ArrayList<ActeurModel> rowToGetAllActors(ResultSet rowSet) {
+		ArrayList<ActeurModel> allActors = new ArrayList<>();
+
+		try {
+			while (rowSet.next()) {
+				ActeurModel actorModel = new ActeurModel();
+
+				actorModel.setName(rowSet.getString("Naam"));
+				actorModel.setBirth(rowSet.getString("GeboorteDatum"));
+				actorModel.setDeath(rowSet.getString("OverlijdensDatum"));
+
+				allActors.add(actorModel);
+			}
+		} catch (SQLException e) {
+			rmConnection(rowSet);
+			e.printStackTrace();
+		}
+		rmConnection(rowSet);
+
+		return allActors;
+	}
+
+	/**
+	 * Method that returns an arraylist with AuthorModels
+	 * 
+	 * @return
+	 */
+	public ArrayList<AuteurModel> getAllAuthors() {
+		String query = "SELECT * FROM auteur";
+		ResultSet resultSet = select(query);
+
+		if (goToFirstRow(select(query)) == null) {
+			rmConnection(resultSet);
+			return null;
+		}
+
+		return rowToGetAllAuthors(resultSet);
+	}
+
+	/**
+	 * Method that fills an arraylist with actormodels and returns them
+	 * 
+	 * @param rowSet
+	 * @return ArrayList<ActeurModel>
+	 */
+	private ArrayList<AuteurModel> rowToGetAllAuthors(ResultSet rowSet) {
+		ArrayList<AuteurModel> allAuthors = new ArrayList<>();
+
+		try {
+			while (rowSet.next()) {
+				AuteurModel authorModel = new AuteurModel();
+
+				authorModel.setName(rowSet.getString("Naam"));
+				authorModel.setBirth(rowSet.getString("GeboorteDatum"));
+				authorModel.setDeath(rowSet.getString("OverlijdensDatum"));
+
+				allAuthors.add(authorModel);
+			}
+		} catch (SQLException e) {
+			rmConnection(rowSet);
+			e.printStackTrace();
+		}
+		rmConnection(rowSet);
+
+		return allAuthors;
+	}
 }
