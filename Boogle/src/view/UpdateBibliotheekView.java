@@ -18,8 +18,12 @@ public class UpdateBibliotheekView extends GridPane {
 	private final Button saveButton;
 	private final Text text;
 	private final ComboBox selectLibraryCB;
+	private final Database db;
 
 	public UpdateBibliotheekView(Pane mainPane) {
+		//Instantiating objects
+		db = new Database();
+		
 		// Instantiating labelobjects
 		selectLibraryLabel = new Label("Selecteer bibliotheek:");
 		nameLabel = new Label("Naam:");
