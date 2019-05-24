@@ -1,5 +1,6 @@
 package view;
 
+import java.sql.ResultSet;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -7,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import model.Database;
 
 public class DeleteFilmView extends GridPane{
 	// Declaring variables
@@ -14,6 +16,8 @@ public class DeleteFilmView extends GridPane{
 	private final ComboBox nameCB;
 	private final Button deleteButton;
 	private final Text text;
+        private ResultSet nameResult;
+        private Database db = new Database();
 
 	public DeleteFilmView(Pane mainPane) {
 		// Instantiating Labels
@@ -22,6 +26,17 @@ public class DeleteFilmView extends GridPane{
 
 		// Instantiating Comboboxes
 		nameCB = new ComboBox();
+                String strSQL = "select * from film";
+            nameResult = db.getData(strSQL);
+            //database opzoeken
+            try {
+            while (nameResult.next()) {
+                String strItem = nameResult.getString("titel");
+                nameCB.getItems().add(strItem);
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
 
 		// Instantiating Buttons
 		deleteButton = new Button("Verwijder");
