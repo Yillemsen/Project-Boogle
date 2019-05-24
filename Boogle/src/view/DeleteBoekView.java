@@ -35,6 +35,7 @@ public class DeleteBoekView extends GridPane{
 		isbnCB = new ComboBox();
                 setComboBoxArrayLists();
 		isbnCB.getItems().add(ISBNItems.get(0));
+                
 
 		// Instantiating Buttons
 		deleteButton = new Button("Verwijder");
@@ -69,7 +70,7 @@ public class DeleteBoekView extends GridPane{
 		// Add this gridpane to mainpane
 		mainPane.getChildren().add(this);
 	}
-private ArrayList<String> setComboBoxArrayLists() {
+        private ArrayList<String> setComboBoxArrayLists() {
 
 		for (BoekModel boek : db.getAllBooks()) {
 			System.out.println(boek.getISBN());

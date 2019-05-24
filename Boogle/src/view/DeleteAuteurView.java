@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import model.AuteurModel;
 import model.Database;
 
 public class DeleteAuteurView extends GridPane{
@@ -26,17 +27,7 @@ public class DeleteAuteurView extends GridPane{
 
 		// Instantiating Comboboxes
 		nameCB = new ComboBox();
-                 String strSQL = "select * from auteur";
-            nameResult = db.getData(strSQL);
-            //database opzoeken
-            try {
-            while (nameResult.next()) {
-                String strItem = nameResult.getString("naam");
-                nameCB.getItems().add(strItem);
-            }
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        }
+                setAuthorCB();
 
 		// Instantiating Buttons
 		deleteButton = new Button("Verwijder");
@@ -69,6 +60,11 @@ public class DeleteAuteurView extends GridPane{
 
 		// Add this gridpane to mainpane
 		mainPane.getChildren().add(this);
+	}
+        private void setAuthorCB() {
+		for (AuteurModel author : db.getAllAuthors()) {
+			nameCB.getItems().add(author.getName());
+		}
 	}
 
 }

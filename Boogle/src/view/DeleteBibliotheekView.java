@@ -17,7 +17,6 @@ public class DeleteBibliotheekView extends GridPane {
 	private final ComboBox libraryCB;
 	private final Button deleteButton;
 	private final Text text;
-        private ResultSet libraryResult;
         private Database db = new Database();
 
 	public DeleteBibliotheekView(Pane mainPane) {
@@ -27,17 +26,7 @@ public class DeleteBibliotheekView extends GridPane {
 
 		// Instantiating Comboboxes
 		libraryCB = new ComboBox();
-                String strSQL = "select * from bibliotheek";
-            libraryResult = db.getData(strSQL);
-            //database opzoeken
-            try {
-            while (libraryResult.next()) {
-                String strItem = libraryResult.getString("naam");
-                libraryCB.getItems().add(strItem);
-            }
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        }
+                setLibraryCB();
 
 		// Instantiating Buttons
 		deleteButton = new Button("Verwijder");
@@ -72,10 +61,8 @@ public class DeleteBibliotheekView extends GridPane {
 		mainPane.getChildren().add(this);
 	}
         private void setLibraryCB() {
-		libraryCB.getItems().clear();
 		for (BibliotheekModel library : db.getAllLibraries()) {
 			libraryCB.getItems().add(library.getName());
 		}
-	}
-                        
+	}               
 }

@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import model.ActeurModel;
 import model.Database;
 
 public class DeleteActeurView extends GridPane {
@@ -25,18 +26,8 @@ public class DeleteActeurView extends GridPane {
 		errorLabel = new Label("Acteur <acteurnaam> is verwijderd");
 
 		// Instantiating Comboboxes
-		nameCB = new ComboBox();
-                String strSQL = "select * from acteur";
-            nameResult = db.getData(strSQL);
-            //database opzoeken
-            try {
-            while (nameResult.next()) {
-                String strItem = nameResult.getString("naam");
-                nameCB.getItems().add(strItem);
-            }
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        }
+		nameCB = new ComboBox<String>();
+                setActorCB();
             
 		// Instantiating Buttons
 		deleteButton = new Button("Verwijder");
@@ -71,5 +62,10 @@ public class DeleteActeurView extends GridPane {
 		//Add this gridpane to mainpane
 		mainPane.getChildren().add(this);
 	}
-
+	private void setActorCB() {
+		nameCB.getItems().clear();
+		for (ActeurModel actor : db.getAllActors()) {
+			nameCB.getItems().add(actor.getName());
+		}
+	}
 }

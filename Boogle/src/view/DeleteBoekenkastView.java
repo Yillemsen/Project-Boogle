@@ -16,7 +16,6 @@ public class DeleteBoekenkastView extends GridPane {
 	private final ComboBox libraryCB, caseNrCB;
 	private final Button deleteButton;
 	private final Text text;
-        private ResultSet libraryResult;
         private Database db = new Database();
 
 	public DeleteBoekenkastView(Pane mainPane) {
@@ -26,18 +25,7 @@ public class DeleteBoekenkastView extends GridPane {
 		caseNrLabel = new Label("BoekenkastNr:");
 
 		// Instantiating Comboboxes
-		libraryCB = new ComboBox();
-                String strSQL = "select * from boek";
-            libraryResult = db.getData(strSQL);
-            //database opzoeken
-            try {
-            while (libraryResult.next()) {
-                String strItem = libraryResult.getString("ISBN");
-                libraryCB.getItems().add(strItem);
-            }
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        }
+		libraryCB = new ComboBox();                
             
 		caseNrCB = new ComboBox();
 
