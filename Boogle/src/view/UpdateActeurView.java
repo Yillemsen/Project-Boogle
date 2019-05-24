@@ -9,7 +9,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import model.ActeurModel;
-import model.BibliotheekModel;
 import model.Database;
 
 public class UpdateActeurView extends GridPane {
@@ -103,14 +102,22 @@ public class UpdateActeurView extends GridPane {
 		am.setName(nameTextField.getText());
 		am.setBirth(dobTextField.getText());
 		am.setDeath(dodTextField.getText());
-
-		String oldName = selectNameCB.getValue().toString();
-		return (db.updateActor(am, oldName));
+		try {
+			String oldName = selectNameCB.getValue().toString();
+			return (db.updateActor(am, oldName));
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+		}
+		return 0;
 	}
 
 	private void setActorItems() {
 		ActeurModel am = new ActeurModel();
-		am = db.getActorFromName((selectNameCB.getValue().toString()));
+		try {
+			am = db.getActorFromName((selectNameCB.getValue().toString()));
+		} catch (NullPointerException e) {
+			errorLabel.setText("Error, er is geen acteur geselecteerd om aan te passen");
+		}
 
 		nameTextField.setText(am.getName());
 		dobTextField.setText(am.getBirth());
