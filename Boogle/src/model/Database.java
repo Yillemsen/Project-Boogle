@@ -200,36 +200,42 @@ public class Database {
 		}
 	}
 
-	public void newBibliotheek(String name, String adres, String location, String cell) {
-		String query = "INSERT INTO bibliotheek(`naam`,`adres`,`plaats`,`telefoon`)" + "VALUES ('" + name + "', '"
-				+ adres + "', '" + location + "', '" + cell + "');";
-		System.out.println(query);
-		insert(query);
 
-	}
+        public void newBibliotheek(String name, String adres, String location, String cell) {
+        String query = "INSERT INTO bibliotheek(`naam`,`adres`,`plaats`,`telefoon`)" +
+                "VALUES ('" + name + "', '" + adres + "', '" + location + "', '" + cell + "');";
+        System.out.println(query);
+        insert(query);
 
-	public void newActeur(String name, String birth, String death) {
-		String query = "INSERT INTO acteur(`naam`,`geboortedatum`,`overlijdensdatum`)" + "VALUES ('" + name + "', '"
-				+ birth + "', '" + death + "');";
-		System.out.println(query);
-		insert(query);
-	}
-
-	public void newAuteur(String name, String birth, String death) {
-		String query = "INSERT INTO auteur(`naam`,`geboortedatum`,`overlijdensdatum`)" + "VALUES ('" + name + "', '"
-				+ birth + "', '" + death + "');";
-		System.out.println(query);
-		insert(query);
-	}
-
-	public void newBoek(String ISBN, String title, String language, String releaseDate, String intTitle,
-			String description, String genre, String image) {
-		String query = "INSERT INTO boek(`ISBN`,`taal`,`title`,`Datumuitgave`,`InternationaleTitel`,`genreNaam`,`Image`,`beschrijving`)"
-				+ "VALUES ('" + ISBN + "', '" + language + "', '" + title + "', '" + releaseDate + "', '" + intTitle
-				+ "', '" + genre + "', '" + description + "', '" + image + "');";
-		System.out.println(query);
-		insert(query);
-	}
+    }
+        public void newActeur(String name, String birth, String death) {
+        String query = "INSERT INTO acteur(`naam`,`geboortedatum`,`overlijdensdatum`)" +
+                "VALUES ('" + name + "', '" + birth + "', '" + death + "');";
+        System.out.println(query);
+        insert(query);
+    }
+        public void newAuteur(String name, String birth, String death) {
+        String query = "INSERT INTO auteur(`naam`,`geboortedatum`,`overlijdensdatum`)" +
+                "VALUES ('" + name + "', '" + birth + "', '" + death + "');";
+        System.out.println(query);
+        insert(query);
+    }
+        public void newBoek(String ISBN, String title, String language, String releaseDate, String intTitle, String description, String genre, String image) {
+        String query = "INSERT INTO boek(`ISBN`,`taal`,`title`,`Datumuitgave`,`InternationaleTitel`,`genreNaam`,`Image`,`beschrijving`)" +
+                "VALUES ('" + ISBN + "', '" + language + "', '" + title + "', '" + releaseDate + "', '" + intTitle + "', '" + genre + "', '" + description + "', '" + image + "');";
+        System.out.println(query);
+        insert(query);
+    }
+        public void deleteBoek(String isbn) {
+        String query = "DELETE FROM boek WHERE isbn = '" + isbn + "';";
+        System.out.println(query);
+        update(query);
+    }
+        public void deleteBibliotheek(String name) {
+        String query = "DELETE FROM bibliotheek WHERE naam = '" + name + "';";
+        System.out.println(query);
+        update(query);
+    }
 
 	/**
 	 * Method that returns an arraylist with all existing boekModels

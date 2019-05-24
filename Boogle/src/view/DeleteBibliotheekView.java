@@ -1,5 +1,6 @@
 package view;
 
+import java.sql.ResultSet;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -7,13 +8,16 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import model.Database;
 
 public class DeleteBibliotheekView extends GridPane {
 	// Declaring variables
 	private final Label nameLabel, errorLabel;
-	private final ComboBox nameCB;
+	private final ComboBox libraryCB;
 	private final Button deleteButton;
 	private final Text text;
+        private ResultSet libraryResult;
+        private Database db = new Database();
 
 	public DeleteBibliotheekView(Pane mainPane) {
 		// Instantiating Labels
@@ -21,10 +25,25 @@ public class DeleteBibliotheekView extends GridPane {
 		errorLabel = new Label("Bibliotheek <library> is verwijderd");
 
 		// Instantiating Comboboxes
-		nameCB = new ComboBox();
+		libraryCB = new ComboBox();
+                String strSQL = "select * from bibliotheek";
+            libraryResult = db.getData(strSQL);
+            //database opzoeken
+            try {
+            while (libraryResult.next()) {
+                String strItem = libraryResult.getString("naam");
+                libraryCB.getItems().add(strItem);
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
 
 		// Instantiating Buttons
 		deleteButton = new Button("Verwijder");
+                deleteButton.setOnAction(event -> {
+                String name = libraryCB.getValue().toString();
+                       db.deleteBibliotheek(name);
+                });
 
 		// Instantiating Text
 		text = new Text("Bibliotheek");
@@ -43,7 +62,7 @@ public class DeleteBibliotheekView extends GridPane {
 		this.add(errorLabel, 0, 3);
 
 		// Placing ComboBox
-		this.add(nameCB, 1, 1);
+		this.add(libraryCB, 1, 1);
 
 		// Placing Buttons
 		this.add(deleteButton, 0, 2);
@@ -51,5 +70,5 @@ public class DeleteBibliotheekView extends GridPane {
 		// Add this gridpane to mainpane
 		mainPane.getChildren().add(this);
 	}
-
+                        
 }
