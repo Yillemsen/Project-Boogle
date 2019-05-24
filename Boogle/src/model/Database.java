@@ -99,7 +99,6 @@ public class Database {
 			getConnection();
 			statement = connection.createStatement();
 			int rowsAffected = statement.executeUpdate(query);
-
 			connection.close();
 
 			return rowsAffected;
@@ -467,7 +466,7 @@ public class Database {
 	 * @param name
 	 * @return BibliotheekModel
 	 */
-	public BibliotheekModel getBibliotheekFromName(String name) {
+	public BibliotheekModel getLibraryFromName(String name) {
 		BibliotheekModel library = new BibliotheekModel();
 		String query = "SELECT * FROM bibliotheek WHERE Naam= '" + name + "'";
 		ResultSet resultSet = select(query);
@@ -549,7 +548,7 @@ public class Database {
 	 * @param BibliotheekModel
 	 *            library, String oldname
 	 */
-	public void updateLibrary(BibliotheekModel library, String oldName) {
+	public int updateLibrary(BibliotheekModel library, String oldName) {
 		String name = library.getName();
 		String location = library.getLocation();
 		String adres = library.getAdres();
@@ -557,7 +556,7 @@ public class Database {
 
 		String query = "UPDATE bibliotheek SET Naam='" + name + "', Plaats='" + location + "', Adres='" + adres
 				+ "', Telefoon='" + cell + "' WHERE Naam='" + oldName + "'";
-		update(query);
+		return(update(query));
 
 	}
 
@@ -567,14 +566,14 @@ public class Database {
 	 * @param ActeurModel
 	 *            actor, String oldName
 	 */
-	public void updateActor(ActeurModel actor, String oldName) {
+	public int updateActor(ActeurModel actor, String oldName) {
 		String name = actor.getName();
 		String dob = actor.getBirth();
 		String dod = actor.getDeath();
 
 		String query = "UPDATE acteur SET Naam='" + name + "', GeboorteDatum='" + dob + "', OverlijdensDatum='" + dod
 				+ "' WHERE Naam='" + oldName + "'";
-		update(query);
+		return(update(query));
 
 	}
 
@@ -584,14 +583,14 @@ public class Database {
 	 * @param ActeurModel
 	 *            author, String oldName
 	 */
-	public void updateAuthor(ActeurModel author, String oldName) {
+	public int updateAuthor(AuteurModel author, String oldName) {
 		String name = author.getName();
 		String dob = author.getBirth();
 		String dod = author.getDeath();
 
 		String query = "UPDATE auteur SET Naam='" + name + "', GeboorteDatum='" + dob + "', OverlijdensDatum='" + dod
 				+ "' WHERE Naam='" + oldName + "'";
-		update(query);
+		return(update(query));
 
 	}
 
