@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import model.BibliotheekModel;
 import model.Database;
 
 public class DeleteBibliotheekView extends GridPane {
@@ -69,6 +70,12 @@ public class DeleteBibliotheekView extends GridPane {
 
 		// Add this gridpane to mainpane
 		mainPane.getChildren().add(this);
+	}
+        private void setLibraryCB() {
+		libraryCB.getItems().clear();
+		for (BibliotheekModel library : db.getAllLibraries()) {
+			libraryCB.getItems().add(library.getName());
+		}
 	}
                         
 }

@@ -57,4 +57,6 @@ public class InsertBibliotheekView extends GridPane {
         
         mainPane.getChildren().add(this);
         
-    }}
+    }
+
+}

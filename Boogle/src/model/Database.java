@@ -236,6 +236,16 @@ public class Database {
         System.out.println(query);
         update(query);
     }
+        public void deleteAuteur(String name) {
+        String query = "DELETE FROM auteur WHERE naam = '" + name + "';";
+        System.out.println(query);
+        update(query);
+    }
+        public void deleteActeur(String name) {
+        String query = "DELETE FROM acteur WHERE naam = '" + name + "';";
+        System.out.println(query);
+        update(query);
+    }
 
 	/**
 	 * Method that returns an arraylist with all existing boekModels

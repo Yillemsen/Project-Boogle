@@ -40,6 +40,10 @@ public class DeleteAuteurView extends GridPane{
 
 		// Instantiating Buttons
 		deleteButton = new Button("Verwijder");
+                deleteButton.setOnAction(event -> {
+                String name = nameCB.getValue().toString();
+                       db.deleteAuteur(name);
+                });
 
 		// Instantiating Text
 		text = new Text("Auteur");
