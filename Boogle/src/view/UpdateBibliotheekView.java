@@ -1,5 +1,7 @@
 package view;
 
+import java.sql.SQLException;
+
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
