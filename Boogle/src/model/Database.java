@@ -43,7 +43,8 @@ public class Database {
 	/**
 	 * Closes result set
 	 * 
-	 * @param lResultSet ResultSet
+	 * @param lResultSet
+	 *            ResultSet
 	 */
 
 	private void rmConnection(ResultSet lResultSet) {
@@ -67,7 +68,8 @@ public class Database {
 	/**
 	 * Executes select statement
 	 * 
-	 * @param query String containing query
+	 * @param query
+	 *            String containing query
 	 * @return resultset
 	 */
 	private ResultSet select(String query) {
@@ -87,7 +89,8 @@ public class Database {
 	/**
 	 * Update or insert
 	 * 
-	 * @param query String containing query
+	 * @param query
+	 *            String containing query
 	 * @return resultset
 	 */
 
@@ -96,7 +99,6 @@ public class Database {
 			getConnection();
 			statement = connection.createStatement();
 			int rowsAffected = statement.executeUpdate(query);
-
 			connection.close();
 
 			return rowsAffected;
@@ -110,7 +112,8 @@ public class Database {
 	/**
 	 * Executes insert statement
 	 * 
-	 * @param query String containing query
+	 * @param query
+	 *            String containing query
 	 * @return method call
 	 */
 
@@ -121,7 +124,8 @@ public class Database {
 	/**
 	 * Executes update statement
 	 * 
-	 * @param query String containing query
+	 * @param query
+	 *            String containing query
 	 * @return method call
 	 */
 
@@ -132,32 +136,33 @@ public class Database {
 	/**
 	 * Get first row from dataset/resultset
 	 * 
-	 * @param rowSet resultset
+	 * @param rowSet
+	 *            resultset
 	 * @return null||error/stacktrace
 	 */
 
-        public ResultSet getData(String strSQL){
-        ResultSet result = null;
-        try{
-            Statement stmt = getConnection().createStatement();
-            result = stmt.executeQuery(strSQL);
-        }catch(Exception e){
-            System.err.println(e.getMessage());
-        }
-        return result;
-    }  
-    
-    public int executeDML(String strSQL){
-        int result = 0;
-        try{
-            Statement stmt = getConnection().createStatement();
-            result = stmt.executeUpdate(strSQL);
-        }catch(Exception e){
-            System.err.println(e.getMessage());
-        }
-        return result;
-    }
-    
+	public ResultSet getData(String strSQL) {
+		ResultSet result = null;
+		try {
+			Statement stmt = getConnection().createStatement();
+			result = stmt.executeQuery(strSQL);
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
+		return result;
+	}
+
+	public int executeDML(String strSQL) {
+		int result = 0;
+		try {
+			Statement stmt = getConnection().createStatement();
+			result = stmt.executeUpdate(strSQL);
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
+		return result;
+	}
+
 	private ResultSet goToFirstRow(ResultSet rowSet) {
 		try {
 			if (rowSet.next()) {
@@ -194,6 +199,7 @@ public class Database {
 			return null;
 		}
 	}
+
 
         public void newBibliotheek(String name, String adres, String location, String cell) {
         String query = "INSERT INTO bibliotheek(`naam`,`adres`,`plaats`,`telefoon`)" +
@@ -458,5 +464,167 @@ public class Database {
 		rmConnection(rowSet);
 
 		return allAuthors;
+	}
+
+	/**
+	 * Method that gets libraryModel from database
+	 * 
+	 * @param name
+	 * @return BibliotheekModel
+	 */
+	public BibliotheekModel getLibraryFromName(String name) {
+		BibliotheekModel library = new BibliotheekModel();
+		String query = "SELECT * FROM bibliotheek WHERE Naam= '" + name + "'";
+		ResultSet resultSet = select(query);
+
+		try {
+			resultSet.next();
+
+			library.setName(resultSet.getString("Naam"));
+			library.setLocation(resultSet.getString("Plaats"));
+			library.setAdres(resultSet.getString("Adres"));
+			library.setCell(resultSet.getString("Telefoon"));
+
+		} catch (SQLException e) {
+			rmConnection(resultSet);
+			e.printStackTrace();
+		}
+		rmConnection(resultSet);
+
+		return library;
+	}
+
+	/**
+	 * Method that gets actorModel from database
+	 * 
+	 * @param name
+	 * @return ActeurModel
+	 */
+	public ActeurModel getActorFromName(String name) {
+		ActeurModel actor = new ActeurModel();
+		String query = "SELECT * FROM acteur WHERE Naam= '" + name + "'";
+		ResultSet resultSet = select(query);
+
+		try {
+			resultSet.next();
+
+			actor.setName(resultSet.getString("Naam"));
+			actor.setBirth(resultSet.getString("GeboorteDatum"));
+			actor.setDeath(resultSet.getString("OverlijdensDatum"));
+
+		} catch (SQLException e) {
+			rmConnection(resultSet);
+			e.printStackTrace();
+		}
+		rmConnection(resultSet);
+
+		return actor;
+	}
+
+	/**
+	 * Method that gets authormodel from database
+	 * 
+	 * @param name
+	 * @return AuthorModel
+	 */
+	public AuteurModel getAuthorFromName(String name) {
+		AuteurModel author = new AuteurModel();
+		String query = "SELECT * FROM auteur WHERE Naam= '" + name + "'";
+		ResultSet resultSet = select(query);
+
+		try {
+			resultSet.next();
+
+			author.setName(resultSet.getString("Naam"));
+			author.setBirth(resultSet.getString("GeboorteDatum"));
+			author.setDeath(resultSet.getString("OverlijdensDatum"));
+
+		} catch (SQLException e) {
+			rmConnection(resultSet);
+			e.printStackTrace();
+		}
+		rmConnection(resultSet);
+
+		return author;
+	}
+
+	/**
+	 * Method that updates the bibliotheek entity in database
+	 * 
+	 * @param BibliotheekModel
+	 *            library, String oldname
+	 */
+	public int updateLibrary(BibliotheekModel library, String oldName) {
+		String name = library.getName();
+		String location = library.getLocation();
+		String adres = library.getAdres();
+		String cell = library.getCell();
+
+		String query = "UPDATE bibliotheek SET Naam='" + name + "', Plaats='" + location + "', Adres='" + adres
+				+ "', Telefoon='" + cell + "' WHERE Naam='" + oldName + "'";
+		return(update(query));
+
+	}
+
+	/**
+	 * Method that updates the acteur entity in database
+	 * 
+	 * @param ActeurModel
+	 *            actor, String oldName
+	 */
+	public int updateActor(ActeurModel actor, String oldName) {
+		String name = actor.getName();
+		String dob = actor.getBirth();
+		String dod = actor.getDeath();
+
+		String query = "UPDATE acteur SET Naam='" + name + "', GeboorteDatum='" + dob + "', OverlijdensDatum='" + dod
+				+ "' WHERE Naam='" + oldName + "'";
+		return(update(query));
+
+	}
+
+	/**
+	 * Method that updates the auteur entity in database
+	 * 
+	 * @param ActeurModel
+	 *            author, String oldName
+	 */
+	public int updateAuthor(AuteurModel author, String oldName) {
+		String name = author.getName();
+		String dob = author.getBirth();
+		String dod = author.getDeath();
+
+		String query = "UPDATE auteur SET Naam='" + name + "', GeboorteDatum='" + dob + "', OverlijdensDatum='" + dod
+				+ "' WHERE Naam='" + oldName + "'";
+		return(update(query));
+
+	}
+
+	/**
+	 * Method that inserts bookcaseNr into database
+	 * 
+	 * @param String
+	 *            libraryName
+	 * @param String
+	 *            bookCaseNr
+	 */
+	public void insertBookCase(String libraryName, String bookCaseNr) {
+		String query = "INSERT INTO boekenkast (BibliotheekNaam, KastNummer) VALUES (" + libraryName + ", " + bookCaseNr
+				+ ")";
+		insert(query);
+	}
+
+	/**
+	 * Method that inserts movieRackNr into database
+	 * 
+	 * @param String
+	 *            libraryName
+	 * @param String
+	 *            movieRackNr
+	 */
+	public void insertMovieRack(String libraryName, String movieRackNr) {
+		String query = "INSERT INTO filmrek (BibliotheekNaam, RekNummer) VALUES (" + libraryName + ", " + movieRackNr
+				+ ")";
+		insert(query);
 	}
 }
