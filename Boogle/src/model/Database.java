@@ -220,6 +220,16 @@ public class Database {
         System.out.println(query);
         insert(query);
     }
+        public void deleteBoek(String isbn) {
+        String query = "DELETE FROM boek WHERE isbn = '" + isbn + "';";
+        System.out.println(query);
+        update(query);
+    }
+        public void deleteBibliotheek(String name) {
+        String query = "DELETE FROM bibliotheek WHERE naam = '" + name + "';";
+        System.out.println(query);
+        update(query);
+    }
 
 	/**
 	 * Method that returns an arraylist with all existing boekModels
