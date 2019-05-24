@@ -1,5 +1,6 @@
 package view;
 
+import java.sql.ResultSet;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -7,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import model.Database;
 
 public class DeleteBoekenkastView extends GridPane {
 	// Declaring variables
@@ -14,6 +16,8 @@ public class DeleteBoekenkastView extends GridPane {
 	private final ComboBox libraryCB, caseNrCB;
 	private final Button deleteButton;
 	private final Text text;
+        private ResultSet libraryResult;
+        private Database db = new Database();
 
 	public DeleteBoekenkastView(Pane mainPane) {
 		// Instantiating Labels
@@ -23,6 +27,18 @@ public class DeleteBoekenkastView extends GridPane {
 
 		// Instantiating Comboboxes
 		libraryCB = new ComboBox();
+                String strSQL = "select * from boek";
+            libraryResult = db.getData(strSQL);
+            //database opzoeken
+            try {
+            while (libraryResult.next()) {
+                String strItem = libraryResult.getString("ISBN");
+                libraryCB.getItems().add(strItem);
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+            
 		caseNrCB = new ComboBox();
 
 		// Instantiating Buttons
