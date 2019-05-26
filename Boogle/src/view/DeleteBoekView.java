@@ -26,7 +26,7 @@ public class DeleteBoekView extends GridPane{
 	public DeleteBoekView(Pane mainPane) {
 		// Instantiating Labels
 		iSBNLabel = new Label("ISBN:");
-		errorLabel = new Label("Boek <titel> is verwijderd");
+		errorLabel = new Label("");
                 
                 // Instantiating Arraylists
 		ISBNItems = new ArrayList<String>();
@@ -40,10 +40,12 @@ public class DeleteBoekView extends GridPane{
 		// Instantiating Buttons
 		deleteButton = new Button("Verwijder");
                 deleteButton.setOnAction(event -> {
-                String isbn = isbnCB.getValue().toString();
-                       db.deleteBoek(isbn);
-                       
-        });
+			if (deleteBookItems() == 0) {
+				errorLabel.setText("Het verwijderen is mislukt");
+			} else {
+				errorLabel.setText("Het is verwijderd van de database");
+			}
+                });
 
 		// Instantiating Text
 		text = new Text("Boek");
@@ -80,4 +82,8 @@ public class DeleteBoekView extends GridPane{
 		ObservableList<String> isbn = FXCollections.observableArrayList(ISBNItems);
 		return ISBNItems;
 	}
+        private int deleteBookItems() {
+            String isbn = isbnCB.getValue().toString();
+                       return(db.deleteBoek(isbn));
+        }
 }

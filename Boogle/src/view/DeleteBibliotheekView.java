@@ -68,7 +68,7 @@ public class DeleteBibliotheekView extends GridPane {
 		for (BibliotheekModel library : db.getAllLibraries()) {
 			libraryCB.getItems().add(library.getName());
 		}
-	}    
+	} 
         private int deleteLibraryItems() {
             String name = libraryCB.getValue().toString();
                        return (db.deleteBibliotheek(name));

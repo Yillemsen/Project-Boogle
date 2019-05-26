@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import model.BibliotheekModel;
 import model.Database;
 
 public class DeleteBoekenkastView extends GridPane {
@@ -25,9 +26,11 @@ public class DeleteBoekenkastView extends GridPane {
 		caseNrLabel = new Label("BoekenkastNr:");
 
 		// Instantiating Comboboxes
-		libraryCB = new ComboBox();                
+		libraryCB = new ComboBox(); 
+                setLibraryCB();
             
 		caseNrCB = new ComboBox();
+                setCaseNrCB();
 
 		// Instantiating Buttons
 		deleteButton = new Button("Verwijder");
@@ -59,4 +62,14 @@ public class DeleteBoekenkastView extends GridPane {
 		// Add this gridpane to mainpane
 		mainPane.getChildren().add(this);
 	}
+        private void setLibraryCB() {
+		for (BibliotheekModel library : db.getAllLibraries()) {
+			libraryCB.getItems().add(library.getName());
+		}
+	} 
+        private void setCaseNrCB() {
+		for (BibliotheekModel caseNr : db.getAllLibraries()) {
+			caseNrCB.getItems().add(caseNr.getName());
+		}
+	} 
 }

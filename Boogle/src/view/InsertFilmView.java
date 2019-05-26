@@ -35,7 +35,6 @@ public class InsertFilmView extends GridPane{
             lblGenre = new Label(" Genre : ");
             lblActeur = new Label(" Acteur : ");
             
-            boxNumber = new ComboBox();
             txtTitle = new TextField();
             txtMovienumber = new TextField();
             txtReg = new TextField();
@@ -51,6 +50,8 @@ public class InsertFilmView extends GridPane{
             setPadding(new Insets(10,10,10,10));
             setHgap(10);
             setVgap(10);
+            
+            boxNumber = new ComboBox();
             
             boxLibary = new ComboBox();
             setLibraryCB();
