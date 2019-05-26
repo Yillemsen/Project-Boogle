@@ -10,8 +10,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import model.AuteurModel;
 import model.BibliotheekModel;
 import model.Database;
+import model.GenreModel;
 
 public class InsertBoekView extends GridPane {
     private Label lblIsbn, lblBooknumber, lblTitle, lblLanguage, lblDate, lblIntTitle, lblGenre, lblAuteur, lblLibary, lblNumber, lblDesc;
@@ -84,8 +86,10 @@ public class InsertBoekView extends GridPane {
             setLibraryCB();
 
             boxGenre = new ComboBox();
+            setGenreCB();
 
-            boxAuteur = new ComboBox();            
+            boxAuteur = new ComboBox();
+            setAuthorCB();
             
             boxLanguage = new ComboBox();
             boxLanguage.getItems().addAll("Nederlands", "English", "Francias","Polski","Deutsch");
@@ -123,4 +127,15 @@ public class InsertBoekView extends GridPane {
 			boxLibary.getItems().add(library.getName());
 		}
 	}  
+        private void setAuthorCB() {
+		for (AuteurModel author : db.getAllAuthors()) {
+			boxAuteur.getItems().add(author.getName());
+		}
+	}
+        private void setGenreCB() {
+		for (GenreModel genre : db.getAllGenres()) {
+			boxGenre.getItems().add(genre.getGenreName());
+		}
+	}  
+        
 }

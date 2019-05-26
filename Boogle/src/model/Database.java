@@ -557,6 +557,74 @@ public class Database {
 
 		return author;
 	}
+        /**
+	 * Method that fills an arraylist with actormodels and returns them
+	 * 
+	 * @param rowSet
+	 * @return ArrayList<ActeurModel>
+	 */
+	private ArrayList<GenreModel> rowToGetAllGenres(ResultSet rowSet) {
+		ArrayList<GenreModel> allGenre = new ArrayList<>();
+
+		try {
+			while (rowSet.next()) {
+				GenreModel genreModel = new GenreModel();
+
+				genreModel.setGenreName(rowSet.getString("Genrenaam"));
+				genreModel.setDescription(rowSet.getString("omschrijving"));
+
+				allGenre.add(genreModel);
+			}
+		} catch (SQLException e) {
+			rmConnection(rowSet);
+			e.printStackTrace();
+		}
+		rmConnection(rowSet);
+
+		return allGenre;
+	}
+        
+        /**
+	 * Method that returns an arraylist with AuthorModels
+	 * 
+	 * @return
+	 */
+	public ArrayList<GenreModel> getAllGenres() {
+		String query = "SELECT * FROM genre";
+		ResultSet resultSet = select(query);
+
+		if (goToFirstRow(select(query)) == null) {
+			rmConnection(resultSet);
+			return null;
+		}
+
+		return rowToGetAllGenres(resultSet);
+	}
+        /**
+	 * Method that gets authormodel from database
+	 * 
+	 * @param name
+	 * @return AuthorModel
+	 */
+	public GenreModel getGenreFromName(String genreName) {
+		GenreModel genre = new GenreModel();
+		String query = "SELECT * FROM genre WHERE Naam= '" + genreName + "'";
+		ResultSet resultSet = select(query);
+
+		try {
+			resultSet.next();
+
+			genre.setGenreName(resultSet.getString("genreNaam"));
+			genre.setDescription(resultSet.getString("Omschrijving"));
+
+		} catch (SQLException e) {
+			rmConnection(resultSet);
+			e.printStackTrace();
+		}
+		rmConnection(resultSet);
+
+		return genre;
+	}
 
 	/**
 	 * Method that updates the bibliotheek entity in database
