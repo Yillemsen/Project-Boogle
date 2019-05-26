@@ -23,7 +23,7 @@ public class DeleteAuteurView extends GridPane{
 	public DeleteAuteurView(Pane mainPane) {
 		// Instantiating Labels
 		nameLabel = new Label("Naam:");
-		errorLabel = new Label("Auteur <auteurnaam> is verwijderd");
+		errorLabel = new Label("");
 
 		// Instantiating Comboboxes
 		nameCB = new ComboBox();
@@ -32,9 +32,13 @@ public class DeleteAuteurView extends GridPane{
 		// Instantiating Buttons
 		deleteButton = new Button("Verwijder");
                 deleteButton.setOnAction(event -> {
-                String name = nameCB.getValue().toString();
-                       db.deleteAuteur(name);
-                });
+			if (deleteAuteurItems() == 0) {
+				errorLabel.setText("Het verwijderen is mislukt");
+			} else {
+				errorLabel.setText("Het is verwijderd van de database");
+			}
+			
+		});
 
 		// Instantiating Text
 		text = new Text("Auteur");
@@ -66,5 +70,9 @@ public class DeleteAuteurView extends GridPane{
 			nameCB.getItems().add(author.getName());
 		}
 	}
+        private int deleteAuteurItems() {
+            String name = nameCB.getValue().toString();
+                       return(db.deleteAuteur(name));
+        }
 
 }

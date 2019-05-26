@@ -17,13 +17,12 @@ public class DeleteActeurView extends GridPane {
 	private final ComboBox nameCB;
 	private final Button deleteButton;
 	private final Text text;
-        private ResultSet nameResult;
         private Database db = new Database();
 
 	public DeleteActeurView(Pane mainPane) {
 		// Instantiating Labels
 		nameLabel = new Label("Naam:");
-		errorLabel = new Label("Acteur <acteurnaam> is verwijderd");
+		errorLabel = new Label("");
 
 		// Instantiating Comboboxes
 		nameCB = new ComboBox<String>();
@@ -32,9 +31,13 @@ public class DeleteActeurView extends GridPane {
 		// Instantiating Buttons
 		deleteButton = new Button("Verwijder");
                 deleteButton.setOnAction(event -> {
-                String name = nameCB.getValue().toString();
-                       db.deleteActeur(name);
-                });
+			if (deleteActeurItems() == 0) {
+				errorLabel.setText("Het verwijderen is mislukt");
+			} else {
+				errorLabel.setText("Het is verwijderd van de database");
+			}
+			
+		});
 
 		// Instantiating Text
 		text = new Text("Acteur");
@@ -68,4 +71,8 @@ public class DeleteActeurView extends GridPane {
 			nameCB.getItems().add(actor.getName());
 		}
 	}
+        private int deleteActeurItems() {
+            String name = nameCB.getValue().toString();
+                       return(db.deleteActeur(name));
+        }
 }

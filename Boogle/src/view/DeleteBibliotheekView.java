@@ -22,7 +22,7 @@ public class DeleteBibliotheekView extends GridPane {
 	public DeleteBibliotheekView(Pane mainPane) {
 		// Instantiating Labels
 		nameLabel = new Label("Naam:");
-		errorLabel = new Label("Bibliotheek <library> is verwijderd");
+		errorLabel = new Label("");
 
 		// Instantiating Comboboxes
 		libraryCB = new ComboBox();
@@ -31,9 +31,13 @@ public class DeleteBibliotheekView extends GridPane {
 		// Instantiating Buttons
 		deleteButton = new Button("Verwijder");
                 deleteButton.setOnAction(event -> {
-                String name = libraryCB.getValue().toString();
-                       db.deleteBibliotheek(name);
-                });
+			if (deleteLibraryItems() == 0) {
+				errorLabel.setText("Het verwijderen is mislukt");
+			} else {
+				errorLabel.setText("Het is verwijderd van de database");
+			}
+			
+		});
 
 		// Instantiating Text
 		text = new Text("Bibliotheek");
@@ -64,5 +68,9 @@ public class DeleteBibliotheekView extends GridPane {
 		for (BibliotheekModel library : db.getAllLibraries()) {
 			libraryCB.getItems().add(library.getName());
 		}
-	}               
+	}    
+        private int deleteLibraryItems() {
+            String name = libraryCB.getValue().toString();
+                       return (db.deleteBibliotheek(name));
+        }
 }

@@ -19,7 +19,6 @@ public class InsertFilmView extends GridPane{
     private Label lblTitle, lblMovienumber, lblReg, lblDate, lblDesc, lblGenre, lblActeur, lblLibary, lblNumber;
     private TextField txtTitle, txtMovienumber, txtReg, txtDate;
     private ComboBox boxGenre, boxActeur, boxLibary, boxNumber;
-    private ResultSet genreResult, auteurResult, biebResult;
     private Text movieInput;
     private TextArea txtDesc;
     private Button btnSave;
