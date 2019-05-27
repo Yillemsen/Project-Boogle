@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import model.BibliotheekModel;
 import model.Database;
 
 public class DeleteBoekenkastView extends GridPane {
@@ -16,7 +17,6 @@ public class DeleteBoekenkastView extends GridPane {
 	private final ComboBox libraryCB, caseNrCB;
 	private final Button deleteButton;
 	private final Text text;
-        private ResultSet libraryResult;
         private Database db = new Database();
 
 	public DeleteBoekenkastView(Pane mainPane) {
@@ -26,20 +26,11 @@ public class DeleteBoekenkastView extends GridPane {
 		caseNrLabel = new Label("BoekenkastNr:");
 
 		// Instantiating Comboboxes
-		libraryCB = new ComboBox();
-                String strSQL = "select * from boek";
-            libraryResult = db.getData(strSQL);
-            //database opzoeken
-            try {
-            while (libraryResult.next()) {
-                String strItem = libraryResult.getString("ISBN");
-                libraryCB.getItems().add(strItem);
-            }
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        }
+		libraryCB = new ComboBox(); 
+                setLibraryCB();
             
 		caseNrCB = new ComboBox();
+                setCaseNrCB();
 
 		// Instantiating Buttons
 		deleteButton = new Button("Verwijder");
@@ -71,4 +62,14 @@ public class DeleteBoekenkastView extends GridPane {
 		// Add this gridpane to mainpane
 		mainPane.getChildren().add(this);
 	}
+        private void setLibraryCB() {
+		for (BibliotheekModel library : db.getAllLibraries()) {
+			libraryCB.getItems().add(library.getName());
+		}
+	} 
+        private void setCaseNrCB() {
+		for (BibliotheekModel caseNr : db.getAllLibraries()) {
+			caseNrCB.getItems().add(caseNr.getName());
+		}
+	} 
 }

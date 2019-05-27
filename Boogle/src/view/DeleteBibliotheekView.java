@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import model.BibliotheekModel;
 import model.Database;
 
 public class DeleteBibliotheekView extends GridPane {
@@ -16,34 +17,27 @@ public class DeleteBibliotheekView extends GridPane {
 	private final ComboBox libraryCB;
 	private final Button deleteButton;
 	private final Text text;
-        private ResultSet libraryResult;
         private Database db = new Database();
 
 	public DeleteBibliotheekView(Pane mainPane) {
 		// Instantiating Labels
 		nameLabel = new Label("Naam:");
-		errorLabel = new Label("Bibliotheek <library> is verwijderd");
+		errorLabel = new Label("");
 
 		// Instantiating Comboboxes
 		libraryCB = new ComboBox();
-                String strSQL = "select * from bibliotheek";
-            libraryResult = db.getData(strSQL);
-            //database opzoeken
-            try {
-            while (libraryResult.next()) {
-                String strItem = libraryResult.getString("naam");
-                libraryCB.getItems().add(strItem);
-            }
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        }
+                setLibraryCB();
 
 		// Instantiating Buttons
 		deleteButton = new Button("Verwijder");
                 deleteButton.setOnAction(event -> {
-                String name = libraryCB.getValue().toString();
-                       db.deleteBibliotheek(name);
-                });
+			if (deleteLibraryItems() == 0) {
+				errorLabel.setText("Het verwijderen is mislukt");
+			} else {
+				errorLabel.setText("Het is verwijderd van de database");
+			}
+			
+		});
 
 		// Instantiating Text
 		text = new Text("Bibliotheek");
@@ -70,5 +64,13 @@ public class DeleteBibliotheekView extends GridPane {
 		// Add this gridpane to mainpane
 		mainPane.getChildren().add(this);
 	}
-                        
+        private void setLibraryCB() {
+		for (BibliotheekModel library : db.getAllLibraries()) {
+			libraryCB.getItems().add(library.getName());
+		}
+	} 
+        private int deleteLibraryItems() {
+            String name = libraryCB.getValue().toString();
+                       return (db.deleteBibliotheek(name));
+        }
 }

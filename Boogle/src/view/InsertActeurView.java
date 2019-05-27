@@ -11,7 +11,7 @@ import model.Database;
 
 public class InsertActeurView extends GridPane {
     
-    private Label lblName, lblBirth, lblDeath;
+    private Label lblName, lblBirth, lblDeath, lblError;
     private TextField txtName, txtBirth, txtDeath;
     private Text acteurInput;
     private Button btnSave;
@@ -27,16 +27,17 @@ public class InsertActeurView extends GridPane {
         lblName = new Label(" Naam : ");
         lblBirth = new Label(" Geboortedatum : ");
         lblDeath = new Label (" Overlijdingsdatum : ");
+        lblError = new Label("");
 
         btnSave = new Button(" Opslaan ");
         btnSave.setOnAction(event -> {
-            
-            String name = txtName.getText();
-            String birth = txtBirth.getText();
-            String death = txtDeath.getText();
-                       db.newActeur(name, birth, death);
-                       
-        });
+			if (insertActeurItems() == 0) {
+				lblError.setText("Het toevoegen is mislukt");
+			} else {
+				lblError.setText("Het is toegevoegd aan de database");
+			}
+			
+		});
         
         setPadding(new Insets(10,10,10,10));
         setHgap(10);
@@ -50,9 +51,16 @@ public class InsertActeurView extends GridPane {
         add(lblDeath, 0, 4);
         add(txtDeath, 1, 4);
         add(btnSave, 1, 5);
+        add(lblError, 1, 6);
         
         mainPane.getChildren().add(this);
         
+    }
+    private int insertActeurItems() {
+            String name = txtName.getText();
+            String birth = txtBirth.getText();
+            String death = txtDeath.getText();
+            return (db.newActeur(name, birth, death));
     }
 
 }
