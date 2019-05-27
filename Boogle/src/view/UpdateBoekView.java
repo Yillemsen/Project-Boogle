@@ -187,6 +187,7 @@ public class UpdateBoekView extends GridPane {
 			errorLabel.setText("Error, er is geen ISBN geselecteerd om aan te passen");
 		}
 
+
 		genreCB.setValue(book.getGenre());
 		titleTextField.setText(book.getTitle());
 		languageTextField.setText(book.getLanguage());

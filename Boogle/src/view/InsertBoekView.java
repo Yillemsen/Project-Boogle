@@ -10,8 +10,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import model.AuteurModel;
 import model.BibliotheekModel;
 import model.Database;
+import model.GenreModel;
 
 public class InsertBoekView extends GridPane {
     private Label lblIsbn, lblBooknumber, lblTitle, lblLanguage, lblDate, lblIntTitle, lblGenre, lblAuteur, lblLibary, lblNumber, lblDesc;
@@ -20,8 +22,6 @@ public class InsertBoekView extends GridPane {
     private Text bookInput;
     private TextArea txtDesc;
     private Button btnSave, btnPlus;
-    private ResultSet biebResult, genreResult, auteurResult;
-    private BibliotheekModel biebName;
     private Database db = new Database();
     
 	public InsertBoekView(Pane mainPane) {
@@ -65,6 +65,7 @@ public class InsertBoekView extends GridPane {
             //});
             
             btnSave = new Button(" Opslaan ");
+            btnSave.setOnAction(event -> {
             String ISBN = txtIsbn.getText();
             String title = txtTitle.getText();
             String language = boxLanguage.getValue().toString();
@@ -74,54 +75,21 @@ public class InsertBoekView extends GridPane {
             String genre = boxGenre.getValue().toString();
             String image = boxAuteur.getValue().toString();
                        db.newBoek(ISBN, title, language, releaseDate, intTitle, description, genre, image);
+            });
             
             setPadding(new Insets(10,10,10,10));
             setHgap(10);
             setVgap(10);
             
-            /**
-             * functie SQL statements
-             */
+
             boxLibary = new ComboBox();
-            String strSQL = "select * from bibliotheek";
-            biebResult = db.getData(strSQL);
-            //database opzoeken
-            try {
-            while (biebResult.next()) {
-                String strItem = biebResult.getString("naam");
-                boxLibary.getItems().add(strItem);
-            }
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        }
+            setLibraryCB();
 
             boxGenre = new ComboBox();
-            String strSQL1 = "select * from genre";
-            genreResult = db.getData(strSQL1);
-            //database opzoeken
-            try {
-            while (genreResult.next()) {
-                String strItem1 = genreResult.getString("genrenaam");
-                boxGenre.getItems().add(strItem1);
-            }
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        }
-            
+            setGenreCB();
+
             boxAuteur = new ComboBox();
-            String strSQL2 = "select * from auteur";
-            auteurResult = db.getData(strSQL2);
-            //database opzoeken
-            try {
-            while (auteurResult.next()) {
-                String strItem2 = auteurResult.getString("naam");
-                boxAuteur.getItems().add(strItem2);
-            }
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        }
-            
-            
+            setAuthorCB();
             
             boxLanguage = new ComboBox();
             boxLanguage.getItems().addAll("Nederlands", "English", "Francias","Polski","Deutsch");
@@ -154,4 +122,20 @@ public class InsertBoekView extends GridPane {
 
             mainPane.getChildren().add(this);
 	}
+        private void setLibraryCB() {
+		for (BibliotheekModel library : db.getAllLibraries()) {
+			boxLibary.getItems().add(library.getName());
+		}
+	}  
+        private void setAuthorCB() {
+		for (AuteurModel author : db.getAllAuthors()) {
+			boxAuteur.getItems().add(author.getName());
+		}
+	}
+        private void setGenreCB() {
+		for (GenreModel genre : db.getAllGenres()) {
+			boxGenre.getItems().add(genre.getGenreName());
+		}
+	}  
+        
 }

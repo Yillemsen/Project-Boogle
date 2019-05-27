@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import model.AuteurModel;
 import model.Database;
 
 public class DeleteAuteurView extends GridPane{
@@ -22,24 +23,22 @@ public class DeleteAuteurView extends GridPane{
 	public DeleteAuteurView(Pane mainPane) {
 		// Instantiating Labels
 		nameLabel = new Label("Naam:");
-		errorLabel = new Label("Auteur <auteurnaam> is verwijderd");
+		errorLabel = new Label("");
 
 		// Instantiating Comboboxes
 		nameCB = new ComboBox();
-                 String strSQL = "select * from auteur";
-            nameResult = db.getData(strSQL);
-            //database opzoeken
-            try {
-            while (nameResult.next()) {
-                String strItem = nameResult.getString("naam");
-                nameCB.getItems().add(strItem);
-            }
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        }
+                setAuthorCB();
 
 		// Instantiating Buttons
 		deleteButton = new Button("Verwijder");
+                deleteButton.setOnAction(event -> {
+			if (deleteAuteurItems() == 0) {
+				errorLabel.setText("Het verwijderen is mislukt");
+			} else {
+				errorLabel.setText("Het is verwijderd van de database");
+			}
+			
+		});
 
 		// Instantiating Text
 		text = new Text("Auteur");
@@ -66,5 +65,14 @@ public class DeleteAuteurView extends GridPane{
 		// Add this gridpane to mainpane
 		mainPane.getChildren().add(this);
 	}
+        private void setAuthorCB() {
+		for (AuteurModel author : db.getAllAuthors()) {
+			nameCB.getItems().add(author.getName());
+		}
+	}
+        private int deleteAuteurItems() {
+            String name = nameCB.getValue().toString();
+                       return(db.deleteAuteur(name));
+        }
 
 }

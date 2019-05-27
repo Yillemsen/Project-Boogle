@@ -257,9 +257,55 @@ public class Database {
 			rmConnection(resultSet);
 			return null;
 		}
-
-		return rowToGetAllBooks(resultSet);
+    return rowToGetAllBooks(resultSet);
 	}
+
+
+        public int newBibliotheek(String name, String adres, String location, String cell) {
+        String query = "INSERT INTO bibliotheek(`naam`,`adres`,`plaats`,`telefoon`)" +
+                "VALUES ('" + name + "', '" + adres + "', '" + location + "', '" + cell + "');";
+        System.out.println(query);
+        return(insert(query));
+
+    }
+        public int newActeur(String name, String birth, String death) {
+        String query = "INSERT INTO acteur(`naam`,`geboortedatum`,`overlijdensdatum`)" +
+                "VALUES ('" + name + "', '" + birth + "', '" + death + "');";
+        System.out.println(query);
+        return(insert(query));
+    }
+        public int newAuteur(String name, String birth, String death) {
+        String query = "INSERT INTO auteur(`naam`,`geboortedatum`,`overlijdensdatum`)" +
+                "VALUES ('" + name + "', '" + birth + "', '" + death + "');";
+        System.out.println(query);
+        return(insert(query));
+    }
+        public int newBoek(String ISBN, String title, String language, String releaseDate, String intTitle, String description, String genre, String image) {
+        String query = "INSERT INTO boek(`ISBN`,`taal`,`title`,`Datumuitgave`,`InternationaleTitel`,`genreNaam`,`Image`,`beschrijving`)" +
+                "VALUES ('" + ISBN + "', '" + language + "', '" + title + "', '" + releaseDate + "', '" + intTitle + "', '" + genre + "', '" + description + "', '" + image + "');";
+        System.out.println(query);
+        return(insert(query));
+    }
+        public int deleteBoek(String isbn) {
+        String query = "DELETE FROM boek WHERE isbn = '" + isbn + "';";
+        System.out.println(query);
+        return(update(query));
+    }
+        public int deleteBibliotheek(String name) {
+        String query = "DELETE FROM bibliotheek WHERE naam = '" + name + "';";
+        System.out.println(query);
+        return(update(query));
+    }
+        public int deleteAuteur(String name) {
+        String query = "DELETE FROM auteur WHERE naam = '" + name + "';";
+        System.out.println(query);
+        return(update(query));
+    }
+        public int deleteActeur(String name) {
+        String query = "DELETE FROM acteur WHERE naam = '" + name + "';";
+        System.out.println(query);
+        return(update(query));
+    }
 
 	/**
 	 * Method that returns an arraylist with all existing boekModels
@@ -415,6 +461,97 @@ public class Database {
 
 		return rowToGetAllActors(resultSet);
 	}
+        ////////////////////////////
+        /**
+	 * Method that returns an arraylist with FilmrekModels
+	 * 
+	 * @return
+	 */
+	public ArrayList<FilmrekModel> getAllFilmrekken() {
+		String query = "select distinct bibliotheeknaam from filmrek";
+		ResultSet resultSet = select(query);
+
+		if (goToFirstRow(select(query)) == null) {
+			rmConnection(resultSet);
+			return null;
+		}
+
+		return rowToGetAllFilmrekken(resultSet);
+	}
+        /**
+	 * Method that fills an arraylist with actormodels and returns them
+	 * 
+	 * @param rowSet
+	 * @return ArrayList<FilnrekModel>
+	 */
+	private ArrayList<FilmrekModel> rowToGetAllFilmrekken(ResultSet rowSet) {
+		ArrayList<FilmrekModel> allFilmrekken = new ArrayList<>();
+
+		try {
+			while (rowSet.next()) {
+				FilmrekModel filmrekModel = new FilmrekModel();
+
+                                filmrekModel.setLibraryName(rowSet.getString("BibliotheekNaam"));
+				//filmrekModel.setRackNr(rowSet.getInt("RekNummer"));
+
+				allFilmrekken.add(filmrekModel);
+			}
+		} catch (SQLException e) {
+			rmConnection(rowSet);
+			e.printStackTrace();
+		}
+		rmConnection(rowSet);
+
+		return allFilmrekken;
+	}
+        ////////////////////////////////
+        
+        
+        
+         ////////////////////////////
+        /**
+	 * Method that returns an arraylist with FilmrekModels
+	 * 
+	 * @return
+	 */
+	public ArrayList<FilmrekModel> getAllFilmrekkenn(String libraryName) {
+		String query = "SELECT * FROM `filmrek` WHERE BibliotheekNaam = '" + libraryName + "'";
+		ResultSet resultSet = select(query);
+
+		if (goToFirstRow(select(query)) == null) {
+			rmConnection(resultSet);
+			return null;
+		}
+
+		return rowToGetAllFilmrekkenn(resultSet);
+	}
+        /**
+	 * Method that fills an arraylist with actormodels and returns them
+	 * 
+	 * @param rowSet
+	 * @return ArrayList<FilnrekModel>
+	 */
+	private ArrayList<FilmrekModel> rowToGetAllFilmrekkenn(ResultSet rowSet) {
+		ArrayList<FilmrekModel> allFilmrekkenn = new ArrayList<>();
+
+		try {
+			while (rowSet.next()) {
+				FilmrekModel filmrekModel = new FilmrekModel();
+
+                                filmrekModel.setLibraryName(rowSet.getString("BibliotheekNaam"));
+				filmrekModel.setRackNr(rowSet.getInt("RekNummer"));
+
+				allFilmrekkenn.add(filmrekModel);
+			}
+		} catch (SQLException e) {
+			rmConnection(rowSet);
+			e.printStackTrace();
+		}
+		rmConnection(rowSet);
+
+		return allFilmrekkenn;
+	}
+        ////////////////////////////////
 
 	/**
 	 * Method that fills an arraylist with actormodels and returns them
@@ -638,6 +775,26 @@ public class Database {
 
 		return library;
 	}
+        public FilmrekModel getFilmrekFromName(String libraryName) {
+		FilmrekModel library = new FilmrekModel();
+		String query = "SELECT * FROM filmrek WHERE bibliotheeknaam= '" + libraryName + "'";
+		ResultSet resultSet = select(query);
+
+		try {
+			resultSet.next();
+
+			library.setLibraryName(resultSet.getString("BibliotheekNaam"));
+			library.setRackNr(resultSet.getInt("RekNummer"));
+
+		} catch (SQLException e) {
+			rmConnection(resultSet);
+			e.printStackTrace();
+		}
+		rmConnection(resultSet);
+
+		return library;
+	}
+        
 
 	/**
 	 * Method that gets actorModel from database
@@ -691,6 +848,74 @@ public class Database {
 		rmConnection(resultSet);
 
 		return author;
+	}
+        /**
+	 * Method that fills an arraylist with actormodels and returns them
+	 * 
+	 * @param rowSet
+	 * @return ArrayList<ActeurModel>
+	 */
+	private ArrayList<GenreModel> rowToGetAllGenres(ResultSet rowSet) {
+		ArrayList<GenreModel> allGenre = new ArrayList<>();
+
+		try {
+			while (rowSet.next()) {
+				GenreModel genreModel = new GenreModel();
+
+				genreModel.setGenreName(rowSet.getString("Genrenaam"));
+				genreModel.setDescription(rowSet.getString("omschrijving"));
+
+				allGenre.add(genreModel);
+			}
+		} catch (SQLException e) {
+			rmConnection(rowSet);
+			e.printStackTrace();
+		}
+		rmConnection(rowSet);
+
+		return allGenre;
+	}
+        
+        /**
+	 * Method that returns an arraylist with AuthorModels
+	 * 
+	 * @return
+	 */
+	public ArrayList<GenreModel> getAllGenres() {
+		String query = "SELECT * FROM genre";
+		ResultSet resultSet = select(query);
+
+		if (goToFirstRow(select(query)) == null) {
+			rmConnection(resultSet);
+			return null;
+		}
+
+		return rowToGetAllGenres(resultSet);
+	}
+        /**
+	 * Method that gets authormodel from database
+	 * 
+	 * @param name
+	 * @return AuthorModel
+	 */
+	public GenreModel getGenreFromName(String genreName) {
+		GenreModel genre = new GenreModel();
+		String query = "SELECT * FROM genre WHERE Naam= '" + genreName + "'";
+		ResultSet resultSet = select(query);
+
+		try {
+			resultSet.next();
+
+			genre.setGenreName(resultSet.getString("genreNaam"));
+			genre.setDescription(resultSet.getString("Omschrijving"));
+
+		} catch (SQLException e) {
+			rmConnection(resultSet);
+			e.printStackTrace();
+		}
+		rmConnection(resultSet);
+
+		return genre;
 	}
 
 	/**

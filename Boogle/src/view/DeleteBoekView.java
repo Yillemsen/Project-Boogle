@@ -26,7 +26,7 @@ public class DeleteBoekView extends GridPane{
 	public DeleteBoekView(Pane mainPane) {
 		// Instantiating Labels
 		iSBNLabel = new Label("ISBN:");
-		errorLabel = new Label("Boek <titel> is verwijderd");
+		errorLabel = new Label("");
                 
                 // Instantiating Arraylists
 		ISBNItems = new ArrayList<String>();
@@ -35,14 +35,17 @@ public class DeleteBoekView extends GridPane{
 		isbnCB = new ComboBox();
                 setComboBoxArrayLists();
 		isbnCB.getItems().add(ISBNItems.get(0));
+                
 
 		// Instantiating Buttons
 		deleteButton = new Button("Verwijder");
                 deleteButton.setOnAction(event -> {
-                String isbn = isbnCB.getValue().toString();
-                       db.deleteBoek(isbn);
-                       
-        });
+			if (deleteBookItems() == 0) {
+				errorLabel.setText("Het verwijderen is mislukt");
+			} else {
+				errorLabel.setText("Het is verwijderd van de database");
+			}
+                });
 
 		// Instantiating Text
 		text = new Text("Boek");
@@ -69,7 +72,7 @@ public class DeleteBoekView extends GridPane{
 		// Add this gridpane to mainpane
 		mainPane.getChildren().add(this);
 	}
-private ArrayList<String> setComboBoxArrayLists() {
+        private ArrayList<String> setComboBoxArrayLists() {
 
 		for (BoekModel boek : db.getAllBooks()) {
 			System.out.println(boek.getISBN());
@@ -79,4 +82,8 @@ private ArrayList<String> setComboBoxArrayLists() {
 		ObservableList<String> isbn = FXCollections.observableArrayList(ISBNItems);
 		return ISBNItems;
 	}
+        private int deleteBookItems() {
+            String isbn = isbnCB.getValue().toString();
+                       return(db.deleteBoek(isbn));
+        }
 }

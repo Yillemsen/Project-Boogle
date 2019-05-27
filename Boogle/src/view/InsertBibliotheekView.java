@@ -10,7 +10,7 @@ import javafx.scene.text.Text;
 import model.Database;
 
 public class InsertBibliotheekView extends GridPane {
-    private Label lblName, lblAdres, lblLocation, lblCell;
+    private Label lblName, lblAdres, lblLocation, lblCell, lblError;
     private TextField txtName, txtAdres, txtLocation, txtCell;
     private Text libaryInput;
     private Button btnSave;
@@ -28,17 +28,17 @@ public class InsertBibliotheekView extends GridPane {
         lblAdres = new Label(" Adres : ");
         lblLocation = new Label(" Plaats : ");
         lblCell = new Label (" Telefoonnummer : ");
+        lblError = new Label("");
         
         btnSave = new Button(" Opslaan ");
         btnSave.setOnAction(event -> {
-
-            String name = txtName.getText();
-            String address = txtAdres.getText();
-            String place = txtLocation.getText();
-            String phone = txtCell.getText();
-                       db.newBibliotheek(name, address, place, phone);
-                       
-            });
+			if (insertLibraryItems() == 0) {
+				lblError.setText("Het toevoegen is mislukt");
+			} else {
+				lblError.setText("Het is toegevoegd aan de database");
+			}
+			
+		});
                 
         setPadding(new Insets(10,10,10,10));
         setHgap(10);
@@ -54,7 +54,17 @@ public class InsertBibliotheekView extends GridPane {
         add(lblCell, 0, 5);
         add(txtCell, 1, 5);
         add(btnSave, 1, 6);
+        add(lblError, 1, 7);
         
         mainPane.getChildren().add(this);
         
-    }}
+    }
+    private int insertLibraryItems() {
+            String name = txtName.getText();
+            String address = txtAdres.getText();
+            String place = txtLocation.getText();
+            String phone = txtCell.getText();
+            return (db.newBibliotheek(name, address, place, phone));
+    }
+
+}

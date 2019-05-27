@@ -10,13 +10,15 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import model.ActeurModel;
+import model.BibliotheekModel;
 import model.Database;
+import model.GenreModel;
 
 public class InsertFilmView extends GridPane{
     private Label lblTitle, lblMovienumber, lblReg, lblDate, lblDesc, lblGenre, lblActeur, lblLibary, lblNumber;
     private TextField txtTitle, txtMovienumber, txtReg, txtDate;
     private ComboBox boxGenre, boxActeur, boxLibary, boxNumber;
-    private ResultSet genreResult, auteurResult, biebResult;
     private Text movieInput;
     private TextArea txtDesc;
     private Button btnSave;
@@ -33,8 +35,6 @@ public class InsertFilmView extends GridPane{
             lblGenre = new Label(" Genre : ");
             lblActeur = new Label(" Acteur : ");
             
-            boxLibary = new ComboBox();
-            boxNumber = new ComboBox();
             txtTitle = new TextField();
             txtMovienumber = new TextField();
             txtReg = new TextField();
@@ -42,8 +42,6 @@ public class InsertFilmView extends GridPane{
             txtDesc  = new TextArea();
             txtDesc.setPrefHeight(150);
             txtDesc.setPrefWidth(20);
-            boxGenre = new ComboBox();
-            boxActeur = new ComboBox();
             
             movieInput = new Text(" Film invoeren ");
             
@@ -53,44 +51,16 @@ public class InsertFilmView extends GridPane{
             setHgap(10);
             setVgap(10);
             
+            boxNumber = new ComboBox();
+            
             boxLibary = new ComboBox();
-            String strSQL = "select * from bibliotheek";
-            biebResult = db.getData(strSQL);
-            //database opzoeken
-            try {
-            while (biebResult.next()) {
-                String strItem = biebResult.getString("naam");
-                boxLibary.getItems().add(strItem);
-            }
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        }
-
+            setLibraryCB();
+            
             boxGenre = new ComboBox();
-            String strSQL1 = "select * from genre";
-            genreResult = db.getData(strSQL1);
-            //database opzoeken
-            try {
-            while (genreResult.next()) {
-                String strItem1 = genreResult.getString("genrenaam");
-                boxGenre.getItems().add(strItem1);
-            }
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        }
+            setGenreCB();
             
             boxActeur = new ComboBox();
-            String strSQL2 = "select * from auteur";
-            auteurResult = db.getData(strSQL2);
-            //database opzoeken
-            try {
-            while (auteurResult.next()) {
-                String strItem2 = auteurResult.getString("naam");
-                boxActeur.getItems().add(strItem2);
-            }
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        }
+            setActorCB();
    
         
             add(movieInput, 0, 0); 
@@ -116,6 +86,22 @@ public class InsertFilmView extends GridPane{
 
             mainPane.getChildren().add(this);
 		
+	}
+        private void setGenreCB() {
+		for (GenreModel genre : db.getAllGenres()) {
+			boxGenre.getItems().add(genre.getGenreName());
+		}
+	}  
+        private void setLibraryCB() {
+		for (BibliotheekModel library : db.getAllLibraries()) {
+			boxLibary.getItems().add(library.getName());
+		}
+	} 
+        private void setActorCB() {
+		boxActeur.getItems().clear();
+		for (ActeurModel actor : db.getAllActors()) {
+			boxActeur.getItems().add(actor.getName());
+		}
 	}
 
 }
