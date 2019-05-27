@@ -131,7 +131,6 @@ public class UpdateBoekView extends GridPane {
 		for (BoekModel boek : db.getAllBooks()) {
 			System.out.println(boek.getISBN());
 			ISBNItems.add(boek.getISBN());
-
 		}
 		ObservableList<String> isbn = FXCollections.observableArrayList(ISBNItems);
 		return ISBNItems;

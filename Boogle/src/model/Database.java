@@ -402,6 +402,97 @@ public class Database {
 
 		return rowToGetAllActors(resultSet);
 	}
+        ////////////////////////////
+        /**
+	 * Method that returns an arraylist with FilmrekModels
+	 * 
+	 * @return
+	 */
+	public ArrayList<FilmrekModel> getAllFilmrekken() {
+		String query = "select distinct bibliotheeknaam from filmrek";
+		ResultSet resultSet = select(query);
+
+		if (goToFirstRow(select(query)) == null) {
+			rmConnection(resultSet);
+			return null;
+		}
+
+		return rowToGetAllFilmrekken(resultSet);
+	}
+        /**
+	 * Method that fills an arraylist with actormodels and returns them
+	 * 
+	 * @param rowSet
+	 * @return ArrayList<FilnrekModel>
+	 */
+	private ArrayList<FilmrekModel> rowToGetAllFilmrekken(ResultSet rowSet) {
+		ArrayList<FilmrekModel> allFilmrekken = new ArrayList<>();
+
+		try {
+			while (rowSet.next()) {
+				FilmrekModel filmrekModel = new FilmrekModel();
+
+                                filmrekModel.setLibraryName(rowSet.getString("BibliotheekNaam"));
+				//filmrekModel.setRackNr(rowSet.getInt("RekNummer"));
+
+				allFilmrekken.add(filmrekModel);
+			}
+		} catch (SQLException e) {
+			rmConnection(rowSet);
+			e.printStackTrace();
+		}
+		rmConnection(rowSet);
+
+		return allFilmrekken;
+	}
+        ////////////////////////////////
+        
+        
+        
+         ////////////////////////////
+        /**
+	 * Method that returns an arraylist with FilmrekModels
+	 * 
+	 * @return
+	 */
+	public ArrayList<FilmrekModel> getAllFilmrekkenn(String libraryName) {
+		String query = "SELECT * FROM `filmrek` WHERE BibliotheekNaam = '" + libraryName + "'";
+		ResultSet resultSet = select(query);
+
+		if (goToFirstRow(select(query)) == null) {
+			rmConnection(resultSet);
+			return null;
+		}
+
+		return rowToGetAllFilmrekkenn(resultSet);
+	}
+        /**
+	 * Method that fills an arraylist with actormodels and returns them
+	 * 
+	 * @param rowSet
+	 * @return ArrayList<FilnrekModel>
+	 */
+	private ArrayList<FilmrekModel> rowToGetAllFilmrekkenn(ResultSet rowSet) {
+		ArrayList<FilmrekModel> allFilmrekkenn = new ArrayList<>();
+
+		try {
+			while (rowSet.next()) {
+				FilmrekModel filmrekModel = new FilmrekModel();
+
+                                filmrekModel.setLibraryName(rowSet.getString("BibliotheekNaam"));
+				filmrekModel.setRackNr(rowSet.getInt("RekNummer"));
+
+				allFilmrekkenn.add(filmrekModel);
+			}
+		} catch (SQLException e) {
+			rmConnection(rowSet);
+			e.printStackTrace();
+		}
+		rmConnection(rowSet);
+
+		return allFilmrekkenn;
+	}
+        ////////////////////////////////
 
 	/**
 	 * Method that fills an arraylist with actormodels and returns them
@@ -503,6 +594,26 @@ public class Database {
 
 		return library;
 	}
+        public FilmrekModel getFilmrekFromName(String libraryName) {
+		FilmrekModel library = new FilmrekModel();
+		String query = "SELECT * FROM filmrek WHERE bibliotheeknaam= '" + libraryName + "'";
+		ResultSet resultSet = select(query);
+
+		try {
+			resultSet.next();
+
+			library.setLibraryName(resultSet.getString("BibliotheekNaam"));
+			library.setRackNr(resultSet.getInt("RekNummer"));
+
+		} catch (SQLException e) {
+			rmConnection(resultSet);
+			e.printStackTrace();
+		}
+		rmConnection(resultSet);
+
+		return library;
+	}
+        
 
 	/**
 	 * Method that gets actorModel from database
