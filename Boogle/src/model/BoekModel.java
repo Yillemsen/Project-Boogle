@@ -4,7 +4,6 @@ public class BoekModel {
 
 	private String ISBN, title, language, releaseDate, intTitle, description, genre, image;
 
-	private int bookNr;
 	public String getISBN() {
 		return ISBN;
 	}
@@ -34,12 +33,6 @@ public class BoekModel {
 	}
 	public void setIntTitle(String intTitle) {
 		this.intTitle = intTitle;
-	}
-	public int getBookNr() {
-		return bookNr;
-	}
-	public void setBookNr(int bookNr) {
-		this.bookNr = bookNr;
 	}
 	public String getImage() {
 		return image;
