@@ -111,7 +111,11 @@ public class UpdateBibliotheekView extends GridPane {
 
 	private void setLibraryItems() {
 		BibliotheekModel bm = new BibliotheekModel();
-		bm = db.getLibraryFromName(selectLibraryCB.getValue().toString());
+		try {
+			bm = db.getLibraryFromName(selectLibraryCB.getValue().toString());
+		} catch (NullPointerException e) {
+			errorLabel.setText("Error, er is geen bibliotheek geselecteerd om aan te passen");
+		}
 
 		nameTextField.setText(bm.getName());
 		adresTextField.setText(bm.getAdres());
@@ -125,7 +129,12 @@ public class UpdateBibliotheekView extends GridPane {
 		bm.setAdres(adresTextField.getText());
 		bm.setLocation(locationTextField.getText());
 		bm.setCell(cellTextField.getText());
-		String oldName = selectLibraryCB.getValue().toString();
-		return (db.updateLibrary(bm, oldName));
+		try {
+			String oldName = selectLibraryCB.getValue().toString();
+			return (db.updateLibrary(bm, oldName));
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+		}
+		return 0;
 	}
 }

@@ -8,7 +8,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
-import model.ActeurModel;
 import model.AuteurModel;
 import model.Database;
 
@@ -44,7 +43,7 @@ public class UpdateAuteurView extends GridPane {
 		text = new Text("Auteur aanpassen");
 
 		// Instantiating combobox
-		selectAuthorCB = new ComboBox();
+		selectAuthorCB = new ComboBox<String>();
 
 		// Make-up for text and layout
 		text.setStyle("-fx-font: 17 arial");
@@ -102,14 +101,22 @@ public class UpdateAuteurView extends GridPane {
 		am.setName(nameTextField.getText());
 		am.setBirth(dobTextField.getText());
 		am.setDeath(dodTextField.getText());
-
-		String oldName = selectAuthorCB.getValue().toString();
-		return (db.updateAuthor(am, oldName));
+		try {
+			String oldName = selectAuthorCB.getValue().toString();
+			return (db.updateAuthor(am, oldName));
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+		}
+		return 0;
 	}
 
 	private void setAuthorItems() {
 		AuteurModel am = new AuteurModel();
-		am = db.getAuthorFromName((selectAuthorCB.getValue().toString()));
+		try {
+			am = db.getAuthorFromName((selectAuthorCB.getValue().toString()));
+		} catch (NullPointerException e) {
+			errorLabel.setText("Error, er is geen auteur geselecteerd om aan te passen");
+		}
 
 		nameTextField.setText(am.getName());
 		dobTextField.setText(am.getBirth());

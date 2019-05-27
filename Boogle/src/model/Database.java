@@ -43,8 +43,7 @@ public class Database {
 	/**
 	 * Closes result set
 	 * 
-	 * @param lResultSet
-	 *            ResultSet
+	 * @param lResultSet ResultSet
 	 */
 
 	private void rmConnection(ResultSet lResultSet) {
@@ -68,8 +67,7 @@ public class Database {
 	/**
 	 * Executes select statement
 	 * 
-	 * @param query
-	 *            String containing query
+	 * @param query String containing query
 	 * @return resultset
 	 */
 	private ResultSet select(String query) {
@@ -89,8 +87,7 @@ public class Database {
 	/**
 	 * Update or insert
 	 * 
-	 * @param query
-	 *            String containing query
+	 * @param query String containing query
 	 * @return resultset
 	 */
 
@@ -112,8 +109,7 @@ public class Database {
 	/**
 	 * Executes insert statement
 	 * 
-	 * @param query
-	 *            String containing query
+	 * @param query String containing query
 	 * @return method call
 	 */
 
@@ -124,8 +120,7 @@ public class Database {
 	/**
 	 * Executes update statement
 	 * 
-	 * @param query
-	 *            String containing query
+	 * @param query String containing query
 	 * @return method call
 	 */
 
@@ -136,8 +131,7 @@ public class Database {
 	/**
 	 * Get first row from dataset/resultset
 	 * 
-	 * @param rowSet
-	 *            resultset
+	 * @param rowSet resultset
 	 * @return null||error/stacktrace
 	 */
 
@@ -200,42 +194,72 @@ public class Database {
 		}
 	}
 
+	public void newBibliotheek(String name, String adres, String location, String cell) {
+		String query = "INSERT INTO bibliotheek(`naam`,`adres`,`plaats`,`telefoon`)" + "VALUES ('" + name + "', '"
+				+ adres + "', '" + location + "', '" + cell + "');";
+		System.out.println(query);
+		insert(query);
 
-        public void newBibliotheek(String name, String adres, String location, String cell) {
-        String query = "INSERT INTO bibliotheek(`naam`,`adres`,`plaats`,`telefoon`)" +
-                "VALUES ('" + name + "', '" + adres + "', '" + location + "', '" + cell + "');";
-        System.out.println(query);
-        insert(query);
+	}
 
-    }
-        public void newActeur(String name, String birth, String death) {
-        String query = "INSERT INTO acteur(`naam`,`geboortedatum`,`overlijdensdatum`)" +
-                "VALUES ('" + name + "', '" + birth + "', '" + death + "');";
-        System.out.println(query);
-        insert(query);
-    }
-        public void newAuteur(String name, String birth, String death) {
-        String query = "INSERT INTO auteur(`naam`,`geboortedatum`,`overlijdensdatum`)" +
-                "VALUES ('" + name + "', '" + birth + "', '" + death + "');";
-        System.out.println(query);
-        insert(query);
-    }
-        public void newBoek(String ISBN, String title, String language, String releaseDate, String intTitle, String description, String genre, String image) {
-        String query = "INSERT INTO boek(`ISBN`,`taal`,`title`,`Datumuitgave`,`InternationaleTitel`,`genreNaam`,`Image`,`beschrijving`)" +
-                "VALUES ('" + ISBN + "', '" + language + "', '" + title + "', '" + releaseDate + "', '" + intTitle + "', '" + genre + "', '" + description + "', '" + image + "');";
-        System.out.println(query);
-        insert(query);
-    }
-        public void deleteBoek(String isbn) {
-        String query = "DELETE FROM boek WHERE isbn = '" + isbn + "';";
-        System.out.println(query);
-        update(query);
-    }
-        public void deleteBibliotheek(String name) {
-        String query = "DELETE FROM bibliotheek WHERE naam = '" + name + "';";
-        System.out.println(query);
-        update(query);
-    }
+	public void newActeur(String name, String birth, String death) {
+		String query = "INSERT INTO acteur(`naam`,`geboortedatum`,`overlijdensdatum`)" + "VALUES ('" + name + "', '"
+				+ birth + "', '" + death + "');";
+		System.out.println(query);
+		insert(query);
+	}
+
+	public void newAuteur(String name, String birth, String death) {
+		String query = "INSERT INTO auteur(`naam`,`geboortedatum`,`overlijdensdatum`)" + "VALUES ('" + name + "', '"
+				+ birth + "', '" + death + "');";
+		System.out.println(query);
+		insert(query);
+	}
+
+	public void newBoek(String ISBN, String title, String language, String releaseDate, String intTitle,
+			String description, String genre, String image) {
+		String query = "INSERT INTO boek(`ISBN`,`taal`,`title`,`Datumuitgave`,`InternationaleTitel`,`genreNaam`,`Image`,`beschrijving`)"
+				+ "VALUES ('" + ISBN + "', '" + language + "', '" + title + "', '" + releaseDate + "', '" + intTitle
+				+ "', '" + genre + "', '" + description + "', '" + image + "');";
+		System.out.println(query);
+		insert(query);
+	}
+
+	public void deleteBoek(String isbn) {
+		String query = "DELETE FROM boek WHERE isbn = '" + isbn + "';";
+		System.out.println(query);
+		update(query);
+	}
+
+	public void deleteBibliotheek(String name) {
+		String query = "DELETE FROM bibliotheek WHERE naam = '" + name + "';";
+		System.out.println(query);
+		update(query);
+	}
+
+	/**
+	 * Method that returns an arraylist with boekmodels from specific library
+	 * 
+	 * @param name
+	 * @return ArrayList<BoekModel>
+	 */
+
+	public ArrayList<BoekModel> getAllBooksFromLibary(String name) {
+		String query = "SELECT * \r\n" + "FROM Boek b\r\n"
+				+ "INNER JOIN boekenkastheeftboek bkhb ON b.ISBN=bkhb.ISBN\r\n"
+				+ "INNER JOIN boekenkast bk ON bkhb.KastNummer=bk.KastNummer\r\n"
+				+ "INNER JOIN bibliotheek bieb ON bk.BibliotheekNaam=bieb.Naam\r\n" + "WHERE bieb.Naam \r\n" + "= '"
+				+ name + "'";
+		System.out.println(query);
+		ResultSet resultSet = select(query);
+
+		if (goToFirstRow(select(query)) == null) {
+			rmConnection(resultSet);
+			return null;
+		}
+
+		return rowToGetAllBooks(resultSet);
+	}
 
 	/**
 	 * Method that returns an arraylist with all existing boekModels
@@ -328,7 +352,6 @@ public class Database {
 			e.printStackTrace();
 		}
 		rmConnection(rowSet);
-		System.out.println(allLibraries);
 
 		return allLibraries;
 	}
@@ -439,6 +462,24 @@ public class Database {
 	}
 
 	/**
+	 * Method that returns an arraylist with AuthorModels based on given booktitle
+	 * 
+	 * @return
+	 */
+	public ArrayList<AuteurModel> getAllAuthorsFromBook(String iSBN) {
+		String query = "SELECT * FROM auteur a INNER JOIN boekheeftauteur bha ON a.Naam=bha.AuteurNaam WHERE bha.ISBN='"
+				+ iSBN + "'";
+		ResultSet resultSet = select(query);
+
+		if (goToFirstRow(select(query)) == null) {
+			rmConnection(resultSet);
+			return null;
+		}
+
+		return rowToGetAllAuthors(resultSet);
+	}
+
+	/**
 	 * Method that fills an arraylist with actormodels and returns them
 	 * 
 	 * @param rowSet
@@ -464,6 +505,110 @@ public class Database {
 		rmConnection(rowSet);
 
 		return allAuthors;
+	}
+
+	public ArrayList<GenreModel> getAllGenres() {
+		String query = "SELECT * FROM genre";
+		ResultSet resultSet = select(query);
+
+		if (goToFirstRow(select(query)) == null) {
+			rmConnection(resultSet);
+			return null;
+		}
+
+		return rowToGetAllGenres(resultSet);
+	}
+
+	private ArrayList<GenreModel> rowToGetAllGenres(ResultSet rowSet) {
+		ArrayList<GenreModel> allGenres = new ArrayList<>();
+
+		try {
+			while (rowSet.next()) {
+				GenreModel genre = new GenreModel();
+
+				genre.setGenreName(rowSet.getString("GenreNaam"));
+				genre.setDescription(rowSet.getString("Omschrijving"));
+
+				allGenres.add(genre);
+			}
+		} catch (SQLException e) {
+			rmConnection(rowSet);
+			e.printStackTrace();
+		}
+		rmConnection(rowSet);
+
+		return allGenres;
+	}
+
+	/**
+	 * Method that returns all bookcases from a library
+	 * 
+	 * @param name
+	 * @return ArrayList<BoekenkastModel>
+	 */
+
+	public ArrayList<BoekenkastModel> getAllBookCasesFromLibrary(String name) {
+		String query = "SELECT * FROM boekenkast WHERE BibliotheekNaam = '" + name + "'";
+		ResultSet resultSet = select(query);
+
+		if (goToFirstRow(select(query)) == null) {
+			rmConnection(resultSet);
+			return null;
+		}
+
+		return rowToGetAllBookCases(resultSet);
+	}
+
+	/**
+	 * Method that fills an arraylist with bookcasemodels and returns them
+	 * 
+	 * @param rowSet
+	 * @return ArrayList<BoekenkastModel>
+	 */
+
+	private ArrayList<BoekenkastModel> rowToGetAllBookCases(ResultSet rowSet) {
+		ArrayList<BoekenkastModel> allBookCases = new ArrayList<>();
+
+		try {
+			while (rowSet.next()) {
+				BoekenkastModel bookCase = new BoekenkastModel();
+
+				bookCase.setBookCaseNr(rowSet.getInt("KastNummer"));
+				bookCase.setLibraryName(rowSet.getString("BibliotheekNaam"));
+
+				allBookCases.add(bookCase);
+			}
+		} catch (SQLException e) {
+			rmConnection(rowSet);
+			e.printStackTrace();
+		}
+		rmConnection(rowSet);
+
+		return allBookCases;
+	}
+
+	public BoekModel getBookFromISBN(String iSBN) {
+		BoekModel book = new BoekModel();
+		String query = "SELECT * FROM boek WHERE ISBN = '" + iSBN + "'";
+		ResultSet resultSet = select(query);
+
+		try {
+			resultSet.next();
+
+			book.setDescription(resultSet.getString("Beschrijving"));
+			book.setReleaseDate(resultSet.getString("DatumUitgave"));
+			book.setGenre(resultSet.getString("GenreNaam"));
+			book.setImage(resultSet.getString("Image"));
+			book.setIntTitle(resultSet.getString("InternationaleTitel"));
+			book.setISBN(resultSet.getString("ISBN"));
+			book.setLanguage(resultSet.getString("Taal"));
+			book.setTitle(resultSet.getString("Titel"));
+
+		} catch (SQLException e) {
+			rmConnection(resultSet);
+			e.printStackTrace();
+		}
+		return book;
 	}
 
 	/**
@@ -551,8 +696,7 @@ public class Database {
 	/**
 	 * Method that updates the bibliotheek entity in database
 	 * 
-	 * @param BibliotheekModel
-	 *            library, String oldname
+	 * @param BibliotheekModel library, String oldname
 	 */
 	public int updateLibrary(BibliotheekModel library, String oldName) {
 		String name = library.getName();
@@ -562,15 +706,14 @@ public class Database {
 
 		String query = "UPDATE bibliotheek SET Naam='" + name + "', Plaats='" + location + "', Adres='" + adres
 				+ "', Telefoon='" + cell + "' WHERE Naam='" + oldName + "'";
-		return(update(query));
+		return (update(query));
 
 	}
 
 	/**
 	 * Method that updates the acteur entity in database
 	 * 
-	 * @param ActeurModel
-	 *            actor, String oldName
+	 * @param ActeurModel actor, String oldName
 	 */
 	public int updateActor(ActeurModel actor, String oldName) {
 		String name = actor.getName();
@@ -579,15 +722,14 @@ public class Database {
 
 		String query = "UPDATE acteur SET Naam='" + name + "', GeboorteDatum='" + dob + "', OverlijdensDatum='" + dod
 				+ "' WHERE Naam='" + oldName + "'";
-		return(update(query));
+		return (update(query));
 
 	}
 
 	/**
 	 * Method that updates the auteur entity in database
 	 * 
-	 * @param ActeurModel
-	 *            author, String oldName
+	 * @param ActeurModel author, String oldName
 	 */
 	public int updateAuthor(AuteurModel author, String oldName) {
 		String name = author.getName();
@@ -596,17 +738,15 @@ public class Database {
 
 		String query = "UPDATE auteur SET Naam='" + name + "', GeboorteDatum='" + dob + "', OverlijdensDatum='" + dod
 				+ "' WHERE Naam='" + oldName + "'";
-		return(update(query));
+		return (update(query));
 
 	}
 
 	/**
 	 * Method that inserts bookcaseNr into database
 	 * 
-	 * @param String
-	 *            libraryName
-	 * @param String
-	 *            bookCaseNr
+	 * @param String libraryName
+	 * @param String bookCaseNr
 	 */
 	public void insertBookCase(String libraryName, String bookCaseNr) {
 		String query = "INSERT INTO boekenkast (BibliotheekNaam, KastNummer) VALUES (" + libraryName + ", " + bookCaseNr
@@ -617,14 +757,13 @@ public class Database {
 	/**
 	 * Method that inserts movieRackNr into database
 	 * 
-	 * @param String
-	 *            libraryName
-	 * @param String
-	 *            movieRackNr
+	 * @param String libraryName
+	 * @param String movieRackNr
 	 */
 	public void insertMovieRack(String libraryName, String movieRackNr) {
 		String query = "INSERT INTO filmrek (BibliotheekNaam, RekNummer) VALUES (" + libraryName + ", " + movieRackNr
 				+ ")";
 		insert(query);
 	}
+
 }
