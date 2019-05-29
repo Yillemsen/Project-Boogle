@@ -3,6 +3,7 @@ package model;
 public class BoekenkastModel {
 	private int bookCaseNr;
 	private String libraryName;
+	
 	public int getBookCaseNr() {
 		return bookCaseNr;
 	}
