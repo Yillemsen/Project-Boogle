@@ -197,42 +197,6 @@ public class Database {
 	}
 
 	/**
-	 * 
-	 * public void newBibliotheek(String name, String adres, String location, String
-	 * cell) { String query = "INSERT INTO
-	 * bibliotheek(`naam`,`adres`,`plaats`,`telefoon`)" + "VALUES ('" + name + "',
-	 * '" + adres + "', '" + location + "', '" + cell + "');";
-	 * System.out.println(query); insert(query);
-	 * 
-	 * }
-	 * 
-	 * public void newActeur(String name, String birth, String death) { String query
-	 * = "INSERT INTO acteur(`naam`,`geboortedatum`,`overlijdensdatum`)" + "VALUES
-	 * ('" + name + "', '" + birth + "', '" + death + "');";
-	 * System.out.println(query); insert(query); }
-	 * 
-	 * public void newAuteur(String name, String birth, String death) { String query
-	 * = "INSERT INTO auteur(`naam`,`geboortedatum`,`overlijdensdatum`)" + "VALUES
-	 * ('" + name + "', '" + birth + "', '" + death + "');";
-	 * System.out.println(query); insert(query); }
-	 * 
-	 * public void newBoek(String ISBN, String title, String language, String
-	 * releaseDate, String intTitle, String description, String genre, String image)
-	 * { String query = "INSERT INTO
-	 * boek(`ISBN`,`taal`,`title`,`Datumuitgave`,`InternationaleTitel`,`genreNaam`,`Image`,`beschrijving`)"
-	 * + "VALUES ('" + ISBN + "', '" + language + "', '" + title + "', '" +
-	 * releaseDate + "', '" + intTitle + "', '" + genre + "', '" + description + "',
-	 * '" + image + "');"; System.out.println(query); insert(query); }
-	 * 
-	 * public void deleteBoek(String isbn) { String query = "DELETE FROM boek WHERE
-	 * isbn = '" + isbn + "';"; System.out.println(query); update(query); }
-	 * 
-	 * public void deleteBibliotheek(String name) { String query = "DELETE FROM
-	 * bibliotheek WHERE naam = '" + name + "';"; System.out.println(query);
-	 * update(query); }
-	 */
-
-	/**
 	 * Method that returns an arraylist with boekmodels from specific library
 	 * 
 	 * @param name
@@ -297,6 +261,34 @@ public class Database {
 		insert(query);
 	}
 
+	/**
+	 * Method that couples a book and author(s)
+	 * 
+	 * @param ArrayList<AuteurModel>, String isbn
+	 */
+
+	public void insertBookHasAuthor(ArrayList<String> authors, String iSBN) {
+		deleteAuthorsFromBook(iSBN);
+		for (String authorName : authors) {
+			String query = "INSERT INTO boekheeftauteur (AuteurNaam, ISBN) VALUES ('" + authorName + "', '" + iSBN
+					+ "')";
+			update(query);
+		}
+	}
+
+	/**
+	 * Method that inserts library, bookcase and isbn into linking table
+	 * 
+	 * @param        int bookCaseNr
+	 * @param String libraryName
+	 * @param String iSBN
+	 */
+	public void insertBookcaseHasBook(int bookCaseNr, String libraryName, String iSBN) {
+		String query = "INSERT INTO boekenkastheeftboek (KastNummer, BibliotheekNaam, ISBN) VALUES ('" + bookCaseNr
+				+ "', '" + libraryName + "', '" + iSBN + "')";
+		update(query);
+	}
+
 	// Methods that delete data from
 	// database///////////////////////////////////////////////////////////////////
 
@@ -324,6 +316,17 @@ public class Database {
 		return (update(query));
 	}
 
+	/**
+	 * Method that deletes all authors that are linked to a specific bookISBN
+	 * 
+	 * @param String iSBN
+	 * @return int
+	 */
+	public int deleteAuthorsFromBook(String iSBN) {
+		String query = "DELETE FROM boekheeftauteur WHERE ISBN ='" + iSBN + "'";
+		return update(query);
+	}
+
 	// Methods that select all books from a
 	// table////////////////////////////////////////////////////////////////////
 
@@ -339,6 +342,7 @@ public class Database {
 				+ "INNER JOIN boekenkast bk ON bkhb.KastNummer=bk.KastNummer\r\n"
 				+ "INNER JOIN bibliotheek bieb ON bk.BibliotheekNaam=bieb.Naam\r\n" + "WHERE bieb.Naam \r\n" + "= '"
 				+ name + "'";
+		System.out.println(query);
 		ResultSet resultSet = select(query);
 
 		if (goToFirstRow(select(query)) == null) {
@@ -576,6 +580,25 @@ public class Database {
 
 		return genre;
 	}
+	
+	public int doesBookExistInLibrary(String iSBN, String library) {
+		String query = "SELECT * FROM boekenkastheeftboek WHERE ISBN='"+iSBN+"' AND BibliotheekNaam='"+library+"'";
+		ResultSet resultSet = select(query);
+		try {
+			resultSet.next();
+			System.out.println(resultSet.getString("KastNummer"));
+			if(resultSet.getString("KastNummer")!=null) {
+				return 1;
+			}
+
+		} catch (SQLException e) {
+			rmConnection(resultSet);
+			e.printStackTrace();
+		}
+		rmConnection(resultSet);
+
+		return 0;
+	}
 
 	// Methods that select a list of models from database
 	// ////////////////////////////////////////////////////////////////////////////
@@ -583,7 +606,7 @@ public class Database {
 	/**
 	 * Method that returns an arraylist with all existing BibliotheekModels
 	 * 
-	 * @return
+	 * @return ArrayList<BibliotheekModel>
 	 */
 	public ArrayList<BibliotheekModel> getAllLibraries() {
 		String query = "SELECT * FROM `bibliotheek`";
@@ -810,12 +833,10 @@ public class Database {
 	public ArrayList<AuteurModel> getAllAuthors() {
 		String query = "SELECT * FROM auteur";
 		ResultSet resultSet = select(query);
-
 		if (goToFirstRow(select(query)) == null) {
 			rmConnection(resultSet);
 			return null;
 		}
-
 		return rowToGetAllAuthors(resultSet);
 	}
 
@@ -1001,6 +1022,29 @@ public class Database {
 
 		String query = "UPDATE auteur SET Naam='" + name + "', GeboorteDatum='" + dob + "', OverlijdensDatum='" + dod
 				+ "' WHERE Naam='" + oldName + "'";
+		return (update(query));
+	}
+
+	public int updateBookFromISBN(BoekModel book) {
+		String description = book.getDescription();
+		String releaseDate = book.getReleaseDate();
+		String genre = book.getGenre();
+		String image = book.getImage();
+		image = "12";
+		String intTitle = book.getIntTitle();
+		String iSBN = book.getISBN();
+		String language = book.getLanguage();
+		String title = book.getTitle();
+
+		String query = "UPDATE boek SET Beschrijving='" + description + "', DatumUitgave='" + releaseDate + "', "
+				+ "GenreNaam='" + genre + "', Image='" + image + "', InternationaleTitel='" + intTitle + "', Taal='"
+				+ language + "', Titel='" + title + "' WHERE ISBN='" + iSBN + "'";
+		return (update(query));
+	}
+
+	public int updateBookCaseHasBook(int bookCaseNr, String library, String iSBN, String oldLibrary) {
+		String query = "UPDATE boekenkastheeftboek SET KastNummer= '" + bookCaseNr + "' BibliotheekNaam='" + library
+				+ "' , WHERE BibliotheekNaam='" + oldLibrary + "' AND ISBN='" + iSBN + "'";
 		return (update(query));
 	}
 }

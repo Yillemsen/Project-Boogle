@@ -1,5 +1,7 @@
 package view;
 
+import java.util.ArrayList;
+
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -131,33 +133,48 @@ public class UpdateBoekView extends GridPane {
 
 		// Set onactionlisteners for clearlibrarybutton
 		clearLibraryButton.setOnAction(event -> {
-			selectLibraryCB.getItems().clear();
+			selectLibraryCB.getSelectionModel().clearSelection();
 			setBookCB("");
 		});
 
 		// Set onactionlisteners for getISBNFromLibraryButton
 		getISBNFromLibraryButton.setOnAction(event -> {
-			String libraryName = selectLibraryCB.getValue().toString();
-			setBookCB(libraryName);
-			errorLabel.setText("Boeken zijn opgehaald uit bibliotheek " + libraryName);
+			if (!selectLibraryCB.getSelectionModel().isEmpty()) {
+				String libraryName = selectLibraryCB.getValue().toString();
+				setBookCB(libraryName);
+				errorLabel.setText("Boeken zijn opgehaald uit bibliotheek " + libraryName);
+			} else {
+				errorLabel.setText("Error, er is geen bibliotheek gekozen");
+			}
 		});
 
 		// Set onactionlistener for getBookCaseFromLibraryButton
 		getBookCaseFromLibraryButton.setOnAction(event -> {
-			String libraryName = updateLibraryCB.getValue().toString();
-			setBookCaseCB(libraryName);
-			errorLabel.setText("Boekenkasten zijn opgehaald uit bibliotheek " + libraryName);
+			if (!updateLibraryCB.getSelectionModel().isEmpty()) {
+				String libraryName = updateLibraryCB.getValue().toString();
+				setBookCaseCB(libraryName);
+				errorLabel.setText("Boekenkasten zijn opgehaald uit bibliotheek " + libraryName);
+			}
 		});
 
 		// Set onactionlistener for saveButton
 		saveButton.setOnAction(event -> {
-
+			if (!(updateBook() == 0)) {
+				errorLabel.setText("Error, niet alle velden zijn correct ingevuld");
+			} else {
+				errorLabel.setText("Data is opgeslagen");
+			}
 		});
+
 		// Set onactionlistener for getBookDataFromDb
 		getBookDataFromDb.setOnAction(event -> {
-			errorLabel.setText("Data is opgehaald");
-			setBookItems();
-			setAuthorItems(selectISBNCB.getValue().toString());
+			if (!selectISBNCB.getSelectionModel().isEmpty()) {
+				setAuthorItems(selectISBNCB.getValue().toString());
+				setBookItems();
+				errorLabel.setText("Data is opgehaald");
+			} else {
+				errorLabel.setText("Error, er is geen ISBN geselecteerd");
+			}
 		});
 
 		// set onactionlistener for addAuthorTextFieldButton
@@ -189,38 +206,51 @@ public class UpdateBoekView extends GridPane {
 	 */
 	private void setAuthorItems(String iSBN) {
 		int i = 0;
-		while (i < db.getAllAuthorsFromBook(iSBN).size()) {
-			if (i + 1 > authorCount) {
-				authors[authorCount] = new ComboBox<String>();
-				this.add(authors[authorCount], 1, authorCount + 13);
+		if (db.getAllAuthorsFromBook(iSBN) != null) {
+			// Create authorcomboboxes if needed and fill with data
+			while (i < db.getAllAuthorsFromBook(iSBN).size()) {
+				if (i >= authorCount) {
+					authors[authorCount] = new ComboBox<String>();
+					this.add(authors[authorCount], 1, authorCount + 13);
+					for (AuteurModel author : db.getAllAuthors()) {
+						authors[authorCount].getItems().add(author.getName());
+					}
+					authorCount++;
+				}
+				i++;
 			}
-			for (AuteurModel author : db.getAllAuthorsFromBook(iSBN)) {
-				authors[i].getItems().add(author.getName());
-
-				authors[i].setValue(author.getName());
+			// Fill the value of selectedauthors
+			int p = 0;
+			while (p < i) {
+				for (AuteurModel author : db.getAllAuthorsFromBook(iSBN)) {
+					authors[p].setValue(author.getName());
+					p++;
+				}
 			}
-			authorCount++;
-			i++;
 		}
-
-		while (i + 1 < authorCount) {
+		while (i < authorCount) {
 			authors[i].valueProperty().set(null);
 			i++;
 		}
 	}
 
 	/**
-	 * Method that sets the value of textfields from data of chosen book
+	 * Method that sets the value of textfields and comboboxes from data of chosen
+	 * book
 	 */
 	private void setBookItems() {
 		BoekModel book = new BoekModel();
 		BoekenkastModel bookCase = new BoekenkastModel();
 		try {
 			book = db.getBookFromISBN(selectISBNCB.getValue().toString());
+		} catch (NullPointerException e) {
+			errorLabel.setText("Error, er is geen ISBN geselecteerd om aan te passen");
+		}
+
+		try {
 			bookCase = db.getBookcaseFromISBN(selectISBNCB.getValue().toString(),
 					selectLibraryCB.getValue().toString());
 		} catch (NullPointerException e) {
-			errorLabel.setText("Error, er is geen ISBN geselecteerd om aan te passen");
 		}
 
 		genreCB.setValue(book.getGenre());
@@ -230,7 +260,7 @@ public class UpdateBoekView extends GridPane {
 		intTitleTextField.setText(book.getIntTitle());
 		ta.setText(book.getDescription());
 
-		if (!selectLibraryCB.getValue().toString().equals("")) {
+		if (!selectLibraryCB.getSelectionModel().isEmpty()) {
 			String libraryName = selectLibraryCB.getValue().toString();
 			updateLibraryCB.setValue(libraryName);
 			String bookCaseString = bookCase.getBookCaseNr() + "";
@@ -288,5 +318,90 @@ public class UpdateBoekView extends GridPane {
 				selectISBNCB.getItems().add(book.getISBN());
 			}
 		}
+	}
+
+	/**
+	 * Method that updates the database with given data
+	 * 
+	 * @return int
+	 */
+	private int updateBook() {
+		BoekModel book = new BoekModel();
+		String authorName = "";
+		BoekenkastModel bookcase = new BoekenkastModel();
+		BibliotheekModel library = new BibliotheekModel();
+		int h = 0;
+		ArrayList<String> authorNames = new ArrayList<String>();
+
+		if (!updateLibraryCB.getSelectionModel().isEmpty()) {
+			if (!bookCaseCB.equals("")) {
+				// Here comes the code for updating the whole book with library
+				book.setGenre(genreCB.getValue().toString());
+				book.setTitle(titleTextField.getText());
+				book.setLanguage(languageTextField.getText());
+				book.setReleaseDate(releaseDateTextField.getText());
+				book.setIntTitle(intTitleTextField.getText());
+				book.setDescription(ta.getText());
+				// book.setImage(image);
+
+				for (int i = 0; i < authorCount; i++) {
+					if (!authors[i].getSelectionModel().isEmpty()) {
+						authorNames.add(authors[i].getValue().toString());
+					}
+				}
+				try {
+					book.setISBN(selectISBNCB.getValue().toString());
+					System.out.println(authorNames);
+					db.insertBookHasAuthor(authorNames, book.getISBN());
+					return (db.updateBookFromISBN(book));
+				} catch (NullPointerException e) {
+					e.printStackTrace();
+				}
+				while (h < 5) {
+					if (authors[h] != null) {
+						authorName = (authors[h].getValue().toString());
+						authorNames.add(authorName);
+					}
+					h++;
+				}
+				db.insertBookHasAuthor(authorNames, book.getISBN());
+				if (db.doesBookExistInLibrary(book.getISBN(), updateLibraryCB.getValue().toString()) == 1) {
+					db.updateBookCaseHasBook(Integer.parseInt(bookCaseCB.getValue()),
+							updateLibraryCB.getValue().toString(), book.getISBN(),
+							selectLibraryCB.getValue().toString());
+				} else {
+					db.insertBookcaseHasBook(Integer.parseInt(bookCaseCB.getValue()),
+							updateLibraryCB.getValue().toString(), book.getISBN());
+				}
+
+			} else {
+				errorLabel.setText("Error, er is geen boekenkast geselecteerd");
+				return 0;
+			}
+		} else {
+
+			book.setGenre(genreCB.getValue().toString());
+			book.setTitle(titleTextField.getText());
+			book.setLanguage(languageTextField.getText());
+			book.setReleaseDate(releaseDateTextField.getText());
+			book.setIntTitle(intTitleTextField.getText());
+			book.setDescription(ta.getText());
+			// book.setImage(image);
+			ArrayList<String> authorNames2 = new ArrayList<String>();
+			for (int i = 0; i < authorCount; i++) {
+				if (!authors[i].getSelectionModel().isEmpty()) {
+					authorNames2.add(authors[i].getValue().toString());
+				}
+			}
+			try {
+				book.setISBN(selectISBNCB.getValue().toString());
+				System.out.println(authorNames2);
+				db.insertBookHasAuthor(authorNames2, book.getISBN());
+				return (db.updateBookFromISBN(book));
+			} catch (NullPointerException e) {
+				e.printStackTrace();
+			}
+		}
+		return 0;
 	}
 }
