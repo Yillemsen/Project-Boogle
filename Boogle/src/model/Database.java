@@ -269,6 +269,7 @@ public class Database {
 
 	public void insertBookHasAuthor(ArrayList<String> authors, String iSBN) {
 		deleteAuthorsFromBook(iSBN);
+		
 		for (String authorName : authors) {
 			String query = "INSERT INTO boekheeftauteur (AuteurNaam, ISBN) VALUES ('" + authorName + "', '" + iSBN
 					+ "')";
@@ -342,7 +343,6 @@ public class Database {
 				+ "INNER JOIN boekenkast bk ON bkhb.KastNummer=bk.KastNummer\r\n"
 				+ "INNER JOIN bibliotheek bieb ON bk.BibliotheekNaam=bieb.Naam\r\n" + "WHERE bieb.Naam \r\n" + "= '"
 				+ name + "'";
-		System.out.println(query);
 		ResultSet resultSet = select(query);
 
 		if (goToFirstRow(select(query)) == null) {
@@ -409,11 +409,11 @@ public class Database {
 		String query = "SELECT * FROM boekenkastheeftboek WHERE BibliotheekNaam ='" + libraryName + "'" + " AND ISBN ='"
 				+ iSBN + "'";
 		ResultSet resultSet = select(query);
-
+		
 		try {
 			resultSet.next();
 
-			bookcase.setBookCaseNr(resultSet.getInt("BoekNummer"));
+			bookcase.setBookCaseNr(resultSet.getInt("KastNummer"));
 			bookcase.setLibraryName(resultSet.getString("BibliotheekNaam"));
 
 		} catch (SQLException e) {
@@ -1030,7 +1030,6 @@ public class Database {
 		String releaseDate = book.getReleaseDate();
 		String genre = book.getGenre();
 		String image = book.getImage();
-		image = "12";
 		String intTitle = book.getIntTitle();
 		String iSBN = book.getISBN();
 		String language = book.getLanguage();
@@ -1042,9 +1041,8 @@ public class Database {
 		return (update(query));
 	}
 
-	public int updateBookCaseHasBook(int bookCaseNr, String library, String iSBN, String oldLibrary) {
-		String query = "UPDATE boekenkastheeftboek SET KastNummer= '" + bookCaseNr + "' BibliotheekNaam='" + library
-				+ "' , WHERE BibliotheekNaam='" + oldLibrary + "' AND ISBN='" + iSBN + "'";
+	public int updateBookCaseHasBook(int bookCaseNr, String library, String iSBN) {
+		String query = "UPDATE boekenkastheeftboek SET KastNummer= '" + bookCaseNr + "' WHERE BibliotheekNaam='" + library + "' AND ISBN='" + iSBN + "'";
 		return (update(query));
 	}
 }
