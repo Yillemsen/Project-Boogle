@@ -194,26 +194,26 @@ public class Database {
 		}
 	}
 
-	public void newBibliotheek(String name, String adres, String location, String cell) {
+	public int newBibliotheek(String name, String adres, String location, String cell) {
 		String query = "INSERT INTO bibliotheek(`naam`,`adres`,`plaats`,`telefoon`)" + "VALUES ('" + name + "', '"
 				+ adres + "', '" + location + "', '" + cell + "');";
 		System.out.println(query);
-		insert(query);
+		return (insert(query));
 
 	}
 
-	public void newActeur(String name, String birth, String death) {
+	public int newActeur(String name, String birth, String death) {
 		String query = "INSERT INTO acteur(`naam`,`geboortedatum`,`overlijdensdatum`)" + "VALUES ('" + name + "', '"
 				+ birth + "', '" + death + "');";
 		System.out.println(query);
-		insert(query);
+		return (insert(query));
 	}
 
-	public void newAuteur(String name, String birth, String death) {
+	public int newAuteur(String name, String birth, String death) {
 		String query = "INSERT INTO auteur(`naam`,`geboortedatum`,`overlijdensdatum`)" + "VALUES ('" + name + "', '"
 				+ birth + "', '" + death + "');";
 		System.out.println(query);
-		insert(query);
+		return (insert(query));
 	}
 
 	public void newBoek(String ISBN, String title, String language, String releaseDate, String intTitle,
@@ -225,16 +225,16 @@ public class Database {
 		insert(query);
 	}
 
-	public void deleteBoek(String isbn) {
+	public int deleteBoek(String isbn) {
 		String query = "DELETE FROM boek WHERE isbn = '" + isbn + "';";
 		System.out.println(query);
-		update(query);
+		return (update(query));
 	}
 
-	public void deleteBibliotheek(String name) {
+	public int deleteBibliotheek(String name) {
 		String query = "DELETE FROM bibliotheek WHERE naam = '" + name + "';";
 		System.out.println(query);
-		update(query);
+		return (update(query));
 	}
 
 	/**
@@ -259,43 +259,7 @@ public class Database {
 		}
     return rowToGetAllBooks(resultSet);
 	}
-
-
-        public int newBibliotheek(String name, String adres, String location, String cell) {
-        String query = "INSERT INTO bibliotheek(`naam`,`adres`,`plaats`,`telefoon`)" +
-                "VALUES ('" + name + "', '" + adres + "', '" + location + "', '" + cell + "');";
-        System.out.println(query);
-        return(insert(query));
-
-    }
-        public int newActeur(String name, String birth, String death) {
-        String query = "INSERT INTO acteur(`naam`,`geboortedatum`,`overlijdensdatum`)" +
-                "VALUES ('" + name + "', '" + birth + "', '" + death + "');";
-        System.out.println(query);
-        return(insert(query));
-    }
-        public int newAuteur(String name, String birth, String death) {
-        String query = "INSERT INTO auteur(`naam`,`geboortedatum`,`overlijdensdatum`)" +
-                "VALUES ('" + name + "', '" + birth + "', '" + death + "');";
-        System.out.println(query);
-        return(insert(query));
-    }
-        public int newBoek(String ISBN, String title, String language, String releaseDate, String intTitle, String description, String genre, String image) {
-        String query = "INSERT INTO boek(`ISBN`,`taal`,`title`,`Datumuitgave`,`InternationaleTitel`,`genreNaam`,`Image`,`beschrijving`)" +
-                "VALUES ('" + ISBN + "', '" + language + "', '" + title + "', '" + releaseDate + "', '" + intTitle + "', '" + genre + "', '" + description + "', '" + image + "');";
-        System.out.println(query);
-        return(insert(query));
-    }
-        public int deleteBoek(String isbn) {
-        String query = "DELETE FROM boek WHERE isbn = '" + isbn + "';";
-        System.out.println(query);
-        return(update(query));
-    }
-        public int deleteBibliotheek(String name) {
-        String query = "DELETE FROM bibliotheek WHERE naam = '" + name + "';";
-        System.out.println(query);
-        return(update(query));
-    }
+        
         public int deleteAuteur(String name) {
         String query = "DELETE FROM auteur WHERE naam = '" + name + "';";
         System.out.println(query);
@@ -849,49 +813,7 @@ public class Database {
 
 		return author;
 	}
-        /**
-	 * Method that fills an arraylist with actormodels and returns them
-	 * 
-	 * @param rowSet
-	 * @return ArrayList<ActeurModel>
-	 */
-	private ArrayList<GenreModel> rowToGetAllGenres(ResultSet rowSet) {
-		ArrayList<GenreModel> allGenre = new ArrayList<>();
 
-		try {
-			while (rowSet.next()) {
-				GenreModel genreModel = new GenreModel();
-
-				genreModel.setGenreName(rowSet.getString("Genrenaam"));
-				genreModel.setDescription(rowSet.getString("omschrijving"));
-
-				allGenre.add(genreModel);
-			}
-		} catch (SQLException e) {
-			rmConnection(rowSet);
-			e.printStackTrace();
-		}
-		rmConnection(rowSet);
-
-		return allGenre;
-	}
-        
-        /**
-	 * Method that returns an arraylist with AuthorModels
-	 * 
-	 * @return
-	 */
-	public ArrayList<GenreModel> getAllGenres() {
-		String query = "SELECT * FROM genre";
-		ResultSet resultSet = select(query);
-
-		if (goToFirstRow(select(query)) == null) {
-			rmConnection(resultSet);
-			return null;
-		}
-
-		return rowToGetAllGenres(resultSet);
-	}
         /**
 	 * Method that gets authormodel from database
 	 * 
