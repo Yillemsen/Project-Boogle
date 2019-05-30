@@ -9,31 +9,46 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import model.BibliotheekModel;
+import model.BoekenkastModel;
 import model.Database;
+import model.FilmrekModel;
 
 public class DeleteBoekenkastView extends GridPane {
 	// Declaring variables
-	private final Label libraryLabel, caseNrLabel, errorLabel;
+	private final Label libraryLabel, caseNrLabel, errorLabel, errorvalueLabel;
 	private final ComboBox libraryCB, caseNrCB;
-	private final Button deleteButton;
+	private final Button deleteButton,valueButton;
 	private final Text text;
         private Database db = new Database();
 
 	public DeleteBoekenkastView(Pane mainPane) {
 		// Instantiating Labels
-		libraryLabel = new Label("Boekenkast:");
-		errorLabel = new Label("Boekenkast <boekenkastNr> is verwijderd");
+		libraryLabel = new Label("Bibliotheek:");
+		errorLabel = new Label("");
 		caseNrLabel = new Label("BoekenkastNr:");
+                errorvalueLabel = new Label("");
 
 		// Instantiating Comboboxes
 		libraryCB = new ComboBox(); 
-                setLibraryCB();
+                setCaseNrCB();
             
 		caseNrCB = new ComboBox();
-                setCaseNrCB();
 
 		// Instantiating Buttons
 		deleteButton = new Button("Verwijder");
+                	if (deleteBoekenkastItems() == 0) {
+				errorLabel.setText("Het verwijderen is mislukt");
+			} else {
+				errorLabel.setText("Het is verwijderd van de database");
+			}
+                
+                
+                valueButton = new Button("Haal op");
+                valueButton.setOnAction(event -> {
+			setLibraryItems();
+                        setBoekenkastCB();
+			errorvalueLabel.setText("Data is opgehaald");
+                });
 
 		// Instantiating Text
 		text = new Text("Boekenkast");
@@ -51,6 +66,7 @@ public class DeleteBoekenkastView extends GridPane {
 		this.add(libraryLabel, 0, 1);
 		this.add(caseNrLabel, 0, 2);
 		this.add(errorLabel, 0, 4);
+                this.add(errorvalueLabel, 0 ,5);
 
 		// Placing ComboBox
 		this.add(libraryCB, 1, 1);
@@ -58,18 +74,35 @@ public class DeleteBoekenkastView extends GridPane {
 
 		// Placing Buttons
 		this.add(deleteButton, 0, 3);
+                this.add(valueButton, 2, 1);
 
 		// Add this gridpane to mainpane
 		mainPane.getChildren().add(this);
 	}
-        private void setLibraryCB() {
-		for (BibliotheekModel library : db.getAllLibraries()) {
-			libraryCB.getItems().add(library.getName());
+                        
+                        
+        private void setBoekenkastCB() {
+		caseNrCB.getItems().clear();
+		for (BoekenkastModel boekenkast : db.getAllBoekenkastvalue(libraryCB.getValue().toString())) {
+			caseNrCB.getItems().add(boekenkast.getBookCaseNr());
 		}
-	} 
+	}
         private void setCaseNrCB() {
-		for (BibliotheekModel caseNr : db.getAllLibraries()) {
-			caseNrCB.getItems().add(caseNr.getName());
+		libraryCB.getItems().clear();
+		for (BoekenkastModel boekenkast : db.getAllBoekenkasten()) {
+			libraryCB.getItems().add(boekenkast.getLibraryName());
 		}
 	} 
+        private void setLibraryItems() {
+		BoekenkastModel bm = new BoekenkastModel();
+		bm = db.getBoekenkastFromName(libraryCB.getValue().toString());
+	}
+        private int deleteBoekenkastItems() {
+            BoekenkastModel deleteBoekenkast = new BoekenkastModel();
+            String libraryName = libraryCB.getValue().toString();
+            String bookCaseNr = caseNrCB.getValue().toString();
+            int parsedBookCaseNr = Integer.parseInt(bookCaseNr);
+            deleteBoekenkast.setBookCaseNr(parsedBookCaseNr);
+                       return (db.deleteBoekenkast(libraryName, bookCaseNr));
+        }
 }

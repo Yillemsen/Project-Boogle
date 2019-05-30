@@ -10,7 +10,7 @@ public class BoogleMenuBar extends MenuBar {
 
     private Menu mToevoegen, mAanpassen, mVerwijderen;
     private MenuItem miInsertBibliotheek, miInsertBoek, miInsertAuteur, miInsertActeur, miInsertFilm, miUpdateBibliotheek, miUpdateBoek, miUpdateFilm, miUpdateActeur, miUpdateAuteur, miDeleteBoekenkast, 
-    miDeleteActeur, miDeleteAuteur, miDeleteBibliotheek, miDeleteFilmrek, miDeleteFilm, miDeleteBoek;
+    miDeleteActeur, miDeleteAuteur, miDeleteBibliotheek, miDeleteFilmrek, miDeleteFilm, miDeleteBoek, miInsertBoekenkast, miInsertFilmrek;
 
     public BoogleMenuBar(Pane mainPane) {
         mToevoegen = new Menu("Toevoegen");
@@ -45,6 +45,18 @@ public class BoogleMenuBar extends MenuBar {
         miInsertAuteur.setOnAction(event -> {
             mainPane.getChildren().clear();
             new InsertAuteurView(mainPane);
+        });
+        
+        miInsertBoekenkast = new MenuItem("Boekenkast");
+        miInsertBoekenkast.setOnAction(event -> {
+            mainPane.getChildren().clear();
+            new InsertBoekenkastView(mainPane);
+        });
+        
+        miInsertFilmrek = new MenuItem("Filmrek");
+        miInsertFilmrek.setOnAction(event -> {
+            mainPane.getChildren().clear();
+            new InsertFilmRekView(mainPane);
         });
 
         miUpdateBibliotheek = new MenuItem("Bibliotheek");
@@ -120,7 +132,7 @@ public class BoogleMenuBar extends MenuBar {
         });
 
         //voeg item toe aan menu
-        mToevoegen.getItems().addAll(miInsertBibliotheek, miInsertBoek, miInsertFilm, miInsertActeur, miInsertAuteur);
+        mToevoegen.getItems().addAll(miInsertBibliotheek, miInsertBoek, miInsertFilm, miInsertActeur, miInsertAuteur, miInsertBoekenkast, miInsertFilmrek);
         mAanpassen.getItems().addAll(miUpdateBibliotheek, miUpdateBoek, miUpdateFilm, miUpdateActeur, miUpdateAuteur);
         mVerwijderen.getItems().addAll(miDeleteBibliotheek, miDeleteBoek, miDeleteFilm, miDeleteActeur, miDeleteAuteur, miDeleteFilmrek, miDeleteBoekenkast);
 

@@ -1,6 +1,5 @@
 package view;
 
-import java.sql.ResultSet;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -8,8 +7,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
-import model.ActeurModel;
-import model.BoekenkastModel;
 import model.Database;
 import model.FilmrekModel;
 
@@ -24,7 +21,7 @@ public class DeleteFilmRekView extends GridPane {
 	public DeleteFilmRekView(Pane mainPane) {
 		// Instantiating Labels
 		libraryLabel = new Label("Bibliotheek:");
-		errorLabel = new Label("Filmrek <rackNr> is verwijderd");
+		errorLabel = new Label("");
 		rackNrLabel = new Label("FilmrekNr:");
                 errorLabel1 = new Label("");
 
@@ -32,16 +29,14 @@ public class DeleteFilmRekView extends GridPane {
 		libraryCB = new ComboBox();
                 setFilmrekCB();
                         
-		rackNrCB = new ComboBox();
-               // setFilmrekkCB();
-                
+		rackNrCB = new ComboBox();                
 
 		// Instantiating Buttons
 		deleteButton = new Button("Verwijder");
                 
                 valueButton = new Button("Haal op");
                 valueButton.setOnAction(event -> {
-                        setFilmrekkCB();
+                        setFilmrekvalueCB();
 			setLibraryItems();
 			errorLabel1.setText("Data is opgehaald");
 		});
@@ -62,7 +57,7 @@ public class DeleteFilmRekView extends GridPane {
 		this.add(libraryLabel, 0, 1);
 		this.add(rackNrLabel, 0, 2);
 		this.add(errorLabel, 0, 4);
-                this.add(errorLabel1, 0, 4);
+                this.add(errorLabel1, 0, 5);
 
 		// Placing ComboBox
 		this.add(libraryCB, 1, 1);
@@ -81,10 +76,10 @@ public class DeleteFilmRekView extends GridPane {
 			libraryCB.getItems().add(filmrek.getLibraryName());
 		}
 	}
-        private void setFilmrekkCB() {
+        private void setFilmrekvalueCB() {
 		rackNrCB.getItems().clear();
-		for (FilmrekModel filmrekk : db.getAllFilmrekkenn(libraryCB.getValue().toString())) {
-			rackNrCB.getItems().add(filmrekk.getRackNr());
+		for (FilmrekModel filmrekvalue : db.getAllFilmrekkenvalue(libraryCB.getValue().toString())) {
+			rackNrCB.getItems().add(filmrekvalue.getRackNr());
 		}
 	}
         private void setLibraryItems() {
