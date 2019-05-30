@@ -213,6 +213,21 @@ public class Database {
 		return (insert(query));
 
 	}
+        public int newBoekenkast(String libraryName, String bookCaseNr) {
+		String query = "INSERT INTO boekenkast(`bibliotheeknaam`,`kastnummer`)" + "VALUES ('" + libraryName + "', '"
+				+ bookCaseNr + "');";
+		System.out.println(query);
+		return (insert(query));
+
+	}
+        
+        public int newFilmrek(String libraryName, String RackNr) {
+		String query = "INSERT INTO Filmrek(`bibliotheeknaam`,`reknummer`)" + "VALUES ('" + libraryName + "', '"
+				+ RackNr + "');";
+		System.out.println(query);
+		return (insert(query));
+
+	}
 
 	public int newActeur(String name, String birth, String death) {
 		String query = "INSERT INTO acteur(`naam`,`geboortedatum`,`overlijdensdatum`)" + "VALUES ('" + name + "', '"
@@ -298,6 +313,12 @@ public class Database {
 		System.out.println(query);
 		return (update(query));
 	}
+        
+        public int deleteBoekenkast(String libraryName, String BookCaseNr) {
+		String query = "DELETE FROM boekenkast WHERE kastnummer, bibliotheeknaam  = '" + BookCaseNr + "','" + libraryName + "';";
+		System.out.println(query);
+		return (update(query));
+	}
 
 	public int deleteBibliotheek(String name) {
 		String query = "DELETE FROM bibliotheek WHERE naam = '" + name + "';";
@@ -351,6 +372,17 @@ public class Database {
 		}
 		return rowToGetAllBooks(resultSet);
 	}
+        
+        public int deleteAuteur(String name) {
+        String query = "DELETE FROM auteur WHERE naam = '" + name + "';";
+        System.out.println(query);
+        return(update(query));
+    }
+        public int deleteActeur(String name) {
+        String query = "DELETE FROM acteur WHERE naam = '" + name + "';";
+        System.out.println(query);
+        return(update(query));
+    }
 
 	/**
 	 * Method that returns an arraylist with all existing boekModels
@@ -752,13 +784,61 @@ public class Database {
 
 		return allFilmrekken;
 	}
-
-	/**
+        ////////////////////////////////
+        
+         ////////////////////////////
+        /**
 	 * Method that returns an arraylist with FilmrekModels
 	 * 
 	 * @return
 	 */
-	public ArrayList<FilmrekModel> getAllFilmrekkenn(String libraryName) {
+	public ArrayList<BoekenkastModel> getAllBoekenkasten() {
+		String query = "select distinct bibliotheeknaam from boekenkast";
+		ResultSet resultSet = select(query);
+
+		if (goToFirstRow(select(query)) == null) {
+			rmConnection(resultSet);
+			return null;
+		}
+
+		return rowToGetAllBoekenkasten(resultSet);
+	}
+        /**
+	 * Method that fills an arraylist with actormodels and returns them
+	 * 
+	 * @param rowSet
+	 * @return ArrayList<FilnrekModel>
+	 */
+	private ArrayList<BoekenkastModel> rowToGetAllBoekenkasten(ResultSet rowSet) {
+		ArrayList<BoekenkastModel> allBoekenkasten = new ArrayList<>();
+
+		try {
+			while (rowSet.next()) {
+				BoekenkastModel boekenkastModel = new BoekenkastModel();
+
+                                boekenkastModel.setLibraryName(rowSet.getString("BibliotheekNaam"));
+				//boekenkastModel.setBookCaseNr(rowSet.getInt("KastNummer"));
+
+				allBoekenkasten.add(boekenkastModel);
+			}
+		} catch (SQLException e) {
+			rmConnection(rowSet);
+			e.printStackTrace();
+		}
+		rmConnection(rowSet);
+
+		return allBoekenkasten;
+	}
+        ////////////////////////////////
+        
+        
+         ////////////////////////////
+        /**
+	 * Method that returns an arraylist with FilmrekModels
+	 * 
+	 * @return
+	 */
+	public ArrayList<FilmrekModel> getAllFilmrekkenvalue(String libraryName) {
 		String query = "SELECT * FROM `filmrek` WHERE BibliotheekNaam = '" + libraryName + "'";
 		ResultSet resultSet = select(query);
 
@@ -767,7 +847,7 @@ public class Database {
 			return null;
 		}
 
-		return rowToGetAllFilmrekkenn(resultSet);
+		return rowToGetAllFilmrekkenvalue(resultSet);
 	}
 
 	/**
@@ -776,8 +856,8 @@ public class Database {
 	 * @param rowSet
 	 * @return ArrayList<FilnrekModel>
 	 */
-	private ArrayList<FilmrekModel> rowToGetAllFilmrekkenn(ResultSet rowSet) {
-		ArrayList<FilmrekModel> allFilmrekkenn = new ArrayList<>();
+	private ArrayList<FilmrekModel> rowToGetAllFilmrekkenvalue(ResultSet rowSet) {
+		ArrayList<FilmrekModel> allFilmrekkenvalue = new ArrayList<>();
 
 		try {
 			while (rowSet.next()) {
@@ -786,7 +866,7 @@ public class Database {
 				filmrekModel.setLibraryName(rowSet.getString("BibliotheekNaam"));
 				filmrekModel.setRackNr(rowSet.getInt("RekNummer"));
 
-				allFilmrekkenn.add(filmrekModel);
+				allFilmrekkenvalue.add(filmrekModel);
 			}
 		} catch (SQLException e) {
 			rmConnection(rowSet);
@@ -794,9 +874,53 @@ public class Database {
 		}
 		rmConnection(rowSet);
 
-		return allFilmrekkenn;
+		return allFilmrekkenvalue;
 	}
 
+         ////////////////////////////
+        /**
+	 * Method that returns an arraylist with FilmrekModels
+	 * 
+	 * @return
+	 */
+	public ArrayList<BoekenkastModel> getAllBoekenkastvalue(String libraryName) {
+		String query = "SELECT * FROM `boekenkast` WHERE BibliotheekNaam = '" + libraryName + "'";
+		ResultSet resultSet = select(query);
+
+		if (goToFirstRow(select(query)) == null) {
+			rmConnection(resultSet);
+			return null;
+		}
+
+		return rowToGetAllBoekenkastvalue(resultSet);
+	}
+        /**
+	 * Method that fills an arraylist with actormodels and returns them
+	 * 
+	 * @param rowSet
+	 * @return ArrayList<FilnrekModel>
+	 */
+	private ArrayList<BoekenkastModel> rowToGetAllBoekenkastvalue(ResultSet rowSet) {
+		ArrayList<BoekenkastModel> allBoekenkastvalue = new ArrayList<>();
+
+		try {
+			while (rowSet.next()) {
+				BoekenkastModel boekenkastModel = new BoekenkastModel();
+
+                                boekenkastModel.setLibraryName(rowSet.getString("BibliotheekNaam"));
+				boekenkastModel.setBookCaseNr(rowSet.getInt("KastNummer"));
+
+				allBoekenkastvalue.add(boekenkastModel);
+			}
+		} catch (SQLException e) {
+			rmConnection(rowSet);
+			e.printStackTrace();
+		}
+		rmConnection(rowSet);
+
+		return allBoekenkastvalue;
+	}
+        ////////////////////
 	/**
 	 * Method that fills an arraylist with actormodels and returns them
 	 * 
@@ -975,6 +1099,152 @@ public class Database {
 		}
 
 		return rowToGetAllGenres(resultSet);
+	}
+	 * Method that gets libraryModel from database
+	 * 
+	 * @param name
+	 * @return BibliotheekModel
+	 */
+	public BibliotheekModel getLibraryFromName(String name) {
+		BibliotheekModel library = new BibliotheekModel();
+		String query = "SELECT * FROM bibliotheek WHERE Naam= '" + name + "'";
+		ResultSet resultSet = select(query);
+
+		try {
+			resultSet.next();
+
+			library.setName(resultSet.getString("Naam"));
+			library.setLocation(resultSet.getString("Plaats"));
+			library.setAdres(resultSet.getString("Adres"));
+			library.setCell(resultSet.getString("Telefoon"));
+
+		} catch (SQLException e) {
+			rmConnection(resultSet);
+			e.printStackTrace();
+		}
+		rmConnection(resultSet);
+
+		return library;
+	}
+        public FilmrekModel getFilmrekFromName(String libraryName) {
+		FilmrekModel library = new FilmrekModel();
+		String query = "SELECT * FROM filmrek WHERE bibliotheeknaam= '" + libraryName + "'";
+		ResultSet resultSet = select(query);
+
+		try {
+			resultSet.next();
+
+			library.setLibraryName(resultSet.getString("BibliotheekNaam"));
+			library.setRackNr(resultSet.getInt("RekNummer"));
+
+		} catch (SQLException e) {
+			rmConnection(resultSet);
+			e.printStackTrace();
+		}
+		rmConnection(resultSet);
+
+		return library;
+	}
+        
+         public BoekenkastModel getBoekenkastFromName(String libraryName) {
+		BoekenkastModel library = new BoekenkastModel();
+		String query = "SELECT * FROM boekenkast WHERE bibliotheeknaam= '" + libraryName + "'";
+		ResultSet resultSet = select(query);
+
+		try {
+			resultSet.next();
+
+			library.setLibraryName(resultSet.getString("BibliotheekNaam"));
+			library.setBookCaseNr(resultSet.getInt("KastNummer"));
+
+		} catch (SQLException e) {
+			rmConnection(resultSet);
+			e.printStackTrace();
+		}
+		rmConnection(resultSet);
+
+		return library;
+	}
+        
+
+	/**
+	 * Method that gets actorModel from database
+	 * 
+	 * @param name
+	 * @return ActeurModel
+	 */
+	public ActeurModel getActorFromName(String name) {
+		ActeurModel actor = new ActeurModel();
+		String query = "SELECT * FROM acteur WHERE Naam= '" + name + "'";
+		ResultSet resultSet = select(query);
+
+		try {
+			resultSet.next();
+
+			actor.setName(resultSet.getString("Naam"));
+			actor.setBirth(resultSet.getString("GeboorteDatum"));
+			actor.setDeath(resultSet.getString("OverlijdensDatum"));
+
+		} catch (SQLException e) {
+			rmConnection(resultSet);
+			e.printStackTrace();
+		}
+		rmConnection(resultSet);
+
+		return actor;
+	}
+
+	/**
+	 * Method that gets authormodel from database
+	 * 
+	 * @param name
+	 * @return AuthorModel
+	 */
+	public AuteurModel getAuthorFromName(String name) {
+		AuteurModel author = new AuteurModel();
+		String query = "SELECT * FROM auteur WHERE Naam= '" + name + "'";
+		ResultSet resultSet = select(query);
+
+		try {
+			resultSet.next();
+
+			author.setName(resultSet.getString("Naam"));
+			author.setBirth(resultSet.getString("GeboorteDatum"));
+			author.setDeath(resultSet.getString("OverlijdensDatum"));
+
+		} catch (SQLException e) {
+			rmConnection(resultSet);
+			e.printStackTrace();
+		}
+		rmConnection(resultSet);
+
+		return author;
+	}
+
+        /**
+	 * Method that gets authormodel from database
+	 * 
+	 * @param name
+	 * @return AuthorModel
+	 */
+	public GenreModel getGenreFromName(String genreName) {
+		GenreModel genre = new GenreModel();
+		String query = "SELECT * FROM genre WHERE Naam= '" + genreName + "'";
+		ResultSet resultSet = select(query);
+
+		try {
+			resultSet.next();
+
+			genre.setGenreName(resultSet.getString("genreNaam"));
+			genre.setDescription(resultSet.getString("Omschrijving"));
+
+		} catch (SQLException e) {
+			rmConnection(resultSet);
+			e.printStackTrace();
+		}
+		rmConnection(resultSet);
+
+		return genre;
 	}
 
 	// Methods that update models in the

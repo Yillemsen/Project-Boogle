@@ -1,6 +1,5 @@
 package view;
 
-import java.sql.ResultSet;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -11,17 +10,17 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import model.ActeurModel;
-import model.BibliotheekModel;
 import model.Database;
+import model.FilmrekModel;
 import model.GenreModel;
 
 public class InsertFilmView extends GridPane{
-    private Label lblTitle, lblMovienumber, lblReg, lblDate, lblDesc, lblGenre, lblActeur, lblLibary, lblNumber;
+    private Label lblTitle, lblMovienumber, lblReg, lblDate, lblDesc, lblGenre, lblActeur, lblLibary, lblNumber, lblErrorvalue;
     private TextField txtTitle, txtMovienumber, txtReg, txtDate;
     private ComboBox boxGenre, boxActeur, boxLibary, boxNumber;
     private Text movieInput;
     private TextArea txtDesc;
-    private Button btnSave;
+    private Button btnSave, btnValue;
     private Database db = new Database();
 	
 	public InsertFilmView(Pane mainPane) {
@@ -47,6 +46,14 @@ public class InsertFilmView extends GridPane{
             
             btnSave = new Button(" Opslaan ");
             
+            btnValue = new Button("Haal op");
+            btnValue.setOnAction(event -> {
+                        setFilmrekvalueCB();
+			setLibraryItems();
+			lblErrorvalue.setText("Data is opgehaald");
+		});
+            
+            
             setPadding(new Insets(10,10,10,10));
             setHgap(10);
             setVgap(10);
@@ -54,7 +61,7 @@ public class InsertFilmView extends GridPane{
             boxNumber = new ComboBox();
             
             boxLibary = new ComboBox();
-            setLibraryCB();
+            setFilmrekCB();
             
             boxGenre = new ComboBox();
             setGenreCB();
@@ -64,6 +71,7 @@ public class InsertFilmView extends GridPane{
    
         
             add(movieInput, 0, 0); 
+            add(btnValue, 2, 1);
             add(lblLibary, 0, 2);
             add(boxLibary, 1, 2);
             add(lblNumber, 0, 3);
@@ -92,16 +100,28 @@ public class InsertFilmView extends GridPane{
 			boxGenre.getItems().add(genre.getGenreName());
 		}
 	}  
-        private void setLibraryCB() {
-		for (BibliotheekModel library : db.getAllLibraries()) {
-			boxLibary.getItems().add(library.getName());
+        private void setFilmrekCB() {
+		boxLibary.getItems().clear();
+		for (FilmrekModel filmrek : db.getAllFilmrekken()) {
+			boxLibary.getItems().add(filmrek.getLibraryName());
 		}
-	} 
+	}
         private void setActorCB() {
 		boxActeur.getItems().clear();
 		for (ActeurModel actor : db.getAllActors()) {
 			boxActeur.getItems().add(actor.getName());
 		}
 	}
-
+        private void setFilmrekvalueCB() {
+		boxNumber.getItems().clear();
+		for (FilmrekModel filmrekvalue : db.getAllFilmrekkenvalue(boxLibary.getValue().toString())) {
+			boxNumber.getItems().add(filmrekvalue.getRackNr());
+		}
+	}
+        private void setLibraryItems() {
+		FilmrekModel bm = new FilmrekModel();
+		bm = db.getFilmrekFromName(boxLibary.getValue().toString());
+	}
 }
+
+
