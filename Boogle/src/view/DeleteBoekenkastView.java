@@ -1,6 +1,5 @@
 package view;
 
-import java.sql.ResultSet;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -8,14 +7,13 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
-import model.BibliotheekModel;
 import model.BoekenkastModel;
 import model.Database;
-import model.FilmrekModel;
 
 public class DeleteBoekenkastView extends GridPane {
 	// Declaring variables
 	private final Label libraryLabel, caseNrLabel, errorLabel, errorvalueLabel;
+        
 	private final ComboBox libraryCB, caseNrCB;
 	private final Button deleteButton,valueButton;
 	private final Text text;
@@ -36,11 +34,13 @@ public class DeleteBoekenkastView extends GridPane {
 
 		// Instantiating Buttons
 		deleteButton = new Button("Verwijder");
+                deleteButton.setOnAction(event -> {               
                 	if (deleteBoekenkastItems() == 0) {
 				errorLabel.setText("Het verwijderen is mislukt");
 			} else {
 				errorLabel.setText("Het is verwijderd van de database");
 			}
+                });
                 
                 
                 valueButton = new Button("Haal op");

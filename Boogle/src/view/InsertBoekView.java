@@ -1,6 +1,10 @@
 package view;
 
-import java.sql.ResultSet;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.util.Base64;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -10,26 +14,28 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
+import javax.imageio.ImageIO;
 import model.AuteurModel;
-import model.BibliotheekModel;
+import model.BoekenkastModel;
 import model.Database;
 import model.GenreModel;
 
 public class InsertBoekView extends GridPane {
-    private Label lblIsbn, lblBooknumber, lblTitle, lblLanguage, lblDate, lblIntTitle, lblGenre, lblAuteur, lblLibary, lblNumber, lblDesc;
-    private TextField txtIsbn, txtBooknumber, txtTitle, txtDate, txtIntTitle;
+    private Label lblIsbn, lblTitle, lblLanguage, lblDate, lblIntTitle, lblGenre, lblAuteur, lblLibary, lblNumber, lblDesc, errorvalueLabel;
+    private TextField txtIsbn, txtTitle, txtDate, txtIntTitle;
     private ComboBox boxLanguage, boxGenre, boxAuteur, boxLibary, boxNumber;
     private Text bookInput;
     private TextArea txtDesc;
-    private Button btnSave, btnPlus;
+    private Button btnSave, chooseImageButton, valueButton;
+    private String B64STRING;
     private Database db = new Database();
     
 	public InsertBoekView(Pane mainPane) {
             //Labels to show
             lblLibary = new Label (" Bibliotheek : ");
             lblNumber = new Label (" Kastnummer : ");
-            lblIsbn = new Label(" ISBN : ");
-            lblBooknumber = new Label(" Boeknummer : ");
+            lblIsbn = new Label(" ISBN : ");;
             lblTitle = new Label(" Titel : ");
             lblLanguage = new Label(" Taal : ");
             lblDate = new Label(" Datum uitgave : ");
@@ -37,12 +43,11 @@ public class InsertBoekView extends GridPane {
             lblDesc = new Label(" Beschrijving : ");
             lblGenre = new Label(" Genre : ");
             lblAuteur = new Label(" Auteur : ");
-            
+            errorvalueLabel = new Label("");
             
             //TextFields to show
             boxNumber = new ComboBox();
             txtIsbn = new TextField();
-            txtBooknumber = new TextField();
             txtTitle = new TextField();
             txtDate  = new TextField();
             txtIntTitle = new TextField();
@@ -51,19 +56,7 @@ public class InsertBoekView extends GridPane {
             txtDesc.setPrefWidth(20);
             
             bookInput = new Text(" Boek invoeren ");
-            
-            btnPlus = new Button("+");
-          //  btnPlus.setOnAction(event -> {
-            //    biebName = new BibliotheekModel();
-             //   biebName.setName(boxLibary.getSelectionModel().getSelectedItem().toString());
-             //   try { String strSQL = "select * from bibliotheek where naam=" + biebName.getName() + "";
-                    
-              //  }
-             //    catch (Exception e) {
-               // System.err.println(e.getMessage());
-                
-            //});
-            
+                        
             btnSave = new Button(" Opslaan ");
             btnSave.setOnAction(event -> {
             String ISBN = txtIsbn.getText();
@@ -73,7 +66,7 @@ public class InsertBoekView extends GridPane {
             String intTitle = txtIntTitle.getText();
             String description = txtDesc.getText();
             String genre = boxGenre.getValue().toString();
-            String image = boxAuteur.getValue().toString();
+            String image = B64STRING = null;
                        db.newBoek(ISBN, title, language, releaseDate, intTitle, description, genre, image);
             });
             
@@ -83,7 +76,7 @@ public class InsertBoekView extends GridPane {
             
 
             boxLibary = new ComboBox();
-            setLibraryCB();
+            setCaseNrCB();
 
             boxGenre = new ComboBox();
             setGenreCB();
@@ -93,17 +86,55 @@ public class InsertBoekView extends GridPane {
             
             boxLanguage = new ComboBox();
             boxLanguage.getItems().addAll("Nederlands", "English", "Francias","Polski","Deutsch");
+            
+            // Set onactionlistener for chooseImageButton
+                chooseImageButton = new Button("Kies afbeelding");
+		chooseImageButton.setOnAction(event -> {
+			// Create a filechooser
+			FileChooser fileChooser = new FileChooser();
+
+			// set filter so that you can select PNG images
+			FileChooser.ExtensionFilter extFilterPNG = new FileChooser.ExtensionFilter("PNG files (*.png)", "*.PNG");
+			fileChooser.getExtensionFilters().addAll(extFilterPNG);
+			// Open filechooser
+			File file = fileChooser.showOpenDialog(null);
+
+			try {
+				// Read image into a bufferedImage
+				BufferedImage bufferedImage = ImageIO.read(file);
+				ByteArrayOutputStream s = new ByteArrayOutputStream();
+				ImageIO.write(bufferedImage, "png", s);
+				// Convert image into a bytearray
+				byte[] byteImage = s.toByteArray();
+				s.close();
+				// encode bytearray to B64String
+				String encodedImage = Base64.getEncoder().encodeToString(byteImage);
+
+				B64STRING = encodedImage;
+
+				// Catch readException
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+		});
+                
+                valueButton = new Button("Haal op");
+                valueButton.setOnAction(event -> {
+			setLibraryItems();
+                        setBoekenkastCB();
+			errorvalueLabel.setText("Data is opgehaald");
+                });
         
             add(bookInput, 0, 0); 
             add(lblLibary, 0, 2);
             add(boxLibary, 1, 2);
+            add(valueButton, 2, 2);
+            add(errorvalueLabel, 2, 1);
             add(lblNumber, 0, 3);
             add(boxNumber, 1, 3);
-            //add(btnPlus, 2, 3);
             add(lblIsbn, 0, 4);
             add(txtIsbn, 1, 4);
-            add(lblBooknumber, 0, 5);
-            add(txtBooknumber, 1, 5);
             add(lblTitle, 0, 6);
             add(txtTitle, 1, 6);
             add(lblLanguage, 0, 7);
@@ -118,15 +149,13 @@ public class InsertBoekView extends GridPane {
             add(boxGenre, 1, 11);
             add(lblAuteur, 0, 12);
             add(boxAuteur, 1, 12);
-            add(btnSave, 1, 13);
+            add(chooseImageButton, 1, 13);
+            add(btnSave, 1, 14);
 
             mainPane.getChildren().add(this);
+            
 	}
-        private void setLibraryCB() {
-		for (BibliotheekModel library : db.getAllLibraries()) {
-			boxLibary.getItems().add(library.getName());
-		}
-	}  
+        
         private void setAuthorCB() {
 		for (AuteurModel author : db.getAllAuthors()) {
 			boxAuteur.getItems().add(author.getName());
@@ -137,5 +166,21 @@ public class InsertBoekView extends GridPane {
 			boxGenre.getItems().add(genre.getGenreName());
 		}
 	}  
+        private void setLibraryItems() {
+		BoekenkastModel bm = new BoekenkastModel();
+		bm = db.getBoekenkastFromName(boxLibary.getValue().toString());
+	}
+        private void setBoekenkastCB() {
+		boxNumber.getItems().clear();
+		for (BoekenkastModel boekenkast : db.getAllBoekenkastvalue(boxLibary.getValue().toString())) {
+			boxNumber.getItems().add(boekenkast.getBookCaseNr());
+		}
+	}
+        private void setCaseNrCB() {
+		boxLibary.getItems().clear();
+		for (BoekenkastModel boekenkast : db.getAllBoekenkasten()) {
+			boxLibary.getItems().add(boekenkast.getLibraryName());
+		}
+	} 
         
 }

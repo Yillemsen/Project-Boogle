@@ -1,6 +1,5 @@
 package view;
 
-import java.sql.ResultSet;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -9,6 +8,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import model.Database;
+import model.FilmModel;
 
 public class DeleteFilmView extends GridPane{
 	// Declaring variables
@@ -21,13 +21,21 @@ public class DeleteFilmView extends GridPane{
 	public DeleteFilmView(Pane mainPane) {
 		// Instantiating Labels
 		titleLabel = new Label("Titel:");
-		errorLabel = new Label("Film <title> is verwijderd");
+		errorLabel = new Label("");
 
 		// Instantiating Comboboxes
 		nameCB = new ComboBox();
+                setFilmCB();
 
 		// Instantiating Buttons
 		deleteButton = new Button("Verwijder");
+                deleteButton.setOnAction(event -> {
+			if (deleteFilmItems() == 0) {
+				errorLabel.setText("Het verwijderen is mislukt");
+			} else {
+				errorLabel.setText("Het is verwijderd van de database");
+			}
+                });
 
 		// Instantiating Text
 		text = new Text("Film");
@@ -54,5 +62,14 @@ public class DeleteFilmView extends GridPane{
 		// Add this gridpane to mainpane
 		mainPane.getChildren().add(this);
 	}
-
+        private int deleteFilmItems() {
+            String title = nameCB.getValue().toString();
+                       return(db.deleteFilm(title));
+        }
+        private void setFilmCB() {
+		nameCB.getItems().clear();
+		for (FilmModel film : db.getAllFilms()) {
+			nameCB.getItems().add(film.getTitle());
+		}
+	}
 }

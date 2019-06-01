@@ -1,6 +1,5 @@
 package view;
 
-import java.sql.ResultSet;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -17,7 +16,6 @@ public class DeleteAuteurView extends GridPane{
 	private final ComboBox nameCB;
 	private final Button deleteButton;
 	private final Text text;
-        private ResultSet nameResult;
         private Database db = new Database();
 
 	public DeleteAuteurView(Pane mainPane) {
