@@ -67,7 +67,9 @@ public class InsertBoekView extends GridPane {
             String description = txtDesc.getText();
             String genre = boxGenre.getValue().toString();
             String image = B64STRING = null;
+            String auteur = boxAuteur.getValue().toString();
                        db.newBoek(ISBN, title, language, releaseDate, intTitle, description, genre, image);
+                       db.newBoekheeftauteur(ISBN, auteur);
             });
             
             setPadding(new Insets(10,10,10,10));

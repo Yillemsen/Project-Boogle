@@ -84,7 +84,9 @@ public class InsertFilmView extends GridPane{
             String description = txtDesc.getText();
             String genreName = boxGenre.getValue().toString();
             String image = B64STRING = null;
+            String acteur = boxActeur.getValue().toString();
                        db.newFilm(title, director, releaseDate, genreName, image, description);
+                       db.newFilmheeftacteur(title, acteur);
             });
             
             // Set onactionlistener for chooseImageButton

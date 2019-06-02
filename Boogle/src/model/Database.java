@@ -249,6 +249,20 @@ public class Database {
 		System.out.println(query);
 		return (insert(query));
 	}
+        
+        public int newBoekheeftauteur(String ISBN, String auteur) {
+		String query = "INSERT INTO boekheeftauteur(`isbn`,`Auteurnaam`)" + "VALUES ('" + ISBN + "', '"
+				+ auteur + "');";
+		System.out.println(query);
+		return (insert(query));
+	}
+
+        public int newFilmheeftacteur(String title, String acteur) {
+		String query = "INSERT INTO filmheeftacteur(`FilmTitel`,`Acteurnaam`)" + "VALUES ('" + title + "', '"
+				+ acteur + "');";
+		System.out.println(query);
+		return (insert(query));
+	}
 
 	public int newBoek(String ISBN, String title, String language, String releaseDate, String intTitle,
 			String description, String genre, String image) {
