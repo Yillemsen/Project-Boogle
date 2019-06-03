@@ -358,7 +358,14 @@ public class Database {
 	}
 
 	public int deleteBoekenkast(String libraryName, String BookCaseNr) {
-		String query = "DELETE FROM boekenkast WHERE kastnummer, bibliotheeknaam  = '" + BookCaseNr  + "','"
+		String query = "DELETE FROM boekenkast WHERE kastnummer = '" + BookCaseNr  + "' AND bibliotheeknaam  = '"
+				+ libraryName + "';";
+		System.out.println(query);
+		return (update(query));
+	}
+        
+        public int deleteFilmrek(String libraryName, String RackNr) {
+		String query = "DELETE FROM filmrek WHERE reknummer = '" + RackNr  + "' AND bibliotheeknaam  = '"
 				+ libraryName + "';";
 		System.out.println(query);
 		return (update(query));

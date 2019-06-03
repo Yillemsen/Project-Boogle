@@ -33,6 +33,13 @@ public class DeleteFilmRekView extends GridPane {
 
 		// Instantiating Buttons
 		deleteButton = new Button("Verwijder");
+                deleteButton.setOnAction(event -> {               
+                	if (deleteFilmrekItems() == 0) {
+				errorLabel.setText("Het verwijderen is mislukt");
+			} else {
+				errorLabel.setText("Het is verwijderd van de database");
+			}
+                });
                 
                 valueButton = new Button("Haal op");
                 valueButton.setOnAction(event -> {
@@ -86,4 +93,12 @@ public class DeleteFilmRekView extends GridPane {
 		FilmrekModel bm = new FilmrekModel();
 		bm = db.getFilmrekFromName(libraryCB.getValue().toString());
 	}
+        private int deleteFilmrekItems() {
+            FilmrekModel deleteFilmrek = new FilmrekModel();
+            String libraryName = libraryCB.getValue().toString();
+            String rackNr = rackNrCB.getValue().toString();
+            int parsedRackNr = Integer.parseInt(rackNr);
+            deleteFilmrek.setRackNr(parsedRackNr);
+                       return (db.deleteFilmrek(libraryName, rackNr));
+        }
 }
