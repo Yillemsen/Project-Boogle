@@ -77,12 +77,14 @@ public class DeleteFilmRekView extends GridPane {
 		// Add this gridpane to mainpane
 		mainPane.getChildren().add(this);
 	}
+        //get libraryname from database
         private void setFilmrekCB() {
 		libraryCB.getItems().clear();
 		for (FilmrekModel filmrek : db.getAllFilmrekken()) {
 			libraryCB.getItems().add(filmrek.getLibraryName());
 		}
 	}
+        //get items from previous combobox
         private void setFilmrekvalueCB() {
 		rackNrCB.getItems().clear();
 		for (FilmrekModel filmrekvalue : db.getAllFilmrekkenvalue(libraryCB.getValue().toString())) {
