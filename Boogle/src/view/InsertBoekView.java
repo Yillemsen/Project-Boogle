@@ -22,8 +22,8 @@ import model.Database;
 import model.GenreModel;
 
 public class InsertBoekView extends GridPane {
-    private Label lblIsbn, lblTitle, lblLanguage, lblDate, lblIntTitle, lblGenre, lblAuteur, lblLibary, lblNumber, lblDesc, errorvalueLabel;
-    private TextField txtIsbn, txtTitle, txtDate, txtIntTitle;
+    private Label lblIsbn, lblTitle, lblLanguage, lblDate, lblIntTitle, lblGenre, lblAuteur, lblLibary, lblNumber, lblDesc, errorvalueLabel, lblBooknumber;
+    private TextField txtIsbn, txtTitle, txtDate, txtIntTitle, txtBooknumber;
     private ComboBox boxLanguage, boxGenre, boxAuteur, boxLibary, boxNumber;
     private Text bookInput;
     private TextArea txtDesc;
@@ -43,6 +43,7 @@ public class InsertBoekView extends GridPane {
             lblDesc = new Label(" Beschrijving : ");
             lblGenre = new Label(" Genre : ");
             lblAuteur = new Label(" Auteur : ");
+            lblBooknumber = new Label(" Boeknummer : ");
             errorvalueLabel = new Label("");
             
             //TextFields to show
@@ -54,11 +55,15 @@ public class InsertBoekView extends GridPane {
             txtDesc  = new TextArea();
             txtDesc.setPrefHeight(150);
             txtDesc.setPrefWidth(20);
+            txtBooknumber = new TextField();
             
+            //text
             bookInput = new Text(" Boek invoeren ");
                         
+            //button with function
             btnSave = new Button(" Opslaan ");
             btnSave.setOnAction(event -> {
+            //insert into database
             String ISBN = txtIsbn.getText();
             String title = txtTitle.getText();
             String language = boxLanguage.getValue().toString();
@@ -68,15 +73,20 @@ public class InsertBoekView extends GridPane {
             String genre = boxGenre.getValue().toString();
             String image = B64STRING = null;
             String auteur = boxAuteur.getValue().toString();
+            String booknumber = txtBooknumber.getText();
+            String rackNr = boxNumber.getValue().toString();
+            String library = boxLibary.getValue().toString();
                        db.newBoek(ISBN, title, language, releaseDate, intTitle, description, genre, image);
                        db.newBoekheeftauteur(ISBN, auteur);
+                       db.newBoekenkastheeftboek(rackNr, library, ISBN, booknumber);
             });
             
+            //put things into place
             setPadding(new Insets(10,10,10,10));
             setHgap(10);
             setVgap(10);
             
-
+            //comboBox
             boxLibary = new ComboBox();
             setCaseNrCB();
 
@@ -121,22 +131,26 @@ public class InsertBoekView extends GridPane {
 
 		});
                 
+                //button with function
                 valueButton = new Button("Haal op");
                 valueButton.setOnAction(event -> {
 			setLibraryItems();
                         setBoekenkastCB();
 			errorvalueLabel.setText("Data is opgehaald");
                 });
-        
+                
+            // put things into place
             add(bookInput, 0, 0); 
             add(lblLibary, 0, 2);
             add(boxLibary, 1, 2);
             add(valueButton, 2, 2);
             add(errorvalueLabel, 2, 1);
+            add(lblBooknumber, 0, 4);
+            add(txtBooknumber, 1, 4);
             add(lblNumber, 0, 3);
             add(boxNumber, 1, 3);
-            add(lblIsbn, 0, 4);
-            add(txtIsbn, 1, 4);
+            add(lblIsbn, 0, 5);
+            add(txtIsbn, 1, 5);
             add(lblTitle, 0, 6);
             add(txtTitle, 1, 6);
             add(lblLanguage, 0, 7);
@@ -157,27 +171,31 @@ public class InsertBoekView extends GridPane {
             mainPane.getChildren().add(this);
             
 	}
-        
+        //get authorname from database
         private void setAuthorCB() {
 		for (AuteurModel author : db.getAllAuthors()) {
 			boxAuteur.getItems().add(author.getName());
 		}
 	}
+        //get genrename from database
         private void setGenreCB() {
 		for (GenreModel genre : db.getAllGenres()) {
 			boxGenre.getItems().add(genre.getGenreName());
 		}
 	}  
+        //get items from database
         private void setLibraryItems() {
 		BoekenkastModel bm = new BoekenkastModel();
 		bm = db.getBoekenkastFromName(boxLibary.getValue().toString());
 	}
+        // get items from previous combobox
         private void setBoekenkastCB() {
 		boxNumber.getItems().clear();
 		for (BoekenkastModel boekenkast : db.getAllBoekenkastvalue(boxLibary.getValue().toString())) {
 			boxNumber.getItems().add(boekenkast.getBookCaseNr());
 		}
 	}
+        // get libraryName from database
         private void setCaseNrCB() {
 		boxLibary.getItems().clear();
 		for (BoekenkastModel boekenkast : db.getAllBoekenkasten()) {

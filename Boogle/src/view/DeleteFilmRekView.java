@@ -89,14 +89,17 @@ public class DeleteFilmRekView extends GridPane {
 			rackNrCB.getItems().add(filmrekvalue.getRackNr());
 		}
 	}
+        //get items from database
         private void setLibraryItems() {
 		FilmrekModel bm = new FilmrekModel();
 		bm = db.getFilmrekFromName(libraryCB.getValue().toString());
 	}
+        //delete from database
         private int deleteFilmrekItems() {
             FilmrekModel deleteFilmrek = new FilmrekModel();
             String libraryName = libraryCB.getValue().toString();
             String rackNr = rackNrCB.getValue().toString();
+            //translate integer into string
             int parsedRackNr = Integer.parseInt(rackNr);
             deleteFilmrek.setRackNr(parsedRackNr);
                        return (db.deleteFilmrek(libraryName, rackNr));

@@ -17,21 +17,26 @@ public class InsertActeurView extends GridPane {
     private Button btnSave;
     private Database db = new Database();
 
-    public InsertActeurView(Pane mainPane) { 
+    public InsertActeurView(Pane mainPane) {
+        //text
         acteurInput = new Text(" Acteur invoeren ");
         
+        //textfields
         txtName = new TextField();
         txtBirth = new TextField();
         txtDeath = new TextField();
         
+        //labels
         lblName = new Label(" Naam : ");
         lblBirth = new Label(" Geboortedatum : ");
         lblDeath = new Label (" Overlijdingsdatum : ");
         lblError = new Label("");
 
+        //button with function
         btnSave = new Button(" Opslaan ");
         btnSave.setOnAction(event -> {
 			if (insertActeurItems() == 0) {
+                            //give error if it fails
 				lblError.setText("Het toevoegen is mislukt");
 			} else {
 				lblError.setText("Het is toegevoegd aan de database");
@@ -39,10 +44,12 @@ public class InsertActeurView extends GridPane {
 			
 		});
         
+        //gives a view a bit space
         setPadding(new Insets(10,10,10,10));
         setHgap(10);
         setVgap(10);
         
+        //put things in place
         add(acteurInput, 0, 0); 
         add(lblName, 0, 2);
         add(txtName, 1, 2);
@@ -56,6 +63,7 @@ public class InsertActeurView extends GridPane {
         mainPane.getChildren().add(this);
         
     }
+    //insert into databse
     private int insertActeurItems() {
             String name = txtName.getText();
             String birth = txtBirth.getText();

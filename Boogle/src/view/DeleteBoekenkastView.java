@@ -34,7 +34,8 @@ public class DeleteBoekenkastView extends GridPane {
 
 		// Instantiating Buttons
 		deleteButton = new Button("Verwijder");
-                deleteButton.setOnAction(event -> {               
+                deleteButton.setOnAction(event -> {
+                        //give error if it fails
                 	if (deleteBoekenkastItems() == 0) {
 				errorLabel.setText("Het verwijderen is mislukt");
 			} else {
@@ -80,27 +81,31 @@ public class DeleteBoekenkastView extends GridPane {
 		mainPane.getChildren().add(this);
 	}
                         
-                        
+        // get bookcasenumber from database                
         private void setBoekenkastCB() {
 		caseNrCB.getItems().clear();
 		for (BoekenkastModel boekenkast : db.getAllBoekenkastvalue(libraryCB.getValue().toString())) {
 			caseNrCB.getItems().add(boekenkast.getBookCaseNr());
 		}
 	}
+        //get libraryname from database
         private void setCaseNrCB() {
 		libraryCB.getItems().clear();
 		for (BoekenkastModel boekenkast : db.getAllBoekenkasten()) {
 			libraryCB.getItems().add(boekenkast.getLibraryName());
 		}
 	} 
+        //get items from database
         private void setLibraryItems() {
 		BoekenkastModel bm = new BoekenkastModel();
 		bm = db.getBoekenkastFromName(libraryCB.getValue().toString());
 	}
+        //delete from database
         private int deleteBoekenkastItems() {
             BoekenkastModel deleteBoekenkast = new BoekenkastModel();
             String libraryName = libraryCB.getValue().toString();
             String bookCaseNr = caseNrCB.getValue().toString();
+            //translate integer to string
             int parsedBookCaseNr = Integer.parseInt(bookCaseNr);
             deleteBoekenkast.setBookCaseNr(parsedBookCaseNr);
                        return (db.deleteBoekenkast(libraryName, bookCaseNr));

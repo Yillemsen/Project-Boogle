@@ -7,7 +7,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import view.BoogleMenuBar;
-import view.InsertBibliotheekView;
 
 public class Boogle extends Application {
 
@@ -17,7 +16,7 @@ public class Boogle extends Application {
         BoogleMenuBar menuBar = new BoogleMenuBar(mainPane);
 
         VBox root = new VBox(menuBar, mainPane);
-        Scene scene = new Scene(root, 700, 700);
+        Scene scene = new Scene(root, 800, 800);
        // new InsertBibliotheekView(root);
 
         primaryStage.setScene(scene);

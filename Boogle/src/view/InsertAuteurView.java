@@ -18,17 +18,21 @@ public class InsertAuteurView extends GridPane {
     private Database db = new Database();
 
     public InsertAuteurView(Pane mainPane) { 
+        //text
         auteurInput = new Text(" Auteur invoeren ");
         
+        //textfield
         txtName = new TextField();
         txtBirth = new TextField();
         txtDeath = new TextField();
         
+        //labels
         lblName = new Label(" Naam : ");
         lblBirth = new Label(" Geboortedatum : ");
         lblDeath = new Label (" Overlijdingsdatum : ");
         lblError = new Label("");
         
+        //button with function
         btnSave = new Button(" Opslaan ");
         btnSave.setOnAction(event -> {
 			if (insertAuteurItems() == 0) {
@@ -39,10 +43,12 @@ public class InsertAuteurView extends GridPane {
 			
 		});
         
+        //gives a view a bit space
         setPadding(new Insets(10,10,10,10));
         setHgap(10);
         setVgap(10);
         
+        //put things in place
         add(auteurInput, 0, 0); 
         add(lblName, 0, 2);
         add(txtName, 1, 2);
@@ -55,6 +61,7 @@ public class InsertAuteurView extends GridPane {
         mainPane.getChildren().add(this);
         
     }
+    //delete from database
         private int insertAuteurItems() {
             String name = txtName.getText();
             String birth = txtBirth.getText();

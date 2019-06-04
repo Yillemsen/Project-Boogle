@@ -256,6 +256,19 @@ public class Database {
 		System.out.println(query);
 		return (insert(query));
 	}
+        public int newBoekenkastheeftboek(String rackNr, String library, String ISBN, String booknumber) {
+		String query = "INSERT INTO boekenkastheeftboek(`kastnummer`,`bibliotheeknaam`,`isbn`,`boeknummer`)" + "VALUES ('" + rackNr + "', '"
+				+ library + "','" + ISBN + "','" + booknumber + "');";
+		System.out.println(query);
+		return (insert(query));
+	}
+        
+        public int newFilmrekheeftfilm(String rackNr, String library, String title, String movienumber) {
+		String query = "INSERT INTO filmrekheeftfilm(`filmreknummer`,`bibliotheeknaam`,`filmtitel`,`filmnummer`)" + "VALUES ('" + rackNr + "', '"
+				+ library + "','" + title + "','" + movienumber + "');";
+		System.out.println(query);
+		return (insert(query));
+	}
 
         public int newFilmheeftacteur(String title, String acteur) {
 		String query = "INSERT INTO filmheeftacteur(`FilmTitel`,`Acteurnaam`)" + "VALUES ('" + title + "', '"

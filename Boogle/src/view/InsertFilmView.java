@@ -32,6 +32,7 @@ public class InsertFilmView extends GridPane{
     private Database db = new Database();
 	
 	public InsertFilmView(Pane mainPane) {
+            //labels
             lblLibary = new Label (" Bibliotheek : ");
             lblNumber = new Label (" Kastnummer : ");
             lblTitle = new Label(" Titel : ");
@@ -42,7 +43,8 @@ public class InsertFilmView extends GridPane{
             lblGenre = new Label(" Genre : ");
             lblActeur = new Label(" Acteur : ");
             lblErrorvalue = new Label("");
-            
+
+            //textfield
             txtTitle = new TextField();
             txtMovienumber = new TextField();
             txtReg = new TextField();
@@ -51,8 +53,10 @@ public class InsertFilmView extends GridPane{
             txtDesc.setPrefHeight(150);
             txtDesc.setPrefWidth(20);
             
+            //text
             movieInput = new Text(" Film invoeren ");
 
+            //button with function
             btnValue = new Button("Haal op");
             btnValue.setOnAction(event -> {
                         setFilmrekvalueCB();
@@ -60,11 +64,7 @@ public class InsertFilmView extends GridPane{
 			lblErrorvalue.setText("Data is opgehaald");
 		});
             
-            
-            setPadding(new Insets(10,10,10,10));
-            setHgap(10);
-            setVgap(10);
-            
+            //comboBox
             boxNumber = new ComboBox();
             
             boxLibary = new ComboBox();
@@ -76,8 +76,10 @@ public class InsertFilmView extends GridPane{
             boxActeur = new ComboBox();
             setActorCB();
    
+            //button with function
             btnSave = new Button(" Opslaan ");
             btnSave.setOnAction(event -> {
+            //insert into database
             String title = txtTitle.getText();
             String director = txtReg.getText();
             String releaseDate = txtDate.getText();
@@ -85,8 +87,12 @@ public class InsertFilmView extends GridPane{
             String genreName = boxGenre.getValue().toString();
             String image = B64STRING = null;
             String acteur = boxActeur.getValue().toString();
+            String rackNr = boxNumber.getValue().toString();
+            String library = boxLibary.getValue().toString();
+            String movienumber = txtMovienumber.getText();
                        db.newFilm(title, director, releaseDate, genreName, image, description);
                        db.newFilmheeftacteur(title, acteur);
+                       db.newFilmrekheeftfilm(rackNr, library, title, movienumber);
             });
             
             // Set onactionlistener for chooseImageButton
@@ -120,7 +126,13 @@ public class InsertFilmView extends GridPane{
 			}
 
 		});
-        
+                
+            //gives a view a bit space
+            setPadding(new Insets(10,10,10,10));
+            setHgap(10);
+            setVgap(10);
+       
+            //put things into place
             add(movieInput, 0, 0); 
             add(lblErrorvalue, 2, 1);
             add(btnValue, 2, 2);
@@ -148,29 +160,34 @@ public class InsertFilmView extends GridPane{
             mainPane.getChildren().add(this);
 		
 	}
+        //get genreName from database
         private void setGenreCB() {
 		for (GenreModel genre : db.getAllGenres()) {
 			boxGenre.getItems().add(genre.getGenreName());
 		}
 	}  
+        //get libraryName from database
         private void setFilmrekCB() {
 		boxLibary.getItems().clear();
 		for (FilmrekModel filmrek : db.getAllFilmrekken()) {
 			boxLibary.getItems().add(filmrek.getLibraryName());
 		}
 	}
+        //get actor from databse
         private void setActorCB() {
 		boxActeur.getItems().clear();
 		for (ActeurModel actor : db.getAllActors()) {
 			boxActeur.getItems().add(actor.getName());
 		}
 	}
+        //get value from previous combobox
         private void setFilmrekvalueCB() {
 		boxNumber.getItems().clear();
 		for (FilmrekModel filmrekvalue : db.getAllFilmrekkenvalue(boxLibary.getValue().toString())) {
 			boxNumber.getItems().add(filmrekvalue.getRackNr());
 		}
 	}
+        //get items from database
         private void setLibraryItems() {
 		FilmrekModel bm = new FilmrekModel();
 		bm = db.getFilmrekFromName(boxLibary.getValue().toString());

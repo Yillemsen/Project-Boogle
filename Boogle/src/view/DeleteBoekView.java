@@ -34,12 +34,13 @@ public class DeleteBoekView extends GridPane{
 		// Instantiating Comboboxes
 		isbnCB = new ComboBox();
                 setComboBoxArrayLists();
-		isbnCB.getItems().add(ISBNItems.get(0));
+		//isbnCB.getItems().add(ISBNItems.get(0));
                 
 
 		// Instantiating Buttons
 		deleteButton = new Button("Verwijder");
                 deleteButton.setOnAction(event -> {
+                        //give error if it fails
 			if (deleteBookItems() == 0) {
 				errorLabel.setText("Het verwijderen is mislukt");
 			} else {
@@ -72,16 +73,17 @@ public class DeleteBoekView extends GridPane{
 		// Add this gridpane to mainpane
 		mainPane.getChildren().add(this);
 	}
-        private ArrayList<String> setComboBoxArrayLists() {
+        //get ISBN from database
+        private void setComboBoxArrayLists() {
 
 		for (BoekModel boek : db.getAllBooks()) {
 			System.out.println(boek.getISBN());
 			ISBNItems.add(boek.getISBN());
+                        isbnCB.getItems().add(boek.getISBN());
 
 		}
-		ObservableList<String> isbn = FXCollections.observableArrayList(ISBNItems);
-		return ISBNItems;
 	}
+        //delete from database
         private int deleteBookItems() {
             String isbn = isbnCB.getValue().toString();
                        return(db.deleteBoek(isbn));

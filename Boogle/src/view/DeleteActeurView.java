@@ -31,6 +31,7 @@ public class DeleteActeurView extends GridPane {
 		// Instantiating Buttons
 		deleteButton = new Button("Verwijder");
                 deleteButton.setOnAction(event -> {
+                        //give error if it fails
 			if (deleteActeurItems() == 0) {
 				errorLabel.setText("Het verwijderen is mislukt");
 			} else {
@@ -65,12 +66,14 @@ public class DeleteActeurView extends GridPane {
 		//Add this gridpane to mainpane
 		mainPane.getChildren().add(this);
 	}
+        //get actorname from database
 	private void setActorCB() {
 		nameCB.getItems().clear();
 		for (ActeurModel actor : db.getAllActors()) {
 			nameCB.getItems().add(actor.getName());
 		}
 	}
+        //delete from database
         private int deleteActeurItems() {
             String name = nameCB.getValue().toString();
                        return(db.deleteActeur(name));
