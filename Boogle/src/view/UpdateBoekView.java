@@ -212,7 +212,7 @@ public class UpdateBoekView extends GridPane {
 		// Set onactionlistener for saveButton
 		saveButton.setOnAction(event -> {
 			// Run updatebook and check if the update faild with a returned int
-			if (!(updateBook() == 0)) {
+			if ((updateBook() == 0)) {
 				errorLabel.setText("Error, niet alle velden zijn correct ingevuld");
 			} else {
 				errorLabel.setText("Data is opgeslagen");
@@ -406,8 +406,6 @@ public class UpdateBoekView extends GridPane {
 	private int updateBook() {
 		// Initiate objects an entities that are used in this method
 		BoekModel book = new BoekModel();
-		String authorName = "";
-		int h = 0;
 		ArrayList<String> authorNames = new ArrayList<String>();
 
 		// Check if updateLibraryCombobox and bookCaseCombobox are filled
@@ -476,6 +474,7 @@ public class UpdateBoekView extends GridPane {
 					authors[i].setValue(null);
 				}
 			}
+			
 			try {
 				// Update database to couple author(s) with a book
 				db.insertBookHasAuthor(authorNames2, book.getISBN());
@@ -484,6 +483,7 @@ public class UpdateBoekView extends GridPane {
 				e.printStackTrace();
 			}
 		}
+		
 		return 0;
 	}
 }

@@ -45,8 +45,7 @@ public class Database {
 	/**
 	 * Closes result set
 	 * 
-	 * @param lResultSet
-	 *            ResultSet
+	 * @param lResultSet ResultSet
 	 */
 
 	private void rmConnection(ResultSet lResultSet) {
@@ -70,8 +69,7 @@ public class Database {
 	/**
 	 * Executes select statement
 	 * 
-	 * @param query
-	 *            String containing query
+	 * @param query String containing query
 	 * @return resultset
 	 */
 	private ResultSet select(String query) {
@@ -91,8 +89,7 @@ public class Database {
 	/**
 	 * Update or insert
 	 * 
-	 * @param query
-	 *            String containing query
+	 * @param query String containing query
 	 * @return resultset
 	 */
 
@@ -102,7 +99,6 @@ public class Database {
 			statement = connection.createStatement();
 			int rowsAffected = statement.executeUpdate(query);
 			connection.close();
-
 			return rowsAffected;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -114,8 +110,7 @@ public class Database {
 	/**
 	 * Executes insert statement
 	 * 
-	 * @param query
-	 *            String containing query
+	 * @param query String containing query
 	 * @return method call
 	 */
 
@@ -126,8 +121,7 @@ public class Database {
 	/**
 	 * Executes update statement
 	 * 
-	 * @param query
-	 *            String containing query
+	 * @param query String containing query
 	 * @return method call
 	 */
 
@@ -138,8 +132,7 @@ public class Database {
 	/**
 	 * Get first row from dataset/resultset
 	 * 
-	 * @param rowSet
-	 *            resultset
+	 * @param rowSet resultset
 	 * @return null||error/stacktrace
 	 */
 
@@ -262,10 +255,8 @@ public class Database {
 	/**
 	 * Method that inserts bookcaseNr into database
 	 * 
-	 * @param String
-	 *            libraryName
-	 * @param String
-	 *            bookCaseNr
+	 * @param String libraryName
+	 * @param String bookCaseNr
 	 */
 	public void insertBookCase(String libraryName, String bookCaseNr) {
 		String query = "INSERT INTO boekenkast (BibliotheekNaam, KastNummer) VALUES (" + libraryName + ", " + bookCaseNr
@@ -276,10 +267,8 @@ public class Database {
 	/**
 	 * Method that inserts movieRackNr into database
 	 * 
-	 * @param String
-	 *            libraryName
-	 * @param String
-	 *            movieRackNr
+	 * @param String libraryName
+	 * @param String movieRackNr
 	 */
 	public void insertMovieRack(String libraryName, String movieRackNr) {
 		String query = "INSERT INTO filmrek (BibliotheekNaam, RekNummer) VALUES (" + libraryName + ", " + movieRackNr
@@ -290,8 +279,7 @@ public class Database {
 	/**
 	 * Method that couples a book and author(s)
 	 * 
-	 * @param ArrayList<AuteurModel>,
-	 *            String isbn
+	 * @param ArrayList<AuteurModel>, String isbn
 	 */
 
 	public void insertBookHasAuthor(ArrayList<String> authors, String iSBN) {
@@ -307,12 +295,9 @@ public class Database {
 	/**
 	 * Method that inserts library, bookcase and isbn into linking table
 	 * 
-	 * @param int
-	 *            bookCaseNr
-	 * @param String
-	 *            libraryName
-	 * @param String
-	 *            iSBN
+	 * @param        int bookCaseNr
+	 * @param String libraryName
+	 * @param String iSBN
 	 */
 	public void insertBookcaseHasBook(int bookCaseNr, String libraryName, String iSBN) {
 		String query = "INSERT INTO boekenkastheeftboek (KastNummer, BibliotheekNaam, ISBN) VALUES ('" + bookCaseNr
@@ -351,8 +336,7 @@ public class Database {
 	/**
 	 * Method that deletes all authors that are linked to a specific bookISBN
 	 * 
-	 * @param String
-	 *            iSBN
+	 * @param String iSBN
 	 * @return int
 	 */
 	public int deleteAuthorsFromBook(String iSBN) {
@@ -366,8 +350,7 @@ public class Database {
 	/**
 	 * Method that gets all books from a given library
 	 * 
-	 * @param String
-	 *            name
+	 * @param String name
 	 * @return ArrayList<BoekModel>
 	 */
 	public ArrayList<BoekModel> getAllBooksFromLibary(String name) {
@@ -1136,8 +1119,7 @@ public class Database {
 	/**
 	 * Method that updates the bibliotheek entity in database
 	 * 
-	 * @param BibliotheekModel
-	 *            library, String oldname
+	 * @param BibliotheekModel library, String oldname
 	 */
 	public int updateLibrary(BibliotheekModel library, String oldName) {
 		String name = library.getName();
@@ -1153,8 +1135,7 @@ public class Database {
 	/**
 	 * Method that updates the acteur entity in database
 	 * 
-	 * @param ActeurModel
-	 *            actor, String oldName
+	 * @param ActeurModel actor, String oldName
 	 */
 	public int updateActor(ActeurModel actor, String oldName) {
 		String name = actor.getName();
@@ -1169,8 +1150,7 @@ public class Database {
 	/**
 	 * Method that updates the auteur entity in database
 	 * 
-	 * @param ActeurModel
-	 *            author, String oldName
+	 * @param ActeurModel author, String oldName
 	 */
 	public int updateAuthor(AuteurModel author, String oldName) {
 		String name = author.getName();
@@ -1183,6 +1163,7 @@ public class Database {
 	}
 
 	public int updateBookFromISBN(BoekModel book) {
+		String query;
 		String description = book.getDescription();
 		String releaseDate = book.getReleaseDate();
 		String genre = book.getGenre();
@@ -1192,9 +1173,16 @@ public class Database {
 		String language = book.getLanguage();
 		String title = book.getTitle();
 
-		String query = "UPDATE boek SET Beschrijving='" + description + "', DatumUitgave='" + releaseDate + "', "
-				+ "GenreNaam='" + genre + "', Image='" + image + "', InternationaleTitel='" + intTitle + "', Taal='"
-				+ language + "', Titel='" + title + "' WHERE ISBN='" + iSBN + "'";
+		if (image != null) {
+
+			query = "UPDATE boek SET Beschrijving='" + description + "', DatumUitgave='" + releaseDate + "', "
+					+ "GenreNaam='" + genre + "', Image='" + image + "', InternationaleTitel='" + intTitle + "', Taal='"
+					+ language + "', Titel='" + title + "' WHERE ISBN='" + iSBN + "'";
+		} else {
+			query = "UPDATE boek SET Beschrijving='" + description + "', DatumUitgave='" + releaseDate + "', Image='"
+					+ image + "', InternationaleTitel='" + intTitle + "', Taal='" + language + "', Titel='" + title
+					+ "' WHERE ISBN='" + iSBN + "'";
+		}
 		return (update(query));
 	}
 
