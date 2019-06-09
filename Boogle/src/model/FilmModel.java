@@ -2,7 +2,6 @@ package model;
 
 public class FilmModel {
 	private String title, director, releaseDate, description, genreName, image;
-	private int movieNr;
 	public String getTitle() {
 		return title;
 	}
@@ -27,12 +26,6 @@ public class FilmModel {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public int getMovieNr() {
-		return movieNr;
-	}
-	public void setMovieNr(int movieNr) {
-		this.movieNr = movieNr;
-	}
 	public String getgenreName() {
 		return genreName;
 	}
@@ -42,7 +35,7 @@ public class FilmModel {
 	public String getImage() {
 		return image;
 	}
-	public void setgenreImage(String image) {
+	public void setImage(String image) {
 		this.image = image;
 	}
 

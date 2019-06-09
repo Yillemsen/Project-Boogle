@@ -1,6 +1,5 @@
 package view;
 
-import java.sql.ResultSet;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -8,14 +7,13 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
-import model.BibliotheekModel;
 import model.BoekenkastModel;
 import model.Database;
-import model.FilmrekModel;
 
 public class DeleteBoekenkastView extends GridPane {
 	// Declaring variables
 	private final Label libraryLabel, caseNrLabel, errorLabel, errorvalueLabel;
+        
 	private final ComboBox libraryCB, caseNrCB;
 	private final Button deleteButton,valueButton;
 	private final Text text;
@@ -36,11 +34,14 @@ public class DeleteBoekenkastView extends GridPane {
 
 		// Instantiating Buttons
 		deleteButton = new Button("Verwijder");
+                deleteButton.setOnAction(event -> {
+                        //give error if it fails
                 	if (deleteBoekenkastItems() == 0) {
 				errorLabel.setText("Het verwijderen is mislukt");
 			} else {
 				errorLabel.setText("Het is verwijderd van de database");
 			}
+                });
                 
                 
                 valueButton = new Button("Haal op");
@@ -80,27 +81,31 @@ public class DeleteBoekenkastView extends GridPane {
 		mainPane.getChildren().add(this);
 	}
                         
-                        
+        // get bookcasenumber from database                
         private void setBoekenkastCB() {
 		caseNrCB.getItems().clear();
 		for (BoekenkastModel boekenkast : db.getAllBoekenkastvalue(libraryCB.getValue().toString())) {
 			caseNrCB.getItems().add(boekenkast.getBookCaseNr());
 		}
 	}
+        //get libraryname from database
         private void setCaseNrCB() {
 		libraryCB.getItems().clear();
 		for (BoekenkastModel boekenkast : db.getAllBoekenkasten()) {
 			libraryCB.getItems().add(boekenkast.getLibraryName());
 		}
 	} 
+        //get items from database
         private void setLibraryItems() {
 		BoekenkastModel bm = new BoekenkastModel();
 		bm = db.getBoekenkastFromName(libraryCB.getValue().toString());
 	}
+        //delete from database
         private int deleteBoekenkastItems() {
             BoekenkastModel deleteBoekenkast = new BoekenkastModel();
             String libraryName = libraryCB.getValue().toString();
             String bookCaseNr = caseNrCB.getValue().toString();
+            //translate integer to string
             int parsedBookCaseNr = Integer.parseInt(bookCaseNr);
             deleteBoekenkast.setBookCaseNr(parsedBookCaseNr);
                        return (db.deleteBoekenkast(libraryName, bookCaseNr));

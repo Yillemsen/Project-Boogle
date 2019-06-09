@@ -242,12 +242,47 @@ public class Database {
 		System.out.println(query);
 		return (insert(query));
 	}
+        
+        public int newBoekheeftauteur(String ISBN, String auteur) {
+		String query = "INSERT INTO boekheeftauteur(`isbn`,`Auteurnaam`)" + "VALUES ('" + ISBN + "', '"
+				+ auteur + "');";
+		System.out.println(query);
+		return (insert(query));
+	}
+        public int newBoekenkastheeftboek(String rackNr, String library, String ISBN, String booknumber) {
+		String query = "INSERT INTO boekenkastheeftboek(`kastnummer`,`bibliotheeknaam`,`isbn`,`boeknummer`)" + "VALUES ('" + rackNr + "', '"
+				+ library + "','" + ISBN + "','" + booknumber + "');";
+		System.out.println(query);
+		return (insert(query));
+	}
+        
+        public int newFilmrekheeftfilm(String rackNr, String library, String title, String movienumber) {
+		String query = "INSERT INTO filmrekheeftfilm(`filmreknummer`,`bibliotheeknaam`,`filmtitel`,`filmnummer`)" + "VALUES ('" + rackNr + "', '"
+				+ library + "','" + title + "','" + movienumber + "');";
+		System.out.println(query);
+		return (insert(query));
+	}
+
+        public int newFilmheeftacteur(String title, String acteur) {
+		String query = "INSERT INTO filmheeftacteur(`FilmTitel`,`Acteurnaam`)" + "VALUES ('" + title + "', '"
+				+ acteur + "');";
+		System.out.println(query);
+		return (insert(query));
+	}
 
 	public int newBoek(String ISBN, String title, String language, String releaseDate, String intTitle,
 			String description, String genre, String image) {
-		String query = "INSERT INTO boek(`ISBN`,`taal`,`title`,`Datumuitgave`,`InternationaleTitel`,`genreNaam`,`Image`,`beschrijving`)"
+		String query = "INSERT INTO boek(`ISBN`,`taal`,`titel`,`Datumuitgave`,`InternationaleTitel`,`genreNaam`,`Image`,`beschrijving`)"
 				+ "VALUES ('" + ISBN + "', '" + language + "', '" + title + "', '" + releaseDate + "', '" + intTitle
 				+ "', '" + genre + "', '" + description + "', '" + image + "');";
+		System.out.println(query);
+		return (insert(query));
+	}
+        
+        public int newFilm(String title, String director, String releaseDate, String genreName, String image, String description) {
+		String query = "INSERT INTO film(`titel`,`regisseur`,`datumPremiere`,`Beschrijving`,`genreNaam`,`Image`)"
+				+ "VALUES ('" + title + "', '" + director + "', '" + releaseDate + "', '" + description + "', '" + genreName
+				+ "', '" + image + "');";
 		System.out.println(query);
 		return (insert(query));
 	}
@@ -313,9 +348,22 @@ public class Database {
 		System.out.println(query);
 		return (update(query));
 	}
+        
+        public int deleteFilm(String title) {
+		String query = "DELETE FROM film WHERE titel = '" + title + "';";
+		System.out.println(query);
+		return (update(query));
+	}
 
 	public int deleteBoekenkast(String libraryName, String BookCaseNr) {
-		String query = "DELETE FROM boekenkast WHERE kastnummer, bibliotheeknaam  = '" + BookCaseNr + "','"
+		String query = "DELETE FROM boekenkast WHERE kastnummer = '" + BookCaseNr  + "' AND bibliotheeknaam  = '"
+				+ libraryName + "';";
+		System.out.println(query);
+		return (update(query));
+	}
+        
+        public int deleteFilmrek(String libraryName, String RackNr) {
+		String query = "DELETE FROM filmrek WHERE reknummer = '" + RackNr  + "' AND bibliotheeknaam  = '"
 				+ libraryName + "';";
 		System.out.println(query);
 		return (update(query));
@@ -866,6 +914,58 @@ public class Database {
 		rmConnection(rowSet);
 
 		return allFilmrekkenvalue;
+	}
+
+	////////////////////////////
+        
+        ////////////////////////////
+	/**
+	 * Method that returns an arraylist with FilmrekModels
+	 * 
+	 * @return
+	 */
+        public ArrayList<FilmModel> getAllFilms() {
+		String query = "SELECT * FROM film";
+		ResultSet resultSet = select(query);
+
+		if (goToFirstRow(select(query)) == null) {
+			rmConnection(resultSet);
+			return null;
+		}
+
+		return rowToGetAllFilms(resultSet);
+	}
+
+	/**
+	 * Method that fills an arraylist with actormodels and returns them
+	 * 
+	 * @param rowSet
+	 * @return ArrayList<FilnrekModel>
+	 */
+	private ArrayList<FilmModel> rowToGetAllFilms(ResultSet rowSet) {
+		ArrayList<FilmModel> allFilms = new ArrayList<>();
+
+		try {
+			while (rowSet.next()) {
+				FilmModel filmModel = new FilmModel();
+
+                                filmModel.setTitle(rowSet.getString("titel"));
+                                filmModel.setDirector(rowSet.getString("regisseur"));
+                                filmModel.setReleaseDate(rowSet.getString("datumpremiere"));
+                                filmModel.setDescription(rowSet.getString("beschrijving"));
+                                filmModel.setgenreName(rowSet.getString("genrenaam"));
+                                filmModel.setImage(rowSet.getString("Image"));
+
+
+				allFilms.add(filmModel);
+			}
+		} catch (SQLException e) {
+			rmConnection(rowSet);
+			e.printStackTrace();
+		}
+		rmConnection(rowSet);
+
+		return allFilms;
 	}
 
 	////////////////////////////

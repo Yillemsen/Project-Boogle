@@ -16,22 +16,28 @@ public class InsertBibliotheekView extends GridPane {
     private Button btnSave;
     private Database db = new Database();
 
-    public InsertBibliotheekView(Pane mainPane) {    
+    public InsertBibliotheekView(Pane mainPane) {   
+        //text
         libaryInput = new Text(" Bibliotheek invoeren ");
-       
+        
+        //textfields
         txtName = new TextField();
         txtAdres = new TextField();
         txtLocation = new TextField();
         txtCell = new TextField();
         
+        //labels
         lblName = new Label(" Naam : ");
         lblAdres = new Label(" Adres : ");
         lblLocation = new Label(" Plaats : ");
         lblCell = new Label (" Telefoonnummer : ");
         lblError = new Label("");
         
+        
+        //button
         btnSave = new Button(" Opslaan ");
         btnSave.setOnAction(event -> {
+                        //give error if it fails
 			if (insertLibraryItems() == 0) {
 				lblError.setText("Het toevoegen is mislukt");
 			} else {
@@ -39,11 +45,13 @@ public class InsertBibliotheekView extends GridPane {
 			}
 			
 		});
-                
+        
+        //gives a view a bit space
         setPadding(new Insets(10,10,10,10));
         setHgap(10);
         setVgap(10);
         
+        //put things in place
         add(libaryInput, 0, 0); 
         add(lblName, 0, 2);
         add(txtName, 1, 2);
@@ -59,6 +67,7 @@ public class InsertBibliotheekView extends GridPane {
         mainPane.getChildren().add(this);
         
     }
+    //insert into database
     private int insertLibraryItems() {
             String name = txtName.getText();
             String address = txtAdres.getText();

@@ -33,6 +33,13 @@ public class DeleteFilmRekView extends GridPane {
 
 		// Instantiating Buttons
 		deleteButton = new Button("Verwijder");
+                deleteButton.setOnAction(event -> {               
+                	if (deleteFilmrekItems() == 0) {
+				errorLabel.setText("Het verwijderen is mislukt");
+			} else {
+				errorLabel.setText("Het is verwijderd van de database");
+			}
+                });
                 
                 valueButton = new Button("Haal op");
                 valueButton.setOnAction(event -> {
@@ -70,20 +77,33 @@ public class DeleteFilmRekView extends GridPane {
 		// Add this gridpane to mainpane
 		mainPane.getChildren().add(this);
 	}
+        //get libraryname from database
         private void setFilmrekCB() {
 		libraryCB.getItems().clear();
 		for (FilmrekModel filmrek : db.getAllFilmrekken()) {
 			libraryCB.getItems().add(filmrek.getLibraryName());
 		}
 	}
+        //get items from previous combobox
         private void setFilmrekvalueCB() {
 		rackNrCB.getItems().clear();
 		for (FilmrekModel filmrekvalue : db.getAllFilmrekkenvalue(libraryCB.getValue().toString())) {
 			rackNrCB.getItems().add(filmrekvalue.getRackNr());
 		}
 	}
+        //get items from database
         private void setLibraryItems() {
 		FilmrekModel bm = new FilmrekModel();
 		bm = db.getFilmrekFromName(libraryCB.getValue().toString());
 	}
+        //delete from database
+        private int deleteFilmrekItems() {
+            FilmrekModel deleteFilmrek = new FilmrekModel();
+            String libraryName = libraryCB.getValue().toString();
+            String rackNr = rackNrCB.getValue().toString();
+            //translate integer into string
+            int parsedRackNr = Integer.parseInt(rackNr);
+            deleteFilmrek.setRackNr(parsedRackNr);
+                       return (db.deleteFilmrek(libraryName, rackNr));
+        }
 }

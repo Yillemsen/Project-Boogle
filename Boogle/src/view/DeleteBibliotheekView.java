@@ -31,6 +31,7 @@ public class DeleteBibliotheekView extends GridPane {
 		deleteButton = new Button("Verwijder");
                 deleteButton.setOnAction(event -> {
 			if (deleteLibraryItems() == 0) {
+                                //give error if it fails
 				errorLabel.setText("Het verwijderen is mislukt");
 			} else {
 				errorLabel.setText("Het is verwijderd van de database");
@@ -63,11 +64,13 @@ public class DeleteBibliotheekView extends GridPane {
 		// Add this gridpane to mainpane
 		mainPane.getChildren().add(this);
 	}
+        //get libraryName from database
         private void setLibraryCB() {
 		for (BibliotheekModel library : db.getAllLibraries()) {
 			libraryCB.getItems().add(library.getName());
 		}
 	} 
+        //delete from database
         private int deleteLibraryItems() {
             String name = libraryCB.getValue().toString();
                        return (db.deleteBibliotheek(name));
