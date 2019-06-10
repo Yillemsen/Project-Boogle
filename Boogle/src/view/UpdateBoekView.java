@@ -211,7 +211,7 @@ public class UpdateBoekView extends GridPane {
 
 		// Set onactionlistener for saveButton
 		saveButton.setOnAction(event -> {
-			// Run updatebook and check if the update faild with a returned int
+			// Run updatebook and check if the update failed with a returned int
 			if ((updateBook() == 0)) {
 				errorLabel.setText("Error, niet alle velden zijn correct ingevuld");
 			} else {
@@ -336,7 +336,11 @@ public class UpdateBoekView extends GridPane {
 			String libraryName = selectLibraryCB.getValue().toString();
 			updateLibraryCB.setValue(libraryName);
 			String bookCaseString = bookCase.getBookCaseNr() + "";
+			//bookCaseCB.getSelectionModel().clearSelection();
 			bookCaseCB.setValue(bookCaseString);
+		} else {
+			updateLibraryCB.getSelectionModel().clearSelection();
+			//bookCaseCB.getSelectionModel().clearSelection();
 		}
 	}
 
@@ -410,6 +414,9 @@ public class UpdateBoekView extends GridPane {
 
 		// Check if updateLibraryCombobox and bookCaseCombobox are filled
 		if (!updateLibraryCB.getSelectionModel().isEmpty() && !bookCaseCB.getSelectionModel().isEmpty()) {
+			// Clear updatelibraryCB and bookcaseCB
+			updateLibraryCB.getSelectionModel().clearSelection();
+			bookCaseCB.getSelectionModel().clearSelection();
 			// Fill bookmodel with data
 			book.setGenre(genreCB.getValue().toString());
 			book.setTitle(titleTextField.getText());
@@ -440,16 +447,16 @@ public class UpdateBoekView extends GridPane {
 				e.printStackTrace();
 			}
 			// Check if a book already exists in a library
-			if (db.doesBookExistInLibrary(book.getISBN(), updateLibraryCB.getValue()) == 1) {
+			if (db.doesBookExistInLibrary(book.getISBN(), updateLibraryCB.getValue()) == 0) {
 				// Update the book in bookcase
-				System.out.println(bookCaseCB.getValue());
-				System.out.println(selectLibraryCB.getValue());
 				db.updateBookCaseHasBook(Integer.parseInt(bookCaseCB.getValue()), selectLibraryCB.getValue().toString(),
 						book.getISBN());
+				System.out.println("hij hij update m");
 			} else {
 				// Insert book in a bookcase (and library)
 				db.insertBookcaseHasBook(Integer.parseInt(bookCaseCB.getValue()), updateLibraryCB.getValue().toString(),
-						book.getISBN());
+						book.getISBN(), "0");
+				System.out.println("Hij voegt m toe");
 			}
 
 		} else {

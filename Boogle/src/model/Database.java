@@ -242,30 +242,31 @@ public class Database {
 		System.out.println(query);
 		return (insert(query));
 	}
-        
-        public int newBoekheeftauteur(String ISBN, String auteur) {
-		String query = "INSERT INTO boekheeftauteur(`isbn`,`Auteurnaam`)" + "VALUES ('" + ISBN + "', '"
-				+ auteur + "');";
-		System.out.println(query);
-		return (insert(query));
-	}
-        public int newBoekenkastheeftboek(String rackNr, String library, String ISBN, String booknumber) {
-		String query = "INSERT INTO boekenkastheeftboek(`kastnummer`,`bibliotheeknaam`,`isbn`,`boeknummer`)" + "VALUES ('" + rackNr + "', '"
-				+ library + "','" + ISBN + "','" + booknumber + "');";
-		System.out.println(query);
-		return (insert(query));
-	}
-        
-        public int newFilmrekheeftfilm(String rackNr, String library, String title, String movienumber) {
-		String query = "INSERT INTO filmrekheeftfilm(`filmreknummer`,`bibliotheeknaam`,`filmtitel`,`filmnummer`)" + "VALUES ('" + rackNr + "', '"
-				+ library + "','" + title + "','" + movienumber + "');";
+
+	public int newBoekheeftauteur(String ISBN, String auteur) {
+		String query = "INSERT INTO boekheeftauteur(`isbn`,`Auteurnaam`)" + "VALUES ('" + ISBN + "', '" + auteur
+				+ "');";
 		System.out.println(query);
 		return (insert(query));
 	}
 
-        public int newFilmheeftacteur(String title, String acteur) {
-		String query = "INSERT INTO filmheeftacteur(`FilmTitel`,`Acteurnaam`)" + "VALUES ('" + title + "', '"
-				+ acteur + "');";
+	public int newBoekenkastheeftboek(String rackNr, String library, String ISBN, String booknumber) {
+		String query = "INSERT INTO boekenkastheeftboek(`kastnummer`,`bibliotheeknaam`,`isbn`,`boeknummer`)"
+				+ "VALUES ('" + rackNr + "', '" + library + "','" + ISBN + "','" + booknumber + "');";
+		System.out.println(query);
+		return (insert(query));
+	}
+
+	public int newFilmrekheeftfilm(String rackNr, String library, String title, String movienumber) {
+		String query = "INSERT INTO filmrekheeftfilm(`filmreknummer`,`bibliotheeknaam`,`filmtitel`,`filmnummer`)"
+				+ "VALUES ('" + rackNr + "', '" + library + "','" + title + "','" + movienumber + "');";
+		System.out.println(query);
+		return (insert(query));
+	}
+
+	public int newFilmheeftacteur(String title, String acteur) {
+		String query = "INSERT INTO filmheeftacteur(`FilmTitel`,`Acteurnaam`)" + "VALUES ('" + title + "', '" + acteur
+				+ "');";
 		System.out.println(query);
 		return (insert(query));
 	}
@@ -278,11 +279,12 @@ public class Database {
 		System.out.println(query);
 		return (insert(query));
 	}
-        
-        public int newFilm(String title, String director, String releaseDate, String genreName, String image, String description) {
+
+	public int newFilm(String title, String director, String releaseDate, String genreName, String image,
+			String description) {
 		String query = "INSERT INTO film(`titel`,`regisseur`,`datumPremiere`,`Beschrijving`,`genreNaam`,`Image`)"
-				+ "VALUES ('" + title + "', '" + director + "', '" + releaseDate + "', '" + description + "', '" + genreName
-				+ "', '" + image + "');";
+				+ "VALUES ('" + title + "', '" + director + "', '" + releaseDate + "', '" + description + "', '"
+				+ genreName + "', '" + image + "');";
 		System.out.println(query);
 		return (insert(query));
 	}
@@ -334,11 +336,12 @@ public class Database {
 	 * @param String libraryName
 	 * @param String iSBN
 	 */
-	public void insertBookcaseHasBook(int bookCaseNr, String libraryName, String iSBN) {
-		String query = "INSERT INTO boekenkastheeftboek (KastNummer, BibliotheekNaam, ISBN) VALUES ('" + bookCaseNr
-				+ "', '" + libraryName + "', '" + iSBN + "')";
+	public void insertBookcaseHasBook(int bookCaseNr, String libraryName, String iSBN, String bookNr) {
+		String query = "INSERT INTO boekenkastheeftboek (KastNummer, BibliotheekNaam, ISBN, BoekNummer) VALUES ('" + bookCaseNr
+				+ "', '" + libraryName + "', '" + iSBN + "', '"+bookNr+"')";
 		update(query);
 	}
+	
 
 	// Methods that delete data from
 	// database///////////////////////////////////////////////////////////////////
@@ -348,23 +351,23 @@ public class Database {
 		System.out.println(query);
 		return (update(query));
 	}
-        
-        public int deleteFilm(String title) {
+
+	public int deleteFilm(String title) {
 		String query = "DELETE FROM film WHERE titel = '" + title + "';";
 		System.out.println(query);
 		return (update(query));
 	}
 
 	public int deleteBoekenkast(String libraryName, String BookCaseNr) {
-		String query = "DELETE FROM boekenkast WHERE kastnummer = '" + BookCaseNr  + "' AND bibliotheeknaam  = '"
+		String query = "DELETE FROM boekenkast WHERE kastnummer = '" + BookCaseNr + "' AND bibliotheeknaam  = '"
 				+ libraryName + "';";
 		System.out.println(query);
 		return (update(query));
 	}
-        
-        public int deleteFilmrek(String libraryName, String RackNr) {
-		String query = "DELETE FROM filmrek WHERE reknummer = '" + RackNr  + "' AND bibliotheeknaam  = '"
-				+ libraryName + "';";
+
+	public int deleteFilmrek(String libraryName, String RackNr) {
+		String query = "DELETE FROM filmrek WHERE reknummer = '" + RackNr + "' AND bibliotheeknaam  = '" + libraryName
+				+ "';";
 		System.out.println(query);
 		return (update(query));
 	}
@@ -657,9 +660,9 @@ public class Database {
 		ResultSet resultSet = select(query);
 		try {
 			resultSet.next();
-			System.out.println(resultSet.getString("KastNummer"));
+
 			if (resultSet.getString("KastNummer") != null) {
-				return 1;
+				return 0;
 			}
 
 		} catch (SQLException e) {
@@ -668,7 +671,7 @@ public class Database {
 		}
 		rmConnection(resultSet);
 
-		return 0;
+		return 1;
 	}
 
 	// Methods that select a list of models from database
@@ -917,14 +920,14 @@ public class Database {
 	}
 
 	////////////////////////////
-        
-        ////////////////////////////
+
+	////////////////////////////
 	/**
 	 * Method that returns an arraylist with FilmrekModels
 	 * 
 	 * @return
 	 */
-        public ArrayList<FilmModel> getAllFilms() {
+	public ArrayList<FilmModel> getAllFilms() {
 		String query = "SELECT * FROM film";
 		ResultSet resultSet = select(query);
 
@@ -949,13 +952,12 @@ public class Database {
 			while (rowSet.next()) {
 				FilmModel filmModel = new FilmModel();
 
-                                filmModel.setTitle(rowSet.getString("titel"));
-                                filmModel.setDirector(rowSet.getString("regisseur"));
-                                filmModel.setReleaseDate(rowSet.getString("datumpremiere"));
-                                filmModel.setDescription(rowSet.getString("beschrijving"));
-                                filmModel.setgenreName(rowSet.getString("genrenaam"));
-                                filmModel.setImage(rowSet.getString("Image"));
-
+				filmModel.setTitle(rowSet.getString("titel"));
+				filmModel.setDirector(rowSet.getString("regisseur"));
+				filmModel.setReleaseDate(rowSet.getString("datumpremiere"));
+				filmModel.setDescription(rowSet.getString("beschrijving"));
+				filmModel.setgenreName(rowSet.getString("genrenaam"));
+				filmModel.setImage(rowSet.getString("Image"));
 
 				allFilms.add(filmModel);
 			}
