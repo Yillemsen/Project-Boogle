@@ -80,11 +80,13 @@ public class UpdateActeurView extends GridPane {
 		// Fill combobox
 		setActorCB();
 
+		// Set onactionlistener for getItemsButton
 		getItemsButton.setOnAction(event -> {
 			setActorItems();
 			errorLabel.setText("Data is opgehaald");
 		});
 
+		// Set onactionlistener for saveButton
 		saveButton.setOnAction(event -> {
 			if (updateActorItems() == 0) {
 				errorLabel.setText("Error, wijzigingen zijn niet opgeslagen");
@@ -97,6 +99,11 @@ public class UpdateActeurView extends GridPane {
 		mainPane.getChildren().add(this);
 	}
 
+	/**
+	 * Method that updates the actormodel in database
+	 * 
+	 * @return int
+	 */
 	private int updateActorItems() {
 		ActeurModel am = new ActeurModel();
 		am.setName(nameTextField.getText());
@@ -111,6 +118,9 @@ public class UpdateActeurView extends GridPane {
 		return 0;
 	}
 
+	/**
+	 * Method that fills the actoritems in the window
+	 */
 	private void setActorItems() {
 		ActeurModel am = new ActeurModel();
 		try {
@@ -124,6 +134,9 @@ public class UpdateActeurView extends GridPane {
 		dodTextField.setText(am.getDeath());
 	}
 
+	/**
+	 * Method that fills the actorcombobox
+	 */
 	private void setActorCB() {
 		selectNameCB.getItems().clear();
 		for (ActeurModel actor : db.getAllActors()) {

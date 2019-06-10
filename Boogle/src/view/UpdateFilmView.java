@@ -20,6 +20,9 @@ public class UpdateFilmView extends GridPane {
 	private final TextArea ta;
 
 	public UpdateFilmView(Pane mainPane) {
+		// Filmview is not used in the
+		// application////////////////////////////////////////////////////////////////////////////////////////////////
+
 		// Instantiating labelobjects
 		selectTitleLabel = new Label("Selecteer titel:");
 		libraryLabel = new Label("Bibliotheek:");
@@ -37,7 +40,7 @@ public class UpdateFilmView extends GridPane {
 		directorTextField = new TextField();
 		releaseDateTextField = new TextField();
 
-		//Instantiating textareaobjects
+		// Instantiating textareaobjects
 		ta = new TextArea();
 
 		// Instantiating buttonobjects
@@ -84,8 +87,8 @@ public class UpdateFilmView extends GridPane {
 		this.add(filmRackCB, 1, 3);
 		this.add(genreCB, 1, 4);
 		this.add(actorCB, 1, 9);
-		
-		//Place textareas
+
+		// Place textareas
 		this.add(ta, 1, 8);
 
 		// Place buttonobject

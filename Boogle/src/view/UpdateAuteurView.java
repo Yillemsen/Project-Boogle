@@ -77,6 +77,7 @@ public class UpdateAuteurView extends GridPane {
 			this.add(textFieldObjects[i], 1, i + 3);
 		}
 
+		// Set onactionlistener for saveButton
 		saveButton.setOnAction(event -> {
 			if (updateAuthorItems() == 0) {
 				errorLabel.setText("Error, wijzigingen zijn niet opgeslagen");
@@ -86,6 +87,7 @@ public class UpdateAuteurView extends GridPane {
 			setAuthorCB();
 		});
 
+		// Set onactionlistener for getItemsButton
 		getItemsButton.setOnAction(event -> {
 			setAuthorItems();
 			errorLabel.setText("Data is opgehaald");
@@ -96,6 +98,11 @@ public class UpdateAuteurView extends GridPane {
 		mainPane.getChildren().add(this);
 	}
 
+	/**
+	 * Method that updates the author items
+	 * 
+	 * @return int
+	 */
 	private int updateAuthorItems() {
 		AuteurModel am = new AuteurModel();
 		am.setName(nameTextField.getText());
@@ -110,6 +117,9 @@ public class UpdateAuteurView extends GridPane {
 		return 0;
 	}
 
+	/**
+	 * Method that sets the author items
+	 */
 	private void setAuthorItems() {
 		AuteurModel am = new AuteurModel();
 		try {
@@ -123,6 +133,9 @@ public class UpdateAuteurView extends GridPane {
 		dodTextField.setText(am.getDeath());
 	}
 
+	/**
+	 * Method that fills the author combobox
+	 */
 	private void setAuthorCB() {
 		selectAuthorCB.getItems().clear();
 		for (AuteurModel author : db.getAllAuthors()) {

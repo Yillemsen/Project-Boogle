@@ -84,12 +84,13 @@ public class UpdateBibliotheekView extends GridPane {
 			this.add(textFieldObjects[i], 1, i + 3);
 		}
 
-		// Set actionlisteners
+		// Set onactionlistener for getItemsButton
 		getItemsButton.setOnAction(event -> {
 			setLibraryItems();
 			errorLabel.setText("Data is opgehaald");
 		});
 
+		// Set onactionlistener for saveButton
 		saveButton.setOnAction(event -> {
 			if (updateLibraryItems() == 0) {
 				errorLabel.setText("Error, wijzigingen zijn niet opgeslagen");
@@ -102,6 +103,9 @@ public class UpdateBibliotheekView extends GridPane {
 		mainPane.getChildren().add(this);
 	}
 
+	/**
+	 * Method that fills the library combobox
+	 */
 	private void setLibraryCB() {
 		selectLibraryCB.getItems().clear();
 		for (BibliotheekModel library : db.getAllLibraries()) {
@@ -109,6 +113,9 @@ public class UpdateBibliotheekView extends GridPane {
 		}
 	}
 
+	/**
+	 * Method that sets the libraryitems
+	 */
 	private void setLibraryItems() {
 		BibliotheekModel bm = new BibliotheekModel();
 		try {
@@ -123,6 +130,11 @@ public class UpdateBibliotheekView extends GridPane {
 		cellTextField.setText(bm.getCell());
 	}
 
+	/**
+	 * Method that updates the librarymodel in the database
+	 * 
+	 * @return int
+	 */
 	private int updateLibraryItems() {
 		BibliotheekModel bm = new BibliotheekModel();
 		bm.setName(nameTextField.getText());
