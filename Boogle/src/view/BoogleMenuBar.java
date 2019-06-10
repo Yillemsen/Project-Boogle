@@ -133,7 +133,7 @@ public class BoogleMenuBar extends MenuBar {
 
         //voeg item toe aan menu
         mToevoegen.getItems().addAll(miInsertBibliotheek, miInsertBoek, miInsertFilm, miInsertActeur, miInsertAuteur, miInsertBoekenkast, miInsertFilmrek);
-        mAanpassen.getItems().addAll(miUpdateBibliotheek, miUpdateBoek, miUpdateFilm, miUpdateActeur, miUpdateAuteur);
+        mAanpassen.getItems().addAll(miUpdateBibliotheek, miUpdateBoek, miUpdateActeur, miUpdateAuteur);
         mVerwijderen.getItems().addAll(miDeleteBibliotheek, miDeleteBoek, miDeleteFilm, miDeleteActeur, miDeleteAuteur, miDeleteFilmrek, miDeleteBoekenkast);
 
         //voeg menu toe aan balk

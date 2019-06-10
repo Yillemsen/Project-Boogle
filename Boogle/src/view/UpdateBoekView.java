@@ -414,9 +414,6 @@ public class UpdateBoekView extends GridPane {
 
 		// Check if updateLibraryCombobox and bookCaseCombobox are filled
 		if (!updateLibraryCB.getSelectionModel().isEmpty() && !bookCaseCB.getSelectionModel().isEmpty()) {
-			// Clear updatelibraryCB and bookcaseCB
-			updateLibraryCB.getSelectionModel().clearSelection();
-			bookCaseCB.getSelectionModel().clearSelection();
 			// Fill bookmodel with data
 			book.setGenre(genreCB.getValue().toString());
 			book.setTitle(titleTextField.getText());
@@ -451,15 +448,16 @@ public class UpdateBoekView extends GridPane {
 				// Update the book in bookcase
 				db.updateBookCaseHasBook(Integer.parseInt(bookCaseCB.getValue()), selectLibraryCB.getValue().toString(),
 						book.getISBN());
-				System.out.println("hij hij update m");
 			} else {
 				// Insert book in a bookcase (and library)
 				db.insertBookcaseHasBook(Integer.parseInt(bookCaseCB.getValue()), updateLibraryCB.getValue().toString(),
 						book.getISBN(), "0");
-				System.out.println("Hij voegt m toe");
 			}
 
 		} else {
+			// Clear updatelibraryCB and bookcaseCB
+			updateLibraryCB.getSelectionModel().clearSelection();
+			bookCaseCB.getSelectionModel().clearSelection();
 			// Fill bookmodel with data from database
 			book.setGenre(genreCB.getValue().toString());
 			book.setTitle(titleTextField.getText());
