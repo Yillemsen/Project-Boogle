@@ -12,9 +12,9 @@ public class DbConnection {
 	
 	public DbConnection() {
 		//Instantiating variables
-		this.url = "jdbc:mysql://databases.aii.avans.nl:3306/aaalbert_db";
-		this.userName = "aaalbert";
-		this.password = "6T1DbpT%";
+		this.url = "jdbc:mysql://37.48.109.246:3306/ardjan";
+		this.userName = "webshop";
+		this.password = "!webshop!";
 	}
 	
 	//Getters
