@@ -179,7 +179,7 @@ public class Database {
 
 	public String getBoek(String ISBN) {
 		try {
-			String query = "SELECT Titel FROM Boek WHERE ISBN = '" + ISBN + "'";
+			String query = "SELECT Titel FROM boek WHERE ISBN = '" + ISBN + "'";
 			ResultSet resultSet = select(query);
 
 			if (goToFirstRow(resultSet) == null) {
@@ -222,7 +222,7 @@ public class Database {
 	}
 
 	public int newFilmrek(String libraryName, String RackNr) {
-		String query = "INSERT INTO Filmrek(`bibliotheeknaam`,`reknummer`)" + "VALUES ('" + libraryName + "', '"
+		String query = "INSERT INTO filmrek(`bibliotheeknaam`,`reknummer`)" + "VALUES ('" + libraryName + "', '"
 				+ RackNr + "');";
 		System.out.println(query);
 		return (insert(query));
@@ -275,7 +275,7 @@ public class Database {
 			String description, String genre, String image) {
 		String query = "INSERT INTO boek(`ISBN`,`taal`,`titel`,`Datumuitgave`,`InternationaleTitel`,`genreNaam`,`Image`,`beschrijving`)"
 				+ "VALUES ('" + ISBN + "', '" + language + "', '" + title + "', '" + releaseDate + "', '" + intTitle
-				+ "', '" + genre + "', '" + description + "', '" + image + "');";
+				+ "', '" + genre + "', '" + image + "', '" + description + "');";
 		System.out.println(query);
 		return (insert(query));
 	}
@@ -337,11 +337,10 @@ public class Database {
 	 * @param String iSBN
 	 */
 	public void insertBookcaseHasBook(int bookCaseNr, String libraryName, String iSBN, String bookNr) {
-		String query = "INSERT INTO boekenkastheeftboek (KastNummer, BibliotheekNaam, ISBN, BoekNummer) VALUES ('" + bookCaseNr
-				+ "', '" + libraryName + "', '" + iSBN + "', '"+bookNr+"')";
+		String query = "INSERT INTO boekenkastheeftboek (KastNummer, BibliotheekNaam, ISBN, BoekNummer) VALUES ('"
+				+ bookCaseNr + "', '" + libraryName + "', '" + iSBN + "', '" + bookNr + "')";
 		update(query);
 	}
-	
 
 	// Methods that delete data from
 	// database///////////////////////////////////////////////////////////////////
@@ -405,7 +404,7 @@ public class Database {
 	 * @return ArrayList<BoekModel>
 	 */
 	public ArrayList<BoekModel> getAllBooksFromLibary(String name) {
-		String query = "SELECT * \r\n" + "FROM Boek b\r\n"
+		String query = "SELECT * \r\n" + "FROM boek b\r\n"
 				+ "INNER JOIN boekenkastheeftboek bkhb ON b.ISBN=bkhb.ISBN\r\n"
 				+ "INNER JOIN boekenkast bk ON bkhb.KastNummer=bk.KastNummer\r\n"
 				+ "INNER JOIN bibliotheek bieb ON bk.BibliotheekNaam=bieb.Naam\r\n" + "WHERE bieb.Naam \r\n" + "= '"
@@ -431,7 +430,7 @@ public class Database {
 	 * @return Arraylist<BoekModel>
 	 */
 	public ArrayList<BoekModel> getAllBooks() {
-		String query = "SELECT * FROM Boek";
+		String query = "SELECT * FROM boek";
 		ResultSet resultSet = select(query);
 
 		if (goToFirstRow(select(query)) == null) {
